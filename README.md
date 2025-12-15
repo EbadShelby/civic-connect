@@ -13,18 +13,22 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 
 ### **Frontend**
 
-* HTML
-* Tailwind CSS
-* Vue.js
-* Axios
-* Vue Toastification (alerts)
-* Vue Router (navigation)
-* Pinia (state management)
-* VeeValidate or Yup (form validation)
-* SweetAlert2 (confirmation dialogs)
-* Heroicons (UI icons)
-* ESLint + Prettier (code formatting)
-* Composer (for managing PHP dependencies)
+* **Vue.js** (^3.5.25) — progressive framework for building UIs
+* **Vite** (^7.2.4) — fast build tool and dev server
+* **Tailwind CSS** (^4.1.18) — utility-first CSS framework
+* **Tailwind CSS Vite** (^4.1.18) — Vite plugin for Tailwind CSS
+* **Axios** (^1.13.2) — HTTP client for API requests
+* **Pinia** (^3.0.4) — state management library
+* **Vue Router** (^4.6.3) — client-side routing
+* **VeeValidate** (^4.15.1) — form validation library
+* **Vue SweetAlert2** (^5.0.11) — beautiful confirmation dialogs
+* **Vue Toastification** (^2.0.0-rc.5) — toast notifications
+* **Vue Loading Overlay** (^6.0.6) — loading spinner component
+* **Heroicons/Vue** (^2.2.0) — heroicons icon library for Vue
+* **ESLint** (^9.39.1) — code linting
+* **Prettier** (^3.6.2) — code formatting
+* **Prettier Plugin Tailwind CSS** (^0.7.2) — Tailwind class sorting for Prettier
+* **Tailwind CSS Motion** (^1.1.1) — animation utilities for Tailwind
 
 ### **Map**
 
@@ -33,11 +37,12 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 
 ### **Backend**
 
-* PHP (vanilla)
-* PHPMailer (email notifications)
-* Dotenv (phpdotenv) for environment variables
-* Intervention Image (image optimization)
-* MIME type validator (file security)
+* **PHP** (vanilla) — server-side logic
+* **PHPMailer** — email notifications and OTP delivery
+* **Dotenv** (phpdotenv) — environment variable management
+* **Intervention Image** — image optimization and processing
+* **MIME Type Validator** — file security and validation
+* **Composer** — PHP dependency manager
 
 ### **Database**
 
@@ -115,6 +120,12 @@ git clone https://github.com/EbadShelby/CivicConnect.git
 
 * Inside `backend/`, copy `.env.example` → `.env`
 * Update database credentials and email SMTP settings
+* Install PHP dependencies:
+
+  ```bash
+  cd backend
+  composer install
+  ```
 
 ### **4. Start Server**
 
@@ -138,6 +149,15 @@ npm run dev
 ```
 http://localhost:5173/
 ```
+
+---
+
+## **Node.js & Environment Requirements**
+
+* **Node.js**: ^20.19.0 or >=22.12.0
+* **npm**: ^11.7.0
+* **PHP**: 7.4+ (recommended 8.0+)
+* **MySQL**: 5.7+
 
 ---
 

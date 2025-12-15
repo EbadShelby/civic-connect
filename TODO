@@ -1,0 +1,136 @@
+Project Setup:
+  ✔ Create repo + add team members @done(25-12-12 10:53)
+  ✔ Set up folder structure (frontend, backend, uploads) @done(25-12-12 10:53)
+  ✔ Initialize Vue project (npm init vue) @done(25-12-12 10:53)
+  ☐ Install dependencies (✅Vue, ✅Axios, ✅Tailwind, Leaflet,openstreetmap, ✅Vue Router, ✅Pinia)
+  ✔ Install UI helpers (Vue Toastification, SweetAlert2, Heroicons) @done(25-12-12 10:53)
+  ✔ Install form validation (VeeValidate or Yup) @done(25-12-12 10:53)
+  ☐ Set up ESLint + Prettier formatting
+  ☐ Set up XAMPP + MySQL database
+  ☐ Create database.sql with tables
+  ☐ Initialize Composer (backend dependencies)
+
+Frontend (Vue + Tailwind):
+  Core UI:
+    ☐ Build landing page layout
+    ☐ Build login & register pages
+    ☐ Build main dashboard page
+    ☐ Build issue reporting form
+    ☐ Build issue list & filters
+    ☐ Build staff dashboard view
+    ☐ Integrate Heroicons for UI clarity
+    ☐ Add Toast/Alert system using Vue Toastification and SweetAlert2
+
+  Routing & State:
+    ☐ Set up Vue Router (pages + guards)
+    ☐ Set up Pinia (auth store, issue store)
+
+  Validation:
+    ☐ Add VeeValidate/Yup to forms (login, register, issue report)
+
+  Map Integration:
+    ☐ Install & configure Leaflet
+    ☐ Display interactive map
+    ☐ Add pin drop selection for reporting
+    ☐ Show pins for reported issues
+    ☐ Add map popups for issue previews
+
+  Axios Integration:
+    ☐ Connect Vue to PHP API (base URL)
+    ☐ Create functions for: GET issues, POST issue, POST upvote, PATCH status
+    ☐ Add token authentication (Pinia store)
+    ☐ Add global error handling for Axios
+
+Backend (PHP + MySQL):
+  Config & Setup:
+    ☐ Create database connection (config.php)
+    ☐ Set up .env via Dotenv (credentials + SMTP)
+    ☐ Set up folder structure (api/, uploads/)
+    ☐ Install Composer packages (PHPMailer, Dotenv, Intervention Image)
+
+  API Endpoints:
+    ☐ POST /users/register
+    ☐ POST /users/login
+    ☐ GET /issues (fetch all issues)
+    ☐ POST /issues (create issue + upload image)
+    ☐ POST /issues/upvote
+    ☐ PATCH /issues/status (staff only)
+    ☐ GET /audit (fetch audit logs)
+    ☐ Secure endpoints with auth/token
+    ☐ POST /auth/send-otp → send OTP to email (phpmailer)
+    ☐ POST /auth/verify-otp → verify OTP (phpmailer)
+    ☐ POST /auth/register → with email verification + captcha
+    ☐ POST /auth/login → with captcha and optional OTP
+    ☐ POST /auth/resend-verification → resend email link
+    ☐ GET /chatbot → basic Q&A guidance
+
+  API Endpoints (Admin):
+    ☐ GET /users (list all users)
+    ☐ POST /users (create user)
+    ☐ PATCH /users/{id} (update user / role)
+    ☐ DELETE /users/{id} (remove user)
+    ☐ GET /analytics (summary of issues, votes, status counts)
+
+  File Upload:
+    ☐ Implement image upload handling
+    ☐ Validate MIME type
+    ☐ Limit file size
+    ☐ Use Intervention Image for resizing
+    ☐ Save final path to database
+
+  Email Notifications:
+    ☐ Configure PHPMailer SMTP
+    ☐ Send email when issue status changes
+    ☐ Send email on registration (optional)
+
+Database (MySQL):
+    ☐ Create users table
+    ☐ Create issues table
+    ☐ Create upvotes table
+    ☐ Create audit_trail table
+    ☐ Add foreign keys & constraints
+    ☐ Add indexes (issue_id, user_id for faster queries)
+
+Features & Logic:
+  Citizen:
+    ☐ Submit new issue
+    ☐ Upvote issue
+    ☐ View issue status updates
+    ☐ View map with all issues
+    ☐ Email notification on status update
+    ☐ OTP for account verification / login
+    ☐ Email verification on registration
+    ☐ Captcha on registration/login forms
+    ☐ Chatbot for guiding users
+
+  Staff:
+    ☐ Login to staff dashboard
+    ☐ OTP for login (optional)
+    ☐ Change issue status (Pending → In Progress → Resolved)
+    ☐ Audit trail auto-log on status change
+    ☐ Filter issues by status or upvotes
+
+  Admin:
+    ☐ Login to admin panel
+    ☐ Manage users (create, update, delete)
+    ☐ Assign roles (Citizen / Staff)
+    ☐ View audit logs
+    ☐ Monitor system stats
+
+Testing:
+  ☐ Test all API endpoints
+  ☐ Test image upload
+  ☐ Test MIME validation
+  ☐ Test map pin accuracy
+  ☐ Test upvote logic (1 vote per user)
+  ☐ Test staff permissions
+  ☐ Test email notifications (PHPMailer)
+  ☐ Test form validation (VeeValidate/Yup)
+
+Polish & Deployment:
+  ☐ Add loading states & error messages
+  ☐ Improve UI with Tailwind
+  ☐ Optimize map markers
+  ☐ Add responsive/mobile layout
+  ☐ Document setup in README
+  ☐ Optional: Deploy online
