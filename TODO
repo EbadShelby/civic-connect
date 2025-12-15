@@ -2,10 +2,10 @@ Project Setup:
   ✔ Create repo + add team members @done(25-12-12 10:53)
   ✔ Set up folder structure (frontend, backend, uploads) @done(25-12-12 10:53)
   ✔ Initialize Vue project (npm init vue) @done(25-12-12 10:53)
-  ☐ Install dependencies (✅Vue, ✅Axios, ✅Tailwind, Leaflet,openstreetmap, ✅Vue Router, ✅Pinia)
-  ✔ Install UI helpers (Vue Toastification, SweetAlert2, Heroicons) @done(25-12-12 10:53)
-  ✔ Install form validation (VeeValidate or Yup) @done(25-12-12 10:53)
-  ☐ Set up ESLint + Prettier formatting
+  ✔ Install dependencies (✅Vue, ✅Axios, ✅Tailwind, ✅Leaflet, ✅Vue Router, ✅Pinia) @done(25-12-16)
+  ✔ Install UI helpers (Vue Toastification, SweetAlert2, Heroicons, Vue Loading Overlay) @done(25-12-12 10:53)
+  ✔ Install form validation (VeeValidate) @done(25-12-12 10:53)
+  ✔ Set up ESLint + Prettier formatting @done(25-12-16)
   ☐ Set up XAMPP + MySQL database
   ☐ Create database.sql with tables
   ☐ Initialize Composer (backend dependencies)
@@ -26,7 +26,7 @@ Frontend (Vue + Tailwind):
     ☐ Set up Pinia (auth store, issue store)
 
   Validation:
-    ☐ Add VeeValidate/Yup to forms (login, register, issue report)
+    ☐ Add VeeValidate to forms (login, register, issue report)
 
   Map Integration:
     ☐ Install & configure Leaflet
