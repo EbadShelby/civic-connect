@@ -1,0 +1,224 @@
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import axios from 'axios'
+
+const API_BASE_URL = 'http://localhost/civic-connect/backend/api'
+
+export const useAuthStore = defineStore('auth', () => {
+  const user = ref(null)
+  const token = ref(localStorage.getItem('token'))
+  const isLoading = ref(false)
+  const error = ref(null)
+  const isAuthenticated = computed(() => !!token.value)
+  const userRole = computed(() => user.value?.role || 'citizen')
+
+  // Role-based access
+  const isAdmin = computed(() => user.value?.role === 'admin')
+  const isStaff = computed(() => user.value?.role === 'staff')
+  const isCitizen = computed(() => user.value?.role === 'citizen')
+
+  // Set axios default authorization header
+  const setAuthHeader = (authToken) => {
+    if (authToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
+    } else {
+      delete axios.defaults.headers.common['Authorization']
+    }
+  }
+
+  if (token.value) {
+    setAuthHeader(token.value)
+  }
+
+  // Register user
+  const register = async (formData) => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const response = await axios.post(`${API_BASE_URL}/users/register`, {
+        email: formData.email,
+        password: formData.password,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        phone: formData.phone || null
+      })
+
+      return {
+        success: true,
+        message: response.data.message,
+        userId: response.data.user_id,
+        email: response.data.email
+      }
+    } catch (err) {
+      error.value = err.response?.data?.error || 'Registration failed'
+      throw error.value
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Verify email with OTP
+  const verifyEmail = async (email, otpCode) => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const response = await axios.post(`${API_BASE_URL}/users/verify-email`, {
+        email,
+        otp_code: otpCode
+      })
+
+      return {
+        success: true,
+        message: response.data.message,
+        userId: response.data.user_id
+      }
+    } catch (err) {
+      error.value = err.response?.data?.error || 'Email verification failed'
+      throw error.value
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Resend OTP
+  const resendOTP = async (email) => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const response = await axios.post(`${API_BASE_URL}/users/resend-otp`, { email })
+
+      return {
+        success: true,
+        message: response.data.message
+      }
+    } catch (err) {
+      error.value = err.response?.data?.error || 'Failed to resend OTP'
+      throw error.value
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Login user
+  const login = async (email, password) => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const response = await axios.post(`${API_BASE_URL}/users/login`, {
+        email,
+        password
+      })
+
+      token.value = response.data.token
+      user.value = response.data.user
+
+      // Store token in localStorage
+      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
+
+      // Set axios default header
+      setAuthHeader(response.data.token)
+
+      return {
+        success: true,
+        message: 'Login successful',
+        user: response.data.user
+      }
+    } catch (err) {
+      error.value = err.response?.data?.error || 'Login failed'
+      throw error.value
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Logout user
+  const logout = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/users/logout`)
+    } catch (err) {
+      // Continue with logout even if API call fails
+      console.warn('Logout API error:', err)
+    } finally {
+      // Clear local state
+      user.value = null
+      token.value = null
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      delete axios.defaults.headers.common['Authorization']
+    }
+  }
+
+  // Get user profile
+  const fetchUserProfile = async (userId) => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const response = await axios.get(`${API_BASE_URL}/users/${userId}`)
+      user.value = response.data.user
+
+      return response.data.user
+    } catch (err) {
+      error.value = err.response?.data?.error || 'Failed to fetch user profile'
+      throw error.value
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Update user profile
+  const updateUserProfile = async (userId, formData) => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const response = await axios.put(`${API_BASE_URL}/users/${userId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+
+      user.value = response.data.user
+      localStorage.setItem('user', JSON.stringify(response.data.user))
+
+      return response.data.user
+    } catch (err) {
+      error.value = err.response?.data?.error || 'Failed to update profile'
+      throw error.value
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Initialize auth from localStorage
+  const initializeAuth = () => {
+    const storedToken = localStorage.getItem('token')
+    const storedUser = localStorage.getItem('user')
+
+    if (storedToken && storedUser) {
+      token.value = storedToken
+      user.value = JSON.parse(storedUser)
+      setAuthHeader(storedToken)
+    }
+  }
+
+  return {
+    user,
+    token,
+    isLoading,
+    error,
+    isAuthenticated,
+    userRole,
+    isAdmin,
+    isStaff,
+    isCitizen,
+    register,
+    verifyEmail,
+    resendOTP,
+    login,
+    logout,
+    fetchUserProfile,
+    updateUserProfile,
+    initializeAuth,
+    setAuthHeader
+  }
+})

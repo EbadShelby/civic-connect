@@ -1,2 +1,17 @@
 @import 'tailwindcss';
 @plugin 'tailwindcss-motion';
+
+@theme {
+  --color-bg: #ebede9;
+
+  --color-primary: #25562e;
+  --color-accent: #75a743;
+
+  --color-text: #10141f;
+  --color-muted: #819796;
+
+  --color-danger: #cf573c;
+
+  --font-base: "Inter", sans-serif;
+  --font-accent: "Ubuntu", sans-serif;
+}
