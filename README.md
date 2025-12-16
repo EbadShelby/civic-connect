@@ -123,8 +123,8 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 > Team members must **fork** the repository first.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/CivicConnect.git
-cd CivicConnect
+git clone https://github.com/YOUR_USERNAME/civic-connect.git
+cd civic-connect
 ```
 
 ⚠️ Do not clone the main repository directly unless you are the project lead.
@@ -134,13 +134,27 @@ cd CivicConnect
 ### **2. Add Upstream Remote (One-Time Setup)**
 
 ```bash
-git remote add upstream https://github.com/EbadShelby/CivicConnect.git
+git remote add upstream https://github.com/EbadShelby/civic-connect.git
 git remote -v
 ```
 
 ---
 
-### **3. Sync With Main Repository (Before Coding)**
+### **3.One-time global setup (EVERY TEAM MEMBER)
+
+Add this to the workflow (VERY IMPORTANT):
+
+```bash
+git config --global pull.rebase false
+```
+
+✅ This tells Git:
+
+“Always use merge when pulling.”
+
+---
+
+### **4. Sync With Main Repository (Before Coding)**
 
 ```bash
 git pull upstream main
@@ -175,7 +189,7 @@ Run XAMPP (Apache + MySQL)
 Backend base URL:
 
 ```
-http://localhost/CivicConnect/backend/
+http://localhost/civic-connect/backend/
 ```
 
 ---
@@ -226,7 +240,7 @@ All changes must be reviewed before merging.
 ## **Folder Structure**
 
 ```
-CivicConnect/
+civic-connect/
 ├─ frontend/                # Vue app
 │  ├─ src/
 │  ├─ public/
