@@ -1,0 +1,47 @@
+@import "tailwindcss";
+@plugin "tailwindcss-motion";
+
+/* --- CATPPUCCIN THEMES --- */
+
+/* Light Theme (Latte) - Default */
+@theme {
+  /* Core Neutrals */
+  --color-bg-base: #eff1f5;
+  --color-bg-surface: #ccd0da;
+  --color-text-primary: #4c4f69;
+  --color-text-secondary: #6c6f85;
+  --color-text: var(--color-text-primary);
+  --color-border: var(--color-bg-surface);
+
+  /* Functional Accents */
+  --color-accent-blue: #8caaee;
+  --color-accent-mauve: #ca9ee6;
+
+  /* Status Colors */
+  --color-status-success: #a6d189;
+  --color-status-warning: #e5c890;
+  --color-status-error: #e78284;
+
+  --font-base: "Inter", sans-serif;
+  --font-accent: "Ubuntu";
+}
+
+/* Dark Theme (Mocha) */
+.dark @theme {
+  /* Core Neutrals */
+  --color-bg-base: #1e1e2e;   /* Base */
+  --color-bg-surface: #313244; /* Surface0 */
+  --color-text-primary: #cdd6f4; /* Text */
+  --color-text-secondary: #a6adc8; /* Subtext0 */
+  --color-text: var(--color-text-primary);
+  --color-border: var(--color-bg-surface);
+
+  /* Functional Accents */
+  --color-accent-blue: #89b4fa; /* Blue */
+  --color-accent-mauve: #cba6f7; /* Mauve */
+
+  /* Status Colors */
+  --color-status-success: #a6e3a1; /* Green */
+  --color-status-warning: #f9e2af; /* Yellow */
+  --color-status-error: #f38ba8; /* Red */
+}
