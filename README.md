@@ -20,10 +20,9 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 * **Pinia** (^3.0.4) — state management
 * **Vue Router** (^4.6.3) — client-side routing
 * **VeeValidate** (^4.15.1) — form validation
-* **Vue SweetAlert2** — confirmation dialogs
 * **Vue Toastification** — toast notifications
 * **Vue Loading Overlay** — loading indicators
-* **Heroicons/Vue** — icons
+* **fontawesome** — icons
 * **ESLint + Prettier** — linting and formatting
 
 ### **Map**
@@ -36,8 +35,6 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 * **PHP** (vanilla)
 * **PHPMailer** — email, OTP, verification
 * **Dotenv (phpdotenv)** — environment variables
-* **Intervention Image** — image processing
-* **MIME Type Validator** — upload security
 * **Composer** — PHP dependency manager
 
 ### **Database**

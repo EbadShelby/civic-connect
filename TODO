@@ -68,7 +68,7 @@ Backend (PHP + MySQL):
     ☐ Create database connection (config.php)
     ☐ Set up .env via Dotenv (credentials + SMTP)
     ☐ Set up folder structure (api/, uploads/)
-    ☐ Install Composer packages (PHPMailer, Dotenv, Intervention Image)
+    ☐ Install Composer packages (PHPMailer, Dotenv)
 
   API Endpoints:
     ☐ POST /users/register
@@ -95,9 +95,7 @@ Backend (PHP + MySQL):
 
   File Upload:
     ☐ Implement image upload handling
-    ☐ Validate MIME type
     ☐ Limit file size
-    ☐ Use Intervention Image for resizing
     ☐ Save final path to database
 
   Email Notifications:
@@ -142,7 +140,6 @@ Features & Logic:
 Testing:
   ☐ Test all API endpoints
   ☐ Test image upload
-  ☐ Test MIME validation
   ☐ Test map pin accuracy
   ☐ Test upvote logic (1 vote per user)
   ☐ Test staff permissions

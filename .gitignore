@@ -1,0 +1,5 @@
+.clinerules
+.github
+backend/vendor/
+backend/uploads/*
+backend/.env
