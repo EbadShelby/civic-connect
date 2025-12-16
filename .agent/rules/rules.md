@@ -1,0 +1,21 @@
+---
+trigger: always_on
+---
+
+- tools we are using
+  - @eslint/js@9.39.2
+  - heroicons/vue@2.2.0
+  - @tailwindcss/vite@4.1.18
+  - axios@1.13.2
+  - leaflet@1.9.4
+  - pinia@3.0.4
+  - prettier-plugin-tailwindcss@0.7.2
+  - prettier@3.6.2
+  - tailwindcss-motion@1.1.1
+  - tailwindcss@4.1.18
+  - vee-validate@4.15.1
+  - vue-loading-overlay@6.0.6
+  - vue-router@4.6.4
+  - vue-sweetalert2@5.0.11
+  - vue-toastification@2.0.0-rc.5
+  - vue@3.5.25
