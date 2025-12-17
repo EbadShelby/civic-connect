@@ -1,126 +1,147 @@
-```
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-[#ebede9] to-gray-100">
-    <div class="mx-auto max-w-3xl px-4 py-8">
-      <!-- Header -->
-      <div class="mb-8">
-        <router-link
-          to="/issues"
-          class="text-accent mb-4 inline-flex items-center gap-2 font-semibold hover:underline"
-        >
-          <ArrowLeftIcon class="h-5 w-5" />
-          Back to Issues
-        </router-link>
-        <h1 class="mb-2 text-4xl font-bold text-[#10141f]">Report an Issue</h1>
-        <p class="text-[#819796]">Help improve our community by reporting problems you see.</p>
+  <div class="animate-fade-in-up mx-auto max-w-4xl px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <router-link
+        to="/issues"
+        class="text-text-light hover:text-primary group mb-4 inline-flex items-center gap-2 font-medium transition-colors"
+      >
+        <ArrowLeftIcon class="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+        Back to Issues
+      </router-link>
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-text mb-2 text-3xl font-bold md:text-4xl">Report an Issue</h1>
+          <p class="text-text-light text-lg">
+            Help improve our community by reporting problems you see.
+          </p>
+        </div>
       </div>
+    </div>
 
-      <!-- Form Card -->
-      <div class="overflow-hidden rounded-xl bg-white shadow-md">
-        <!-- Progress Steps (Optional improvement, not in original but nice to have structure) -->
-
-        <form @submit.prevent="submitIssue" class="space-y-8 p-8">
-          <!-- Category Selection -->
-          <div>
-            <label class="mb-2 block text-sm font-bold text-[#10141f]"
-              >Issue Category <span class="text-red-500">*</span></label
+    <!-- Form Card -->
+    <div class="shadow-soft overflow-hidden rounded-2xl border border-gray-100 bg-white">
+      <form @submit.prevent="submitIssue" class="space-y-8 p-6 md:p-8">
+        <!-- Section: Category -->
+        <section>
+          <h3 class="text-text mb-4 flex items-center gap-2 text-lg font-bold">
+            <span
+              class="bg-primary/10 text-primary flex h-6 w-6 items-center justify-center rounded-full text-sm"
+              >1</span
             >
-            <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
-              <label v-for="cat in categories" :key="cat.value" class="relative cursor-pointer">
-                <input
-                  type="radio"
-                  v-model="form.category"
-                  :value="cat.value"
-                  class="peer sr-only"
-                />
+            What type of issue is this?
+          </h3>
+          <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <label v-for="cat in categories" :key="cat.value" class="group relative cursor-pointer">
+              <input type="radio" v-model="form.category" :value="cat.value" class="peer sr-only" />
+              <div
+                class="peer-checked:border-primary peer-checked:bg-primary-light/20 group-hover:border-primary/50 rounded-xl border-2 border-gray-100 p-4 text-center transition-all duration-200 peer-checked:shadow-sm"
+              >
+                <!-- Icon placeholder (could be dynamic based on category) -->
                 <div
-                  class="rounded-lg border-2 border-gray-200 p-3 text-center transition-all peer-checked:border-[#75a743] peer-checked:bg-[#eaf4e1] hover:border-gray-300"
+                  class="text-primary mb-2 opacity-80 transition-transform duration-200 group-hover:scale-110"
                 >
-                  <span class="block text-sm font-semibold text-[#10141f]">{{ cat.label }}</span>
+                  <FolderIcon class="mx-auto h-8 w-8" />
                 </div>
-              </label>
+                <span
+                  class="text-text peer-checked:text-primary block text-sm font-semibold transition-colors"
+                  >{{ cat.label }}</span
+                >
+              </div>
+            </label>
+          </div>
+          <p v-if="errors.category" class="text-danger mt-2 flex items-center gap-1 text-sm">
+            <ExclamationCircleIcon class="h-4 w-4" /> {{ errors.category }}
+          </p>
+        </section>
+
+        <!-- Section: Details -->
+        <section class="grid gap-8 md:grid-cols-2">
+          <div class="space-y-6">
+            <h3 class="text-text mb-4 flex items-center gap-2 text-lg font-bold">
+              <span
+                class="bg-primary/10 text-primary flex h-6 w-6 items-center justify-center rounded-full text-sm"
+                >2</span
+              >
+              Describe the problem
+            </h3>
+
+            <!-- Title -->
+            <div>
+              <label for="title" class="text-text mb-1 block text-sm font-medium"
+                >Title <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                id="title"
+                v-model="form.title"
+                placeholder="e.g., Pothole on Main St"
+                class="focus:ring-primary/20 focus:border-primary w-full rounded-lg border-gray-200 bg-gray-50 px-4 py-2.5 transition-all outline-none focus:bg-white focus:ring-2"
+              />
+              <p v-if="errors.title" class="text-danger mt-1 text-xs">{{ errors.title }}</p>
             </div>
-            <p v-if="errors.category" class="mt-1 text-xs text-red-500">{{ errors.category }}</p>
-          </div>
 
-          <!-- Title -->
-          <div>
-            <label for="title" class="mb-2 block text-sm font-bold text-[#10141f]"
-              >Title <span class="text-red-500">*</span></label
-            >
-            <input
-              type="text"
-              id="title"
-              v-model="form.title"
-              placeholder="Brief summary of the issue"
-              class="w-full rounded-lg border border-gray-300 px-4 py-2 transition-shadow focus:ring-2 focus:ring-[#25562e] focus:outline-none"
-            />
-            <p v-if="errors.title" class="mt-1 text-xs text-red-500">{{ errors.title }}</p>
-          </div>
-
-          <!-- Description -->
-          <div>
-            <label for="description" class="mb-2 block text-sm font-bold text-[#10141f]"
-              >Description <span class="text-red-500">*</span></label
-            >
-            <textarea
-              id="description"
-              v-model="form.description"
-              rows="4"
-              placeholder="Please describe the issue in detail..."
-              class="w-full rounded-lg border border-gray-300 px-4 py-2 transition-shadow focus:ring-2 focus:ring-[#25562e] focus:outline-none"
-            ></textarea>
-            <p v-if="errors.description" class="mt-1 text-xs text-red-500">
-              {{ errors.description }}
-            </p>
-          </div>
-
-          <!-- Priority -->
-          <div>
-            <label class="mb-2 block text-sm font-bold text-[#10141f]">Priority Level</label>
-            <div class="flex items-start rounded-lg bg-blue-50 p-4">
-              <ExclamationCircleIcon class="mr-2 h-6 w-6 flex-shrink-0 text-yellow-500" />
-              <p class="text-sm text-blue-800">
-                Most community reports are <strong>Medium</strong> or <strong>Low</strong> priority.
-                High priority should be reserved for safety hazards.
+            <!-- Description -->
+            <div>
+              <label for="description" class="text-text mb-1 block text-sm font-medium"
+                >Description <span class="text-danger">*</span></label
+              >
+              <textarea
+                id="description"
+                v-model="form.description"
+                rows="4"
+                placeholder="Please describe the issue in detail..."
+                class="focus:ring-primary/20 focus:border-primary w-full resize-none rounded-lg border-gray-200 bg-gray-50 px-4 py-2.5 transition-all outline-none focus:bg-white focus:ring-2"
+              ></textarea>
+              <p v-if="errors.description" class="text-danger mt-1 text-xs">
+                {{ errors.description }}
               </p>
             </div>
-            <div class="mt-3 flex gap-4">
-              <label class="inline-flex items-center">
-                <input
-                  type="radio"
-                  v-model="form.priority"
-                  value="low"
-                  class="text-primary focus:ring-[#25562e]"
-                />
-                <span class="ml-2 text-[#10141f]">Low</span>
-              </label>
-              <label class="inline-flex items-center">
-                <input
-                  type="radio"
-                  v-model="form.priority"
-                  value="medium"
-                  class="text-primary focus:ring-[#25562e]"
-                />
-                <span class="ml-2 text-[#10141f]">Medium</span>
-              </label>
-              <label class="inline-flex items-center">
-                <input
-                  type="radio"
-                  v-model="form.priority"
-                  value="high"
-                  class="text-primary focus:ring-[#25562e]"
-                />
-                <span class="ml-2 text-[#10141f]">High</span>
-              </label>
+
+            <!-- Priority -->
+            <div>
+              <label class="text-text mb-2 block text-sm font-medium">Priority Level</label>
+              <div class="flex gap-3">
+                <label class="inline-flex cursor-pointer items-center">
+                  <input type="radio" v-model="form.priority" value="low" class="peer sr-only" />
+                  <span
+                    class="text-text-light peer-checked:text-text rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium transition-colors peer-checked:border-gray-300 peer-checked:bg-gray-100"
+                    >Low</span
+                  >
+                </label>
+                <label class="inline-flex cursor-pointer items-center">
+                  <input type="radio" v-model="form.priority" value="medium" class="peer sr-only" />
+                  <span
+                    class="text-text-light peer-checked:bg-warning-light peer-checked:text-warning-dark peer-checked:border-warning rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium transition-colors"
+                    >Medium</span
+                  >
+                </label>
+                <label class="inline-flex cursor-pointer items-center">
+                  <input type="radio" v-model="form.priority" value="high" class="peer sr-only" />
+                  <span
+                    class="text-text-light peer-checked:bg-danger-light peer-checked:text-danger-dark peer-checked:border-danger rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium transition-colors"
+                    >High</span
+                  >
+                </label>
+              </div>
+              <p class="mt-2 inline-block rounded-lg bg-blue-50 p-2 text-xs text-blue-700">
+                <ExclamationCircleIcon class="mr-1 inline h-3 w-3" />
+                High priority is for immediate safety hazards.
+              </p>
             </div>
           </div>
 
           <!-- Image Upload -->
           <div>
-            <label class="mb-2 block text-sm font-bold text-[#10141f]">Photo Evidence</label>
+            <h3 class="text-text mb-4 flex items-center gap-2 text-lg font-bold">
+              <span
+                class="bg-primary/10 text-primary flex h-6 w-6 items-center justify-center rounded-full text-sm"
+                >3</span
+              >
+              Add a photo
+            </h3>
             <div
-              class="relative cursor-pointer rounded-xl border-2 border-dashed border-gray-300 p-8 text-center transition-colors hover:bg-gray-50"
+              class="hover:border-primary/50 group relative flex h-[calc(100%-3rem)] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 p-6 text-center transition-all hover:bg-white"
               @dragover.prevent
               @drop.prevent="handleFileDrop"
               @click="triggerFileInput"
@@ -133,38 +154,76 @@
                 @change="handleFileSelect"
               />
 
-              <div v-if="!form.image" class="flex flex-col items-center">
-                <PhotoIcon class="mb-2 h-12 w-12 text-[#819796]" />
-                <p class="text-sm font-semibold text-[#10141f]">Click to upload or drag and drop</p>
-                <p class="mt-1 text-xs text-[#819796]">JPG, PNG, GIF up to 5MB</p>
+              <div v-if="!form.image" class="pointer-events-none flex flex-col items-center">
+                <div
+                  class="mb-3 rounded-full bg-white p-3 shadow-sm transition-transform group-hover:scale-110"
+                >
+                  <PhotoIcon class="text-primary h-8 w-8" />
+                </div>
+                <p class="text-text text-sm font-semibold">Click to upload or drag & drop</p>
+                <p class="text-text-light mt-1 text-xs">JPG, PNG, GIF up to 5MB</p>
               </div>
 
-              <div v-else class="flex flex-col items-center">
-                <p class="mb-2 flex items-center text-sm font-semibold text-green-600">
+              <div v-else class="flex w-full flex-col items-center">
+                <div
+                  v-if="imagePreview"
+                  class="relative mb-3 h-48 w-full overflow-hidden rounded-lg shadow-sm"
+                >
+                  <img :src="imagePreview" class="h-full w-full object-cover" />
+                  <button
+                    @click.stop="removeImage"
+                    class="text-danger absolute top-2 right-2 rounded-full bg-white/90 p-1.5 shadow-sm transition-colors hover:bg-white"
+                  >
+                    <TrashIcon class="h-4 w-4" />
+                  </button>
+                </div>
+                <p class="text-success mb-2 flex items-center text-sm font-semibold">
                   <CheckCircleIcon class="mr-1 h-5 w-5" />
                   {{ form.image.name }}
                 </p>
-                <button
-                  type="button"
-                  @click.stop="removeImage"
-                  class="flex items-center text-sm text-[#cf573c] hover:underline"
-                >
-                  <TrashIcon class="mr-1 h-4 w-4" /> Remove image
-                </button>
               </div>
             </div>
           </div>
+        </section>
 
-          <!-- Terms -->
+        <!-- Section: Map -->
+        <section>
+          <h3 class="text-text mb-4 flex items-center gap-2 text-lg font-bold">
+            <span
+              class="bg-primary/10 text-primary flex h-6 w-6 items-center justify-center rounded-full text-sm"
+              >4</span
+            >
+            Location
+          </h3>
+          <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+            <div id="map" class="z-0 h-80 w-full"></div>
+          </div>
+          <div class="mt-2 flex items-center justify-between text-sm">
+            <p v-if="form.latitude" class="text-success flex items-center font-medium">
+              <MapPinIcon class="mr-1 h-4 w-4" />
+              Location selected: {{ form.latitude.toFixed(6) }}, {{ form.longitude.toFixed(6) }}
+            </p>
+            <p v-else class="text-text-light flex items-center">
+              <ExclamationCircleIcon class="mr-1 h-4 w-4" />
+              Tap on the map to pin the location
+            </p>
+          </div>
+          <p v-if="error && error.includes('location')" class="text-danger mt-2 text-sm">
+            {{ error }}
+          </p>
+        </section>
+
+        <!-- Terms & Submit -->
+        <div class="border-t border-gray-100 pt-6">
           <div class="mb-6 flex items-start gap-3">
             <input
               id="terms"
               v-model="form.agreeToTerms"
               type="checkbox"
-              class="mt-1 rounded"
+              class="text-primary focus:ring-primary mt-1 rounded border-gray-300"
               required
             />
-            <label for="terms" class="text-sm text-[#819796]">
+            <label for="terms" class="text-text-light cursor-pointer text-sm select-none">
               I confirm that this information is accurate and will help improve our community
             </label>
           </div>
@@ -174,22 +233,25 @@
             <button
               type="submit"
               :disabled="isSubmitting || !form.latitude || !form.longitude"
-              class="flex flex-1 items-center justify-center rounded-lg bg-gradient-to-r from-[#25562e] to-[#1a3d21] px-4 py-3 font-semibold text-white transition-shadow hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
+              class="btn-primary flex-1 py-3"
             >
               <ArrowPathIcon v-if="isSubmitting" class="mr-2 h-5 w-5 animate-spin" />
-              {{ isSubmitting ? 'Submitting...' : 'Report Issue' }}
+              {{ isSubmitting ? 'Submitting Report...' : 'Submit Report' }}
             </button>
             <router-link
               to="/dashboard"
-              class="flex-1 rounded-lg border-2 border-gray-300 px-4 py-3 text-center font-semibold text-[#10141f] transition-colors hover:bg-gray-50"
+              class="text-text flex-1 rounded-lg border border-gray-200 bg-white px-4 py-3 text-center font-semibold transition-colors hover:border-gray-300 hover:bg-gray-50"
             >
               Cancel
             </router-link>
           </div>
 
           <!-- Error Message -->
-          <div v-if="error" class="mt-4 rounded-lg border border-red-200 bg-red-50 p-4">
-            <p class="flex items-center text-sm text-red-800">
+          <div
+            v-if="error && !error.includes('location')"
+            class="bg-danger-light/20 border-danger/20 mt-4 rounded-lg border p-4"
+          >
+            <p class="text-danger flex items-center text-sm">
               <ExclamationCircleIcon class="mr-2 h-5 w-5" />
               {{ error }}
             </p>
@@ -197,16 +259,16 @@
 
           <!-- Success Message -->
           <div
-            v-if="form.latitude && form.longitude"
-            class="rounded-lg border border-green-200 bg-green-50 p-3"
+            v-if="successMessage"
+            class="bg-success-light/20 border-success/20 mt-4 rounded-lg border p-4"
           >
-            <p class="flex items-center text-sm text-green-800">
+            <p class="text-success flex items-center text-sm">
               <CheckCircleIcon class="mr-2 h-5 w-5" />
               {{ successMessage }}
             </p>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -222,13 +284,21 @@ import {
   ArrowPathIcon,
   PhotoIcon,
   MapPinIcon,
-  PaperAirplaneIcon,
   TrashIcon,
   CheckCircleIcon,
-} from '@heroicons/vue/24/solid'
+  FolderIcon,
+} from '@heroicons/vue/24/outline' // Switched to outline for cleaner look
 
 const issuesStore = useIssuesStore()
 const router = useRouter()
+
+// Categories (Mock data for now, could be from API)
+const categories = [
+  { label: 'Roads', value: 'roads' },
+  { label: 'Lighting', value: 'lighting' },
+  { label: 'Trash', value: 'trash' },
+  { label: 'Other', value: 'other' },
+]
 
 const form = ref({
   title: '',
@@ -242,14 +312,16 @@ const form = ref({
 })
 
 const imagePreview = ref(null)
-const isDragging = ref(false)
 const isSubmitting = ref(false)
 const error = ref('')
 const successMessage = ref('')
+const fileInput = ref(null)
 let map = null
 let marker = null
 
-const fileInput = ref(null)
+const triggerFileInput = () => {
+  fileInput.value.click()
+}
 
 const handleFileSelect = (event) => {
   const file = event.target.files[0]
@@ -259,7 +331,6 @@ const handleFileSelect = (event) => {
 }
 
 const handleFileDrop = (event) => {
-  isDragging.value = false
   const files = event.dataTransfer.files
   if (files.length > 0) {
     validateAndSetImage(files[0])
@@ -299,8 +370,30 @@ const removeImage = () => {
   }
 }
 
+const errors = ref({})
+
+const validateForm = () => {
+  errors.value = {}
+  let isValid = true
+
+  if (!form.value.category) {
+    errors.value.category = 'Please select a category'
+    isValid = false
+  }
+  if (!form.value.title) {
+    errors.value.title = 'Title is required'
+    isValid = false
+  }
+  if (!form.value.description) {
+    errors.value.description = 'Description is required'
+    isValid = false
+  }
+
+  return isValid
+}
+
 const initMap = () => {
-  // Cotabato City coordinates and bounds
+  // Cotabato City coordinates
   const cotabatoCenterLat = 7.2167
   const cotabatoCenterLng = 124.25
   const cotabatoBounds = [
@@ -308,36 +401,30 @@ const initMap = () => {
     [7.3367, 124.38], // Northeast
   ]
 
-  // Initialize map centered on Cotabato City
   map = L.map('map').setView([cotabatoCenterLat, cotabatoCenterLng], 13)
 
-  // Set max bounds to Cotabato City with some buffer
   map.setMaxBounds([
     [7.0767, 124.1],
     [7.3567, 124.4],
   ])
 
-  // Add OpenStreetMap tiles
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors',
     maxZoom: 19,
     minZoom: 11,
   }).addTo(map)
 
-  // Add a visual bounds rectangle
   L.rectangle(cotabatoBounds, {
-    color: '#25562e',
+    color: '#047857', // Primary color
     weight: 2,
     opacity: 0.3,
-    fillColor: '#75a743',
+    fillColor: '#10b981', // Accent color
     fillOpacity: 0.05,
   }).addTo(map)
 
-  // Handle map clicks
   map.on('click', (event) => {
     const { lat, lng } = event.latlng
 
-    // Check if click is within Cotabato City bounds
     if (
       lat >= cotabatoBounds[0][0] &&
       lat <= cotabatoBounds[1][0] &&
@@ -346,46 +433,40 @@ const initMap = () => {
     ) {
       form.value.latitude = lat
       form.value.longitude = lng
+      error.value = '' // Clear location error if any
 
-      // Remove previous marker
       if (marker) {
         map.removeLayer(marker)
       }
 
-      // Add new marker
       marker = L.marker([lat, lng])
         .addTo(map)
-        .bindPopup(
-          `<strong>Issue Location</strong><br/>Lat: ${lat.toFixed(6)}<br/>Lng: ${lng.toFixed(6)}`,
-        )
+        .bindPopup(`<strong>Selected Location</strong>`)
         .openPopup()
     } else {
       error.value = 'Please select a location within Cotabato City'
-      setTimeout(() => {
-        error.value = ''
-      }, 3000)
     }
   })
 }
 
-const submitForm = async () => {
-  // Check if user is authenticated
+const submitIssue = async () => {
+  if (!validateForm()) return
+
   const token = localStorage.getItem('token')
   if (!token) {
-    error.value = 'You must be logged in to report an issue. Please log in and try again.'
-    setTimeout(() => {
-      router.push('/login')
-    }, 2000)
+    error.value = 'You must be logged in to report an issue.'
+    setTimeout(() => router.push('/login'), 2000)
     return
   }
 
   if (!form.value.latitude || !form.value.longitude) {
-    error.value = 'Please select a location on the map'
+    error.value = 'Please pin the location on the map.'
     return
   }
 
+  // Re-check terms here just in case HTML5 validation fails
   if (!form.value.agreeToTerms) {
-    error.value = 'Please agree to the terms'
+    error.value = 'You must agree to the terms.'
     return
   }
 
@@ -408,20 +489,17 @@ const submitForm = async () => {
 
     await issuesStore.createIssue(formData)
 
-    successMessage.value = 'Issue reported successfully! Redirecting to dashboard...'
+    successMessage.value = 'Issue reported successfully! Redirecting...'
 
-    // Redirect after a short delay
     setTimeout(() => {
       router.push('/dashboard')
     }, 2000)
   } catch (err) {
-    if (err.includes('Unauthorized') || err.includes('401')) {
-      error.value = 'Your session has expired. Please log in again.'
-      setTimeout(() => {
-        router.push('/login')
-      }, 2000)
+    if (err.toString().includes('401')) {
+      error.value = 'Session expired. Please login again.'
+      setTimeout(() => router.push('/login'), 2000)
     } else {
-      error.value = err || 'Failed to report issue. Please try again.'
+      error.value = err.message || 'Failed to report issue. Please try again.'
     }
   } finally {
     isSubmitting.value = false
@@ -432,3 +510,20 @@ onMounted(() => {
   initMap()
 })
 </script>
+
+<style scoped>
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

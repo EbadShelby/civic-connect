@@ -1,38 +1,15 @@
 <template>
   <div class="bg-bg min-h-screen">
-    <!-- Navigation Header -->
-    <header class="border-accent/20 sticky top-0 z-40 border-b bg-white">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <div class="flex items-center gap-2">
-          <div class="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
-            <span class="text-lg font-bold text-white">CC</span>
-          </div>
-          <h1 class="text-primary text-xl font-bold">CivicConnect</h1>
-        </div>
-        <nav class="hidden gap-8 md:flex">
-          <a href="#features" class="text-text hover:text-primary transition">Features</a>
-          <a href="#how-it-works" class="text-text hover:text-primary transition">How it Works</a>
-          <a href="#community" class="text-text hover:text-primary transition">Community</a>
-        </nav>
-        <div class="flex gap-3">
-          <router-link
-            to="/login"
-            class="text-primary border-primary hover:bg-primary/5 rounded-lg border px-6 py-2 transition"
-          >
-            Sign In
-          </router-link>
-          <router-link
-            to="/register"
-            class="bg-primary hover:bg-primary/90 rounded-lg px-6 py-2 text-white transition"
-          >
-            Get Started
-          </router-link>
-        </div>
-      </div>
-    </header>
-
     <!-- Hero Section -->
-    <section class="px-4 py-12 sm:px-6 md:py-24 lg:px-8">
+    <section class="relative overflow-hidden px-4 py-12 sm:px-6 md:py-24 lg:px-8">
+      <!-- Decorative background -->
+      <div
+        class="bg-primary/5 absolute top-0 right-0 -z-10 h-[600px] w-[600px] translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="bg-accent/5 absolute bottom-0 left-0 -z-10 h-[400px] w-[400px] -translate-x-1/2 translate-y-1/2 rounded-full blur-3xl"
+      ></div>
+
       <div class="mx-auto max-w-4xl text-center">
         <h2 class="text-primary mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
           Make Your Community Better
@@ -266,13 +243,6 @@
         </router-link>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="border-accent/20 border-t bg-white px-4 py-8 sm:px-6 lg:px-8">
-      <div class="text-muted mx-auto max-w-7xl text-center text-sm">
-        <p>&copy; 2025 CivicConnect. Empowering communities, one report at a time.</p>
-      </div>
-    </footer>
   </div>
 </template>
 

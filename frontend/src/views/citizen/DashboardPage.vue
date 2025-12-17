@@ -1,230 +1,260 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-[#ebede9] to-gray-100">
-    <div class="mx-auto max-w-7xl px-4 py-8">
-      <!-- Header -->
-      <div class="mb-8">
-        <h1 class="mb-2 text-4xl font-bold text-[#10141f]">
-          Welcome, {{ authStore.user?.first_name || 'Citizen' }}!
-        </h1>
-        <p class="text-lg text-[#819796]">Here's what's happening in your community</p>
-      </div>
+  <div class="animate-fade-in-up mx-auto max-w-7xl px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-text mb-2 text-3xl font-bold md:text-4xl">
+        Welcome, {{ authStore.user?.first_name || 'Citizen' }}!
+      </h1>
+      <p class="text-text-light text-lg">Here's what's happening in your community</p>
+    </div>
 
-      <!-- Stats Grid -->
-      <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
-        <!-- My Issues -->
-        <div class="rounded-xl border-l-4 border-[#25562e] bg-white p-6 shadow-md">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-semibold tracking-wide text-[#819796] uppercase">My Issues</p>
-              <p class="mt-2 text-3xl font-bold text-[#25562e]">{{ stats.myIssuesCount }}</p>
-            </div>
-            <FlagIcon class="h-8 w-8 text-[#25562e] opacity-20" />
+    <!-- Stats Grid -->
+    <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
+      <!-- My Issues -->
+      <div
+        class="shadow-soft hover-lift rounded-2xl border border-gray-100 bg-white p-6 transition-all"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-text-light text-sm font-semibold tracking-wide uppercase">My Issues</p>
+            <p class="text-primary mt-2 text-3xl font-bold">{{ stats.myIssuesCount }}</p>
           </div>
-          <router-link
-            to="/my-issues"
-            class="mt-4 inline-block text-sm text-[#75a743] hover:underline"
-          >
-            View all →
-          </router-link>
-        </div>
-
-        <!-- Issues Resolved -->
-        <div class="rounded-xl border-l-4 border-[#75a743] bg-white p-6 shadow-md">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-semibold tracking-wide text-[#819796] uppercase">Resolved</p>
-              <p class="mt-2 text-3xl font-bold text-[#75a743]">{{ stats.resolvedCount }}</p>
-            </div>
-            <CheckCircleIcon class="h-8 w-8 text-[#75a743] opacity-20" />
+          <div class="bg-primary-light/20 rounded-xl p-3">
+            <FlagIcon class="text-primary h-6 w-6" />
           </div>
         </div>
-
-        <!-- Total Upvotes -->
-        <div class="rounded-xl border-l-4 border-[#cf573c] bg-white p-6 shadow-md">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-semibold tracking-wide text-[#819796] uppercase">
-                Upvotes Received
-              </p>
-              <p class="mt-2 text-3xl font-bold text-[#cf573c]">{{ stats.totalUpvotes }}</p>
-            </div>
-            <HandThumbUpIcon class="h-8 w-8 text-[#cf573c] opacity-20" />
-          </div>
-        </div>
-
-        <!-- Community Issues -->
-        <div class="rounded-xl border-l-4 border-indigo-600 bg-white p-6 shadow-md">
-          <div class="flex items-center justify-between">
-            <div>
-              <p class="text-sm font-semibold tracking-wide text-[#819796] uppercase">
-                Community Issues
-              </p>
-              <p class="mt-2 text-3xl font-bold text-indigo-600">{{ stats.totalIssues }}</p>
-            </div>
-            <MapPinIcon class="h-8 w-8 text-indigo-600 opacity-20" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-        <!-- Report New Issue -->
         <router-link
-          to="/report-issue"
-          class="rounded-xl bg-gradient-to-br from-[#25562e] to-[#1a3d21] p-8 text-white shadow-md transition-shadow hover:shadow-lg"
+          to="/my-issues"
+          class="text-accent hover:text-accent-hover group mt-4 inline-flex items-center text-sm font-medium transition-colors"
         >
-          <div class="flex items-center gap-4">
-            <PlusCircleIcon class="h-10 w-10 opacity-80" />
-            <div>
-              <h3 class="text-xl font-bold">Report Issue</h3>
-              <p class="mt-1 text-[#a8d5a8]">Help your community by reporting an issue</p>
-            </div>
-          </div>
+          View all
+          <ArrowRightIcon class="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
         </router-link>
+      </div>
 
-        <!-- Browse Issues -->
+      <!-- Issues Resolved -->
+      <div
+        class="shadow-soft hover-lift rounded-2xl border border-gray-100 bg-white p-6 transition-all"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-text-light text-sm font-semibold tracking-wide uppercase">Resolved</p>
+            <p class="text-success mt-2 text-3xl font-bold">{{ stats.resolvedCount }}</p>
+          </div>
+          <div class="bg-success-light rounded-xl p-3">
+            <CheckCircleIcon class="text-success h-6 w-6" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Upvotes -->
+      <div
+        class="shadow-soft hover-lift rounded-2xl border border-gray-100 bg-white p-6 transition-all"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-text-light text-sm font-semibold tracking-wide uppercase">
+              Upvotes Received
+            </p>
+            <p class="text-warning mt-2 text-3xl font-bold">{{ stats.totalUpvotes }}</p>
+          </div>
+          <div class="bg-warning-light rounded-xl p-3">
+            <HandThumbUpIcon class="text-warning h-6 w-6" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Community Issues -->
+      <div
+        class="shadow-soft hover-lift rounded-2xl border border-gray-100 bg-white p-6 transition-all"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-text-light text-sm font-semibold tracking-wide uppercase">
+              Community Issues
+            </p>
+            <p class="mt-2 text-3xl font-bold text-indigo-600">{{ stats.totalIssues }}</p>
+          </div>
+          <div class="rounded-xl bg-indigo-50 p-3">
+            <MapPinIcon class="h-6 w-6 text-indigo-600" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+      <!-- Report New Issue -->
+      <router-link
+        to="/report-issue"
+        class="group from-primary to-primary-hover shadow-primary/20 relative overflow-hidden rounded-2xl bg-gradient-to-br p-8 text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
+      >
+        <div
+          class="absolute top-0 right-0 -mt-4 -mr-4 h-32 w-32 rounded-full bg-white/10 blur-2xl transition-colors group-hover:bg-white/20"
+        ></div>
+        <div class="relative flex items-center gap-4">
+          <div class="rounded-xl bg-white/20 p-3 backdrop-blur-sm">
+            <PlusCircleIcon class="h-8 w-8 text-white" />
+          </div>
+          <div>
+            <h3 class="text-xl font-bold">Report Issue</h3>
+            <p class="text-primary-light mt-1">Help your community by reporting an issue</p>
+          </div>
+        </div>
+      </router-link>
+
+      <!-- Browse Issues -->
+      <router-link
+        to="/issues"
+        class="group text-text shadow-soft hover:border-primary/30 relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-lg"
+      >
+        <div
+          class="bg-accent/5 group-hover:bg-accent/10 absolute top-0 right-0 -mt-4 -mr-4 h-32 w-32 rounded-full blur-2xl transition-colors"
+        ></div>
+        <div class="relative flex items-center gap-4">
+          <div class="bg-accent/10 text-accent rounded-xl p-3">
+            <ListBulletIcon class="h-8 w-8" />
+          </div>
+          <div>
+            <h3 class="group-hover:text-primary text-xl font-bold transition-colors">
+              Browse Issues
+            </h3>
+            <p class="text-text-light mt-1">View and upvote community issues</p>
+          </div>
+        </div>
+      </router-link>
+    </div>
+
+    <!-- Recent Issues Section -->
+    <div class="shadow-soft mb-8 rounded-2xl border border-gray-100 bg-white p-6">
+      <div class="mb-6 flex items-center justify-between">
+        <h2 class="text-text text-2xl font-bold">Recent Community Issues</h2>
         <router-link
           to="/issues"
-          class="rounded-xl bg-gradient-to-br from-[#75a743] to-[#5a8530] p-8 text-white shadow-md transition-shadow hover:shadow-lg"
+          class="text-accent hover:text-accent-hover text-sm font-semibold hover:underline"
         >
-          <div class="flex items-center gap-4">
-            <ListBulletIcon class="h-10 w-10 opacity-80" />
-            <div>
-              <h3 class="text-xl font-bold">Browse Issues</h3>
-              <p class="mt-1 text-[#c8e6c8]">View and upvote community issues</p>
-            </div>
-          </div>
+          See all →
         </router-link>
       </div>
 
-      <!-- Recent Issues Section -->
-      <div class="mb-8 rounded-xl bg-white p-6 shadow-md">
-        <div class="mb-6 flex items-center justify-between">
-          <h2 class="text-2xl font-bold text-[#10141f]">Recent Community Issues</h2>
-          <router-link to="/issues" class="font-semibold text-[#75a743] hover:underline">
-            See all →
-          </router-link>
-        </div>
+      <div v-if="isLoading" class="py-12 text-center">
+        <ArrowPathIcon class="text-accent mx-auto h-8 w-8 animate-spin" />
+        <p class="text-text-light mt-4">Loading issues...</p>
+      </div>
 
-        <div v-if="isLoading" class="py-12 text-center">
-          <ArrowPathIcon class="mx-auto h-8 w-8 animate-spin text-[#75a743]" />
-          <p class="mt-4 text-[#819796]">Loading issues...</p>
-        </div>
+      <div v-else-if="recentIssues.length === 0" class="py-12 text-center">
+        <InboxIcon class="text-text-lighter mx-auto mb-4 h-10 w-10" />
+        <p class="text-text-light">No issues reported yet. Be the first to report one!</p>
+      </div>
 
-        <div v-else-if="recentIssues.length === 0" class="py-12 text-center">
-          <InboxIcon class="mx-auto mb-4 h-10 w-10 text-[#819796] opacity-50" />
-          <p class="text-[#819796]">No issues reported yet. Be the first to report one!</p>
-        </div>
-
-        <div v-else class="space-y-4">
-          <div
-            v-for="issue in recentIssues"
-            :key="issue.id"
-            class="flex items-center gap-4 rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50"
-          >
-            <!-- Status Badge -->
-            <div class="shrink-0">
-              <div
-                :class="{
-                  'bg-blue-100 text-blue-800': issue.status === 'open',
-                  'bg-yellow-100 text-yellow-800': issue.status === 'in_progress',
-                  'bg-green-100 text-green-800': issue.status === 'resolved',
-                  'bg-gray-100 text-gray-800': issue.status === 'closed',
-                }"
-                class="rounded-full px-3 py-1 text-xs font-semibold uppercase"
-              >
-                {{ issue.status }}
-              </div>
+      <div v-else class="space-y-4">
+        <div
+          v-for="issue in recentIssues"
+          :key="issue.id"
+          class="flex items-center gap-4 rounded-xl border border-gray-100 p-4 transition-all hover:border-gray-200 hover:bg-gray-50"
+        >
+          <!-- Status Badge -->
+          <div class="shrink-0">
+            <div
+              :class="{
+                'bg-blue-50 text-blue-700 ring-1 ring-blue-700/10': issue.status === 'open',
+                'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/20':
+                  issue.status === 'in_progress',
+                'bg-green-50 text-green-700 ring-1 ring-green-600/20': issue.status === 'resolved',
+                'bg-gray-50 text-gray-600 ring-1 ring-gray-500/10': issue.status === 'closed',
+              }"
+              class="rounded-full px-3 py-1 text-xs font-semibold tracking-wider uppercase"
+            >
+              {{ issue.status }}
             </div>
+          </div>
 
-            <!-- Issue Info -->
-            <div class="grow">
-              <router-link
-                :to="`/issues/${issue.id}`"
-                class="text-lg font-semibold text-[#25562e] transition-colors hover:text-[#75a743]"
-              >
-                {{ issue.title }}
-              </router-link>
-              <p class="mt-1 text-sm text-[#819796]">
-                {{ issue.category }} • {{ formatDate(issue.created_at) }}
-              </p>
-            </div>
+          <!-- Issue Info -->
+          <div class="grow">
+            <router-link
+              :to="`/issues/${issue.id}`"
+              class="text-text hover:text-primary text-lg font-semibold transition-colors"
+            >
+              {{ issue.title }}
+            </router-link>
+            <p class="text-text-light mt-1 text-sm">
+              {{ issue.category }} • {{ formatDate(issue.created_at) }}
+            </p>
+          </div>
 
-            <!-- Stats -->
-            <div class="flex items-center gap-4 text-sm">
-              <span class="flex items-center gap-1 text-[#819796]">
-                <HandThumbUpIcon class="h-4 w-4 text-[#cf573c]" />
-                {{ issue.upvote_count || 0 }}
-              </span>
-            </div>
+          <!-- Stats -->
+          <div class="hidden items-center gap-4 text-sm sm:flex">
+            <span class="text-text-light flex items-center gap-1 rounded-lg bg-gray-50 px-2 py-1">
+              <HandThumbUpIcon class="text-warning h-4 w-4" />
+              <span class="text-text font-medium">{{ issue.upvote_count || 0 }}</span>
+            </span>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- My Issues List -->
-      <div class="overflow-hidden rounded-xl bg-white shadow-md">
-        <div class="border-b border-gray-200 p-6">
-          <h2 class="text-xl font-bold text-[#10141f]">My Reports</h2>
-        </div>
+    <!-- My Issues List -->
+    <div class="shadow-soft overflow-hidden rounded-2xl border border-gray-100 bg-white">
+      <div class="border-b border-gray-100 bg-gray-50/50 p-6">
+        <h2 class="text-text text-xl font-bold">My Reports</h2>
+      </div>
 
-        <div v-if="userIssuesLoading" class="p-12 text-center">
-          <ArrowPathIcon class="mx-auto h-8 w-8 animate-spin text-[#75a743]" />
-          <p class="mt-4 text-[#819796]">Loading your issues...</p>
-        </div>
+      <div v-if="userIssuesLoading" class="p-12 text-center">
+        <ArrowPathIcon class="text-accent mx-auto h-8 w-8 animate-spin" />
+        <p class="text-text-light mt-4">Loading your issues...</p>
+      </div>
 
-        <div
-          v-else-if="userIssues.length === 0"
-          class="flex flex-col items-center p-12 text-center"
+      <div v-else-if="userIssues.length === 0" class="flex flex-col items-center p-12 text-center">
+        <InboxIcon class="text-text-lighter mb-4 h-12 w-12" />
+        <p class="text-text-light mb-4 text-lg">You haven't reported any issues yet.</p>
+        <router-link
+          to="/report-issue"
+          class="btn-primary shadow-primary/30 rounded-lg px-6 py-2 font-semibold shadow-sm"
         >
-          <InboxIcon class="mb-4 h-12 w-12 text-[#819796] opacity-50" />
-          <p class="mb-4 text-lg text-[#819796]">You haven't reported any issues yet.</p>
-          <router-link
-            to="/report-issue"
-            class="inline-block font-bold text-[#75a743] hover:underline"
-          >
-            Report your first issue
-          </router-link>
-        </div>
+          Report your first issue
+        </router-link>
+      </div>
 
-        <div v-else class="divide-y divide-gray-200">
-          <div
-            v-for="issue in userIssues.slice(0, 3)"
-            :key="issue.id"
-            class="flex flex-col gap-4 p-6 transition-colors hover:bg-gray-50 md:flex-row md:items-center md:justify-between"
-          >
-            <div class="grow">
-              <div class="mb-1 flex items-center gap-3">
-                <h3 class="text-lg font-bold text-[#10141f]">{{ issue.title }}</h3>
-                <span
-                  :class="{
-                    'bg-blue-100 text-blue-800': issue.status === 'open',
-                    'bg-yellow-100 text-yellow-800': issue.status === 'in_progress',
-                    'bg-green-100 text-green-800': issue.status === 'resolved',
-                    'bg-gray-100 text-gray-800': issue.status === 'closed',
-                  }"
-                  class="rounded-full px-2 py-0.5 text-xs font-semibold uppercase"
-                >
-                  {{ issue.status }}
-                </span>
-              </div>
-              <p class="mb-2 line-clamp-1 text-sm text-[#819796]">{{ issue.description }}</p>
-              <p class="text-xs text-[#819796]">
-                Reported on {{ new Date(issue.created_at).toLocaleDateString() }}
-              </p>
-            </div>
-
-            <div class="flex items-center gap-4">
-              <div class="min-w-[60px] text-center md:text-right">
-                <p class="text-xs text-[#819796]">Upvotes</p>
-                <p class="font-bold text-[#10141f]">{{ issue.upvote_count || 0 }}</p>
-              </div>
-              <router-link
-                :to="`/issues/${issue.id}`"
-                class="flex items-center font-semibold text-[#25562e] hover:text-[#1a3d21]"
+      <div v-else class="divide-y divide-gray-100">
+        <div
+          v-for="issue in userIssues.slice(0, 3)"
+          :key="issue.id"
+          class="group flex flex-col gap-4 p-6 transition-colors hover:bg-gray-50 md:flex-row md:items-center md:justify-between"
+        >
+          <div class="grow">
+            <div class="mb-2 flex items-center gap-3">
+              <h3 class="text-text group-hover:text-primary text-lg font-bold transition-colors">
+                {{ issue.title }}
+              </h3>
+              <span
+                :class="{
+                  'bg-blue-50 text-blue-700': issue.status === 'open',
+                  'bg-yellow-50 text-yellow-700': issue.status === 'in_progress',
+                  'bg-green-50 text-green-700': issue.status === 'resolved',
+                  'bg-gray-50 text-gray-600': issue.status === 'closed',
+                }"
+                class="rounded-full px-2 py-0.5 text-xs font-semibold uppercase"
               >
-                View <ArrowRightIcon class="ml-1 h-4 w-4" />
-              </router-link>
+                {{ issue.status }}
+              </span>
             </div>
+            <p class="text-text-light mb-2 line-clamp-1 text-sm">{{ issue.description }}</p>
+            <p class="text-text-lighter text-xs">
+              Reported on {{ new Date(issue.created_at).toLocaleDateString() }}
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="min-w-[60px] text-center md:text-right">
+              <p class="text-text-light text-xs">Upvotes</p>
+              <p class="text-text font-bold">{{ issue.upvote_count || 0 }}</p>
+            </div>
+            <router-link
+              :to="`/issues/${issue.id}`"
+              class="text-primary hover:text-primary-hover bg-primary-light/10 flex items-center rounded-lg px-3 py-1.5 font-semibold transition-colors"
+            >
+              View <ArrowRightIcon class="ml-1 h-4 w-4" />
+            </router-link>
           </div>
         </div>
       </div>
@@ -233,7 +263,7 @@
     <!-- Floating Action Button for Mobile -->
     <router-link
       to="/report-issue"
-      class="fixed right-6 bottom-6 z-50 flex items-center justify-center rounded-full bg-[#25562e] p-4 text-white shadow-lg transition-all hover:bg-[#1a3d21] md:hidden"
+      class="bg-primary shadow-primary/40 hover:bg-primary-hover fixed right-6 bottom-6 z-50 flex items-center justify-center rounded-full p-4 text-white shadow-lg transition-all hover:scale-110 active:scale-95 md:hidden"
     >
       <PlusIcon class="h-6 w-6" />
     </router-link>
@@ -241,8 +271,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../../stores/authStore'
 import { useIssuesStore } from '../../stores/issuesStore'
 import {

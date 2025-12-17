@@ -8,37 +8,37 @@ const routes = [
     path: '/',
     name: 'home',
     component: () => import('../views/HomePage.vue'),
-    meta: { guard: 'PUBLIC', title: 'Home' }
+    meta: { guard: 'PUBLIC', title: 'Home' },
   },
   {
     path: '/register',
     name: 'register',
     component: () => import('../views/auth/RegisterPage.vue'),
-    meta: { guard: 'PUBLIC', title: 'Register' }
+    meta: { guard: 'PUBLIC', title: 'Register', layout: 'AuthLayout' },
   },
   {
     path: '/login',
     name: 'login',
     component: () => import('../views/auth/LoginPage.vue'),
-    meta: { guard: 'PUBLIC', title: 'Login' }
+    meta: { guard: 'PUBLIC', title: 'Login', layout: 'AuthLayout' },
   },
   {
     path: '/verify-email',
     name: 'verifyEmail',
     component: () => import('../views/auth/VerifyEmailPage.vue'),
-    meta: { guard: 'PUBLIC', title: 'Verify Email' }
+    meta: { guard: 'PUBLIC', title: 'Verify Email', layout: 'AuthLayout' },
   },
   {
     path: '/verify-otp',
     name: 'verifyOTP',
     component: () => import('../views/auth/OTPVerificationPage.vue'),
-    meta: { guard: 'PUBLIC', title: 'Verify OTP' }
+    meta: { guard: 'PUBLIC', title: 'Verify OTP', layout: 'AuthLayout' },
   },
   {
     path: '/forgot-password',
     name: 'forgotPassword',
     component: () => import('../views/auth/ForgotPasswordPage.vue'),
-    meta: { guard: 'PUBLIC', title: 'Forgot Password' }
+    meta: { guard: 'PUBLIC', title: 'Forgot Password', layout: 'AuthLayout' },
   },
 
   // Citizen routes (authenticated users)
@@ -46,43 +46,43 @@ const routes = [
     path: '/dashboard',
     name: 'citizenDashboard',
     component: () => import('../views/citizen/DashboardPage.vue'),
-    meta: { guard: 'CITIZEN', title: 'Dashboard' }
+    meta: { guard: 'CITIZEN', title: 'Dashboard' },
   },
   {
     path: '/issues',
     name: 'issuesList',
     component: () => import('../views/citizen/IssuesListPage.vue'),
-    meta: { guard: 'CITIZEN', title: 'Issues' }
+    meta: { guard: 'CITIZEN', title: 'Issues' },
   },
   {
     path: '/issues/:id',
     name: 'issueDetail',
     component: () => import('../views/citizen/IssueDetailPage.vue'),
-    meta: { guard: 'CITIZEN', title: 'Issue Details' }
+    meta: { guard: 'CITIZEN', title: 'Issue Details' },
   },
   {
     path: '/report-issue',
     name: 'reportIssue',
     component: () => import('../views/citizen/ReportIssuePage.vue'),
-    meta: { guard: 'CITIZEN', title: 'Report Issue' }
+    meta: { guard: 'CITIZEN', title: 'Report Issue' },
   },
   {
     path: '/my-issues',
     name: 'myIssues',
     component: () => import('../views/citizen/MyIssuesPage.vue'),
-    meta: { guard: 'CITIZEN', title: 'My Issues' }
+    meta: { guard: 'CITIZEN', title: 'My Issues' },
   },
   {
     path: '/profile',
     name: 'profile',
     component: () => import('../views/citizen/ProfilePage.vue'),
-    meta: { guard: 'CITIZEN', title: 'Profile' }
+    meta: { guard: 'CITIZEN', title: 'Profile' },
   },
   {
     path: '/edit-profile',
     name: 'editProfile',
     component: () => import('../views/citizen/EditProfilePage.vue'),
-    meta: { guard: 'CITIZEN', title: 'Edit Profile' }
+    meta: { guard: 'CITIZEN', title: 'Edit Profile' },
   },
 
   // Staff routes
@@ -90,25 +90,25 @@ const routes = [
     path: '/staff/dashboard',
     name: 'staffDashboard',
     component: () => import('../views/staff/DashboardPage.vue'),
-    meta: { guard: 'STAFF', title: 'Staff Dashboard' }
+    meta: { guard: 'STAFF', title: 'Staff Dashboard' },
   },
   {
     path: '/staff/issues',
     name: 'staffIssues',
     component: () => import('../views/staff/IssuesManagementPage.vue'),
-    meta: { guard: 'STAFF', title: 'Manage Issues' }
+    meta: { guard: 'STAFF', title: 'Manage Issues' },
   },
   {
     path: '/staff/issues/:id',
     name: 'staffIssueDetail',
     component: () => import('../views/staff/IssueDetailPage.vue'),
-    meta: { guard: 'STAFF', title: 'Issue Details' }
+    meta: { guard: 'STAFF', title: 'Issue Details' },
   },
   {
     path: '/staff/reports',
     name: 'staffReports',
     component: () => import('../views/staff/ReportsPage.vue'),
-    meta: { guard: 'STAFF', title: 'Reports' }
+    meta: { guard: 'STAFF', title: 'Reports' },
   },
 
   // Admin routes
@@ -116,31 +116,31 @@ const routes = [
     path: '/admin/dashboard',
     name: 'adminDashboard',
     component: () => import('../views/admin/DashboardPage.vue'),
-    meta: { guard: 'ADMIN', title: 'Admin Dashboard' }
+    meta: { guard: 'ADMIN', title: 'Admin Dashboard' },
   },
   {
     path: '/admin/users',
     name: 'adminUsers',
     component: () => import('../views/admin/UsersManagementPage.vue'),
-    meta: { guard: 'ADMIN', title: 'Manage Users' }
+    meta: { guard: 'ADMIN', title: 'Manage Users' },
   },
   {
     path: '/admin/issues',
     name: 'adminIssues',
     component: () => import('../views/admin/IssuesManagementPage.vue'),
-    meta: { guard: 'ADMIN', title: 'Manage Issues' }
+    meta: { guard: 'ADMIN', title: 'Manage Issues' },
   },
   {
     path: '/admin/audit-logs',
     name: 'adminAuditLogs',
     component: () => import('../views/admin/AuditLogsPage.vue'),
-    meta: { guard: 'ADMIN', title: 'Audit Logs' }
+    meta: { guard: 'ADMIN', title: 'Audit Logs' },
   },
   {
     path: '/admin/analytics',
     name: 'adminAnalytics',
     component: () => import('../views/admin/AnalyticsPage.vue'),
-    meta: { guard: 'ADMIN', title: 'Analytics' }
+    meta: { guard: 'ADMIN', title: 'Analytics' },
   },
 
   // Error routes
@@ -148,19 +148,19 @@ const routes = [
     path: '/unauthorized',
     name: 'unauthorized',
     component: () => import('../views/errors/UnauthorizedPage.vue'),
-    meta: { guard: 'PUBLIC', title: 'Unauthorized' }
+    meta: { guard: 'PUBLIC', title: 'Unauthorized', layout: 'AuthLayout' }, // Use simple layout for errors
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: () => import('../views/errors/NotFoundPage.vue'),
-    meta: { guard: 'PUBLIC', title: 'Not Found' }
-  }
+    meta: { guard: 'PUBLIC', title: 'Not Found', layout: 'AuthLayout' },
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
 })
 
 /**
