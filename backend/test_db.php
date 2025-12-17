@@ -17,6 +17,7 @@ try {
     );
     
     echo "✅ Database connection successful";
+
     
     $stmt = $pdo->query("SELECT COUNT(*) as count FROM users");
     $result = $stmt->fetch();

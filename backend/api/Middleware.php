@@ -12,6 +12,7 @@ class Middleware {
      * @return array|null User data if authenticated, null otherwise
      */
     public static function authenticate() {
+        global $pdo;
         $headers = getallheaders();
         $token = $headers['Authorization'] ?? null;
 
@@ -24,12 +25,20 @@ class Middleware {
             $token = $matches[1];
         }
 
-        // Simple token validation (in production, use JWT)
-        // For now, we'll use a simple session-based approach
+        // Check session first
         if (isset($_SESSION['user_id']) && isset($_SESSION['token']) && $_SESSION['token'] === $token) {
             return [
                 'user_id' => $_SESSION['user_id'],
                 'email' => $_SESSION['email'],
+                'token' => $token
+            ];
+        }
+
+        // For same session requests, just having session data is enough
+        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+            return [
+                'user_id' => $_SESSION['user_id'],
+                'email' => $_SESSION['email'] ?? null,
                 'token' => $token
             ];
         }

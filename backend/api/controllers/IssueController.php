@@ -214,7 +214,9 @@ class IssueController {
                     i.*,
                     u.first_name,
                     u.last_name,
-                    u.profile_image
+                    u.profile_image,
+                    (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count,
+                    (SELECT COUNT(*) FROM comments WHERE issue_id = i.id) as comment_count
                 FROM issues i
                 LEFT JOIN users u ON i.user_id = u.id
                 WHERE $where_clause
@@ -415,9 +417,13 @@ class IssueController {
                 FROM issues
                 WHERE user_id = ?
                 ORDER BY created_at DESC
-                LIMIT ? OFFSET ?
+                LIMIT ?
+                OFFSET ?
             ");
-            $stmt->execute([$user_id, $limit, $offset]);
+            $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
+            $stmt->bindValue(2, (int)$limit, PDO::PARAM_INT);
+            $stmt->bindValue(3, (int)$offset, PDO::PARAM_INT);
+            $stmt->execute();
             $issues = $stmt->fetchAll();
 
             sendResponse([

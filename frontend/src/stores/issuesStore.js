@@ -93,9 +93,10 @@ export const useIssuesStore = defineStore('issues', () => {
     isLoading.value = true
     error.value = null
     try {
+      const token = localStorage.getItem('token')
       const response = await axios.post(`${API_BASE_URL}/issues`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Authorization': `Bearer ${token}`
         }
       })
 
@@ -120,11 +121,7 @@ export const useIssuesStore = defineStore('issues', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await axios.put(`${API_BASE_URL}/issues/${issueId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      const response = await axios.put(`${API_BASE_URL}/issues/${issueId}`, formData)
 
       const updatedIssue = response.data.issue
       const index = issues.value.findIndex((issue) => issue.id === issueId)
@@ -167,6 +164,21 @@ export const useIssuesStore = defineStore('issues', () => {
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to delete issue'
+      throw error.value
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Fetch user issues
+  const fetchUserIssues = async (userId) => {
+    isLoading.value = true
+    error.value = null
+    try {
+      const response = await axios.get(`${API_BASE_URL}/users/${userId}/issues`)
+      return response.data.issues || []
+    } catch (err) {
+      error.value = err.response?.data?.error || 'Failed to fetch user issues'
       throw error.value
     } finally {
       isLoading.value = false
@@ -368,6 +380,7 @@ export const useIssuesStore = defineStore('issues', () => {
     createIssue,
     updateIssue,
     deleteIssue,
+    fetchUserIssues,
     upvoteIssue,
     removeUpvote,
     addComment,

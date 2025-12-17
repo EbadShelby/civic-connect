@@ -4,6 +4,9 @@ import axios from 'axios'
 
 const API_BASE_URL = 'http://localhost/civic-connect/backend/api'
 
+// Configure axios to send cookies with requests
+axios.defaults.withCredentials = true
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const token = ref(localStorage.getItem('token'))
@@ -26,8 +29,21 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // Load user from localStorage on init
+  const loadUserFromStorage = () => {
+    try {
+      const storedUser = localStorage.getItem('user')
+      if (storedUser) {
+        user.value = JSON.parse(storedUser)
+      }
+    } catch (err) {
+      console.error('Failed to load user from localStorage:', err)
+    }
+  }
+
   if (token.value) {
     setAuthHeader(token.value)
+    loadUserFromStorage()
   }
 
   // Register user
@@ -171,11 +187,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await axios.put(`${API_BASE_URL}/users/${userId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+      const response = await axios.put(`${API_BASE_URL}/users/${userId}`, formData)
 
       user.value = response.data.user
       localStorage.setItem('user', JSON.stringify(response.data.user))

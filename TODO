@@ -13,16 +13,16 @@ Project Setup:
 Frontend (Vue + Tailwind):
   Core UI:
     Public/Shared Pages:
-      ☐ Build landing page layout (/)
-      ☐ Build login page (/login)
-      ☐ Build register page (/register)
-      ☐ Build email verification page (/verify-email)
-      ☐ Build OTP verification page (/verify-otp)
+      ✔ Build landing page layout (/) @done(25-12-17 10:56)
+      ✔ Build login page (/login) @done(25-12-17 10:56)
+      ✔ Build register page (/register) @done(25-12-17 10:56)
+      ✔ Build email verification page (/verify-email) @done(25-12-17 10:56)
+      ✔ Build OTP verification page (/verify-otp) @done(25-12-17 10:56)
 
     Citizen Pages:
-      ☐ Build citizen dashboard (/dashboard)
-      ☐ Build report issue page (/report)
-      ☐ Build issues map/list page (/issues)
+      ✔ Build citizen dashboard (/dashboard) @done(25-12-17 10:57)
+      ✔ Build report issue page (/report) @done(25-12-17 10:57)
+      ✔ Build issues map/list page (/issues) @done(25-12-17 10:57)
       ☐ Build issue details page (/issues/:id)
       ☐ Build profile page (/profile)
 
