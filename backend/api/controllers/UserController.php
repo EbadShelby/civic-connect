@@ -79,7 +79,21 @@ class UserController {
             $user_id = $this->pdo->lastInsertId();
 
             // Send verification email with OTP
-            $this->sendVerificationEmail($data['email'], $data['first_name'], $otp_code);
+            $emailSent = $this->sendVerificationEmail($data['email'], $data['first_name'], $otp_code);
+            
+            if (!$emailSent) {
+                // Email sending failed - log  and inform user
+                error_log("CRITICAL: Failed to send verification email to: " . $data['email']);
+                // Still allow registration to complete, but warn user
+                sendResponse([
+                    'success' => true,
+                    'message' => 'User registered successfully. However, there was an issue sending the verification email. Please use the resend OTP option.',
+                    'user_id' => $user_id,
+                    'email' => $data['email'],
+                    'email_warning' => true
+                ], 201);
+                return;
+            }
 
             // Log audit trail
             Middleware::logAuditTrail($user_id, 'USER_CREATED', 'users', $user_id, null, [
@@ -94,6 +108,7 @@ class UserController {
                 'user_id' => $user_id,
                 'email' => $data['email']
             ], 201);
+
         } catch (PDOException $e) {
             sendError('Failed to register user: ' . $e->getMessage(), 500);
         }
@@ -221,7 +236,12 @@ class UserController {
             $stmt->execute([$otp_code, $otp_expires, $user['id']]);
 
             // Send verification email
-            $this->sendVerificationEmail($data['email'], $user['first_name'], $otp_code);
+            $emailSent = $this->sendVerificationEmail($data['email'], $user['first_name'], $otp_code);
+            
+            if (!$emailSent) {
+                error_log("CRITICAL: Failed to resend OTP email to: " . $data['email']);
+                sendError('Failed to send OTP email. Please try again later.', 500);
+            }
 
             // Log audit trail
             Middleware::logAuditTrail($user['id'], 'OTP_RESENT', 'users', $user['id']);
@@ -230,6 +250,7 @@ class UserController {
                 'success' => true,
                 'message' => 'OTP code sent to your email address'
             ], 200);
+
         } catch (PDOException $e) {
             sendError('Failed to resend OTP: ' . $e->getMessage(), 500);
         }
@@ -438,10 +459,20 @@ class UserController {
             $mail->Subject = 'Email Verification - Civic Connect';
             $mail->Body = $this->getVerificationEmailHTML($first_name, $otp_code);
 
-            return $mail->send();
+            $result = $mail->send();
+            
+            if ($result) {
+                error_log("Email sent successfully to: {$email} with OTP: {$otp_code}");
+            } else {
+                error_log("Email send returned false for: {$email}");
+            }
+            
+            return $result;
         } catch (Exception $e) {
-            // Log error but don't fail the registration
+            // Log detailed error information
             error_log('Email sending failed: ' . $e->getMessage());
+            error_log('Mail Error Info: ' . $mail->ErrorInfo);
+            error_log('Recipient: ' . $email);
             return false;
         }
     }
