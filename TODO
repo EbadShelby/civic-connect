@@ -27,8 +27,8 @@ Frontend (Vue + Tailwind):
       ✔ Build profile page (/profile) @done(25-12-17)
 
     Staff Pages:
-      ☐ Build staff dashboard (/staff/dashboard)
-      ☐ Build issue management page (/staff/issues/:id)
+      ✔ Build staff dashboard (/staff/dashboard) @done(25-12-17)
+      ✔ Build issue management page (/staff/issues/:id) @done(25-12-17)
 
     Admin Pages:
       ☐ Build admin dashboard (/admin/dashboard)
