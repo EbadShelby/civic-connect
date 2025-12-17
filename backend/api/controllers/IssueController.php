@@ -111,13 +111,12 @@ class IssueController {
 
         try {
             $stmt = $this->pdo->prepare("
-                SELECT 
+                SELECT
                     i.*,
                     u.first_name,
                     u.last_name,
                     u.profile_image,
-                    (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count,
-                    (SELECT COUNT(*) FROM comments WHERE issue_id = i.id) as comment_count
+                    (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count
                 FROM issues i
                 LEFT JOIN users u ON i.user_id = u.id
                 WHERE i.id = ?
@@ -210,13 +209,12 @@ class IssueController {
 
             // Get issues
             $stmt = $this->pdo->prepare("
-                SELECT 
+                SELECT
                     i.*,
                     u.first_name,
                     u.last_name,
                     u.profile_image,
-                    (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count,
-                    (SELECT COUNT(*) FROM comments WHERE issue_id = i.id) as comment_count
+                    (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count
                 FROM issues i
                 LEFT JOIN users u ON i.user_id = u.id
                 WHERE $where_clause

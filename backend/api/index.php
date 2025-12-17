@@ -27,11 +27,6 @@
  * POST   /api/issues/{id}/upvotes         - Upvote issue
  * DELETE /api/issues/{id}/upvotes         - Remove upvote
  * GET    /api/issues/{id}/upvotes         - Get issue upvotes
- * 
- * POST   /api/issues/{id}/comments        - Add comment
- * GET    /api/issues/{id}/comments        - Get issue comments
- * PUT    /api/comments/{id}               - Update comment
- * DELETE /api/comments/{id}               - Delete comment
  */
 
 require_once __DIR__ . '/../config/bootstrap.php';
@@ -92,7 +87,7 @@ function routeRequest($uri, $method) {
     
     // If URI is empty, return an error with available endpoints
     if (empty($uri)) {
-        sendError('API endpoint required. Available endpoints: /users, /issues, /upload, /files, /comments', 400);
+        sendError('API endpoint required. Available endpoints: /users, /issues, /upload, /files', 400);
     }
     
     // Split URI into parts
@@ -114,10 +109,6 @@ function routeRequest($uri, $method) {
     // Files routes
     elseif ($endpoint === 'files') {
         handleFileRoutes($parts, $method);
-    }
-    // Comments routes
-    elseif ($endpoint === 'comments') {
-        handleCommentRoutes($parts, $method);
     }
     else {
         sendError('Endpoint not found', 404);
@@ -252,18 +243,6 @@ function handleIssueRoutes($parts, $method) {
                     } else {
                         sendError('Method not allowed', 405);
                     }
-                } elseif ($sub_action === 'comments') {
-                    // POST /issues/{id}/comments, GET /issues/{id}/comments
-                    require_once __DIR__ . '/controllers/CommentController.php';
-                    $comment_controller = new CommentController();
-
-                    if ($method === 'POST') {
-                        $comment_controller->addComment($issue_id);
-                    } elseif ($method === 'GET') {
-                        $comment_controller->getComments($issue_id);
-                    } else {
-                        sendError('Method not allowed', 405);
-                    }
                 } else {
                     sendError('Invalid endpoint', 404);
                 }
@@ -321,30 +300,5 @@ function handleFileRoutes($parts, $method) {
     }
 }
 
-/**
- * Handle comment routes
- */
-function handleCommentRoutes($parts, $method) {
-    if (empty($parts)) {
-        sendError('Invalid comment endpoint', 400);
-    }
 
-    $comment_id = array_shift($parts);
-
-    if (!is_numeric($comment_id)) {
-        sendError('Invalid comment ID', 400);
-    }
-
-    require_once __DIR__ . '/controllers/CommentController.php';
-    $controller = new CommentController();
-    $comment_id = (int)$comment_id;
-
-    if ($method === 'PUT') {
-        $controller->updateComment($comment_id);
-    } elseif ($method === 'DELETE') {
-        $controller->deleteComment($comment_id);
-    } else {
-        sendError('Method not allowed', 405);
-    }
-}
 ?>

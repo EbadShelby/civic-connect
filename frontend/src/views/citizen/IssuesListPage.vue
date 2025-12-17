@@ -4,7 +4,7 @@
       <!-- Header -->
       <div class="mb-8">
         <h1 class="mb-2 text-4xl font-bold text-[#10141f]">Community Issues</h1>
-        <p class="text-[#819796]">Browse, upvote, and comment on issues in your community</p>
+        <p class="text-[#819796]">Browse and upvote issues in your community</p>
       </div>
 
       <!-- View Toggle and Filters -->
@@ -20,7 +20,7 @@
               }"
               class="flex items-center gap-2 rounded-lg px-4 py-2 font-semibold transition-colors"
             >
-              <i class="fas fa-list"></i>
+              <ListBulletIcon class="h-5 w-5" />
               List View
             </button>
             <button
@@ -31,7 +31,7 @@
               }"
               class="flex items-center gap-2 rounded-lg px-4 py-2 font-semibold transition-colors"
             >
-              <i class="fas fa-map"></i>
+              <MapIcon class="h-5 w-5" />
               Map View
             </button>
           </div>
@@ -76,15 +76,15 @@
             >
               <option value="recent">Most Recent</option>
               <option value="upvotes">Most Upvoted</option>
-              <option value="comments">Most Discussed</option>
             </select>
 
             <!-- Reset Filters -->
             <button
               @click="resetAllFilters"
-              class="rounded-lg bg-gray-200 px-4 py-2 font-semibold text-[#10141f] transition-colors hover:bg-gray-300"
+              class="flex items-center rounded-lg bg-gray-200 px-4 py-2 font-semibold text-[#10141f] transition-colors hover:bg-gray-300"
             >
-              <i class="fas fa-redo mr-2"></i>Reset
+              <ArrowPathIcon class="mr-2 h-5 w-5" />
+              Reset
             </button>
           </div>
         </div>
@@ -93,17 +93,17 @@
       <!-- List View -->
       <div v-if="viewMode === 'list'" class="space-y-4">
         <!-- Loading State -->
-        <div v-if="isLoading" class="py-12 text-center">
-          <i class="fas fa-spinner fa-spin text-3xl text-[#75a743]"></i>
+        <div v-if="isLoading" class="flex flex-col items-center py-12 text-center">
+          <ArrowPathIcon class="h-8 w-8 animate-spin text-[#75a743]" />
           <p class="mt-4 text-[#819796]">Loading issues...</p>
         </div>
 
         <!-- Empty State -->
         <div
           v-else-if="filteredIssuesStore.length === 0"
-          class="rounded-xl bg-white p-12 text-center shadow-md"
+          class="flex flex-col items-center rounded-xl bg-white p-12 text-center shadow-md"
         >
-          <i class="fas fa-inbox mb-4 block text-4xl text-[#819796] opacity-50"></i>
+          <InboxIcon class="mb-4 block h-12 w-12 text-[#819796] opacity-50" />
           <p class="text-lg text-[#819796]">No issues found matching your filters.</p>
           <button
             @click="resetAllFilters"
@@ -138,7 +138,7 @@
                 v-else
                 class="flex h-32 w-full flex-shrink-0 items-center justify-center rounded-lg bg-gray-200 lg:w-32"
               >
-                <i class="fas fa-image text-3xl text-gray-400"></i>
+                <PhotoIcon class="h-8 w-8 text-gray-400" />
               </div>
 
               <!-- Issue Details -->
@@ -168,15 +168,16 @@
 
                 <!-- Category and Meta -->
                 <div class="mb-3 flex flex-wrap items-center gap-3 text-sm text-[#819796]">
-                  <span>
-                    <i class="fas fa-tag mr-1 text-[#75a743]"></i>
+                  <span class="flex items-center">
+                    <TagIcon class="mr-1 h-4 w-4 text-[#75a743]" />
                     {{ formatCategory(issue.category) }}
                   </span>
-                  <span>
-                    <i class="fas fa-calendar mr-1 text-[#75a743]"></i>
+                  <span class="flex items-center">
+                    <CalendarIcon class="mr-1 h-4 w-4 text-[#75a743]" />
                     {{ formatDate(issue.created_at) }}
                   </span>
                   <span
+                    class="flex items-center"
                     :class="{
                       'text-red-600': issue.priority === 'critical',
                       'text-orange-600': issue.priority === 'high',
@@ -184,7 +185,7 @@
                       'text-blue-600': issue.priority === 'low',
                     }"
                   >
-                    <i class="fas fa-exclamation-circle mr-1"></i>
+                    <ExclamationCircleIcon class="mr-1 h-4 w-4" />
                     {{ issue.priority?.charAt(0).toUpperCase() + issue.priority?.slice(1) }}
                   </span>
                 </div>
@@ -193,8 +194,8 @@
                 <p class="mb-3 line-clamp-2 text-[#10141f]">{{ issue.description }}</p>
 
                 <!-- Reporter -->
-                <p class="mb-3 text-xs text-[#819796]">
-                  <i class="fas fa-user-circle mr-1"></i>
+                <p class="mb-3 flex items-center text-xs text-[#819796]">
+                  <UserCircleIcon class="mr-1 h-4 w-4" />
                   Reported by {{ issue.user_name || 'Anonymous' }}
                 </p>
               </div>
@@ -213,18 +214,9 @@
                       }"
                       class="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 font-semibold transition-colors"
                     >
-                      <i class="fas fa-arrow-up"></i>
-                      {{ issue.upvote_count || 0 }}
+                      <HandThumbUpIcon class="h-5 w-5" />
+                      Vote ({{ issue.upvote_count || 0 }})
                     </button>
-                  </div>
-                  <div class="text-center">
-                    <router-link
-                      :to="`/issues/${issue.id}`"
-                      class="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-200 px-3 py-2 font-semibold text-[#10141f] transition-colors hover:bg-[#75a743] hover:text-white"
-                    >
-                      <i class="fas fa-comment"></i>
-                      {{ issue.comment_count || 0 }}
-                    </router-link>
                   </div>
                 </div>
 
@@ -252,7 +244,7 @@
       <!-- Map View -->
       <div v-if="viewMode === 'map'" class="overflow-hidden rounded-xl bg-white shadow-md">
         <div v-if="isLoading" class="flex h-96 items-center justify-center">
-          <i class="fas fa-spinner fa-spin text-3xl text-[#75a743]"></i>
+          <ArrowPathIcon class="h-8 w-8 animate-spin text-[#75a743]" />
         </div>
         <div id="map-container" v-else class="h-96 md:h-[600px]"></div>
       </div>
@@ -264,6 +256,18 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import L from 'leaflet'
 import { useIssuesStore } from '../../stores/issuesStore'
+import {
+  ListBulletIcon,
+  MapIcon,
+  ArrowPathIcon,
+  InboxIcon,
+  PhotoIcon,
+  TagIcon,
+  CalendarIcon,
+  ExclamationCircleIcon,
+  UserCircleIcon,
+  HandThumbUpIcon,
+} from '@heroicons/vue/24/solid'
 
 const issuesStore = useIssuesStore()
 
@@ -380,10 +384,19 @@ const initMap = () => {
   // Add markers for all issues
   issuesStore.filteredIssues.forEach((issue) => {
     if (issue.latitude && issue.longitude) {
+      // SVG for map popup thumbs up
+      const thumbsUpSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-1 inline-block">
+        <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.233 18.748c.036.003.072.003.108.003h3.126c.909 0 1.764-.325 2.43-.873a10.45 10.45 0 002.606-6.666c0-.525-.03-1.044-.09-1.554a3.75 3.75 0 00-3.665-3.348h-3.126a2.25 2.25 0 00-1.418.508c-.27.233-.673.34-1.077.34-.378 0-.743-.092-1.077-.282a3.75 3.75 0 00-1.748-.43h-2.25C6.983 7.545 6 9.006 6 10.875v5.85c0 1.056.405 2.06 1.127 2.766.721.705 1.707 1.059 2.723 1.059h5.383z" />
+      </svg>`
+
       const marker = L.marker([issue.latitude, issue.longitude]).addTo(mapInstance).bindPopup(`
           <div class="max-w-xs">
             <h3 class="font-bold">${issue.title}</h3>
             <p class="text-sm text-gray-600">${issue.category}</p>
+            <p class="text-sm font-semibold text-[#cf573c] mt-1 flex items-center">
+              ${thumbsUpSvg}
+              ${issue.upvote_count || 0} Votes
+            </p>
             <p class="text-sm mt-2">${issue.description.substring(0, 100)}...</p>
             <a href="#/issues/${issue.id}" class="text-blue-600 text-sm font-semibold mt-2 inline-block">View Details →</a>
           </div>

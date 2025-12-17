@@ -1,167 +1,157 @@
+```
 <template>
   <div class="min-h-screen bg-gradient-to-br from-[#ebede9] to-gray-100">
-    <div class="mx-auto max-w-4xl px-4 py-8">
+    <div class="mx-auto max-w-3xl px-4 py-8">
       <!-- Header -->
       <div class="mb-8">
-        <h1 class="mb-2 text-4xl font-bold text-[#10141f]">Report a New Issue</h1>
-        <p class="text-[#819796]">Help improve your community by reporting an issue</p>
+        <router-link
+          to="/issues"
+          class="text-accent mb-4 inline-flex items-center gap-2 font-semibold hover:underline"
+        >
+          <ArrowLeftIcon class="h-5 w-5" />
+          Back to Issues
+        </router-link>
+        <h1 class="mb-2 text-4xl font-bold text-[#10141f]">Report an Issue</h1>
+        <p class="text-[#819796]">Help improve our community by reporting problems you see.</p>
       </div>
 
       <!-- Form Card -->
       <div class="overflow-hidden rounded-xl bg-white shadow-md">
-        <form @submit.prevent="submitForm" class="p-8">
-          <!-- Issue Title -->
-          <div class="mb-6">
-            <label for="title" class="mb-2 block text-sm font-semibold text-[#10141f]">
-              Issue Title <span class="text-[#cf573c]">*</span>
-            </label>
-            <input
-              id="title"
-              v-model="form.title"
-              type="text"
-              placeholder="e.g., Large pothole on Main Street"
-              class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
-              required
-            />
-            <p class="mt-1 text-xs text-[#819796]">Be specific about what the issue is</p>
+        <!-- Progress Steps (Optional improvement, not in original but nice to have structure) -->
+
+        <form @submit.prevent="submitIssue" class="space-y-8 p-8">
+          <!-- Category Selection -->
+          <div>
+            <label class="mb-2 block text-sm font-bold text-[#10141f]"
+              >Issue Category <span class="text-red-500">*</span></label
+            >
+            <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+              <label v-for="cat in categories" :key="cat.value" class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  v-model="form.category"
+                  :value="cat.value"
+                  class="peer sr-only"
+                />
+                <div
+                  class="rounded-lg border-2 border-gray-200 p-3 text-center transition-all peer-checked:border-[#75a743] peer-checked:bg-[#eaf4e1] hover:border-gray-300"
+                >
+                  <span class="block text-sm font-semibold text-[#10141f]">{{ cat.label }}</span>
+                </div>
+              </label>
+            </div>
+            <p v-if="errors.category" class="mt-1 text-xs text-red-500">{{ errors.category }}</p>
           </div>
 
-          <!-- Issue Description -->
-          <div class="mb-6">
-            <label for="description" class="mb-2 block text-sm font-semibold text-[#10141f]">
-              Description <span class="text-[#cf573c]">*</span>
-            </label>
+          <!-- Title -->
+          <div>
+            <label for="title" class="mb-2 block text-sm font-bold text-[#10141f]"
+              >Title <span class="text-red-500">*</span></label
+            >
+            <input
+              type="text"
+              id="title"
+              v-model="form.title"
+              placeholder="Brief summary of the issue"
+              class="w-full rounded-lg border border-gray-300 px-4 py-2 transition-shadow focus:ring-2 focus:ring-[#25562e] focus:outline-none"
+            />
+            <p v-if="errors.title" class="mt-1 text-xs text-red-500">{{ errors.title }}</p>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="mb-2 block text-sm font-bold text-[#10141f]"
+              >Description <span class="text-red-500">*</span></label
+            >
             <textarea
               id="description"
               v-model="form.description"
-              placeholder="Provide more details about the issue..."
-              rows="5"
-              maxlength="1000"
-              class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
-              required
+              rows="4"
+              placeholder="Please describe the issue in detail..."
+              class="w-full rounded-lg border border-gray-300 px-4 py-2 transition-shadow focus:ring-2 focus:ring-[#25562e] focus:outline-none"
             ></textarea>
-            <p class="mt-1 text-xs text-[#819796]">{{ form.description.length }}/1000 characters</p>
-          </div>
-
-          <!-- Two Column Grid -->
-          <div class="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-            <!-- Category -->
-            <div>
-              <label for="category" class="mb-2 block text-sm font-semibold text-[#10141f]">
-                Category <span class="text-[#cf573c]">*</span>
-              </label>
-              <select
-                id="category"
-                v-model="form.category"
-                class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
-                required
-              >
-                <option value="">Select a category</option>
-                <option value="pothole">Pothole</option>
-                <option value="trash">Trash/Littering</option>
-                <option value="streetlight">Street Light</option>
-                <option value="graffiti">Graffiti</option>
-                <option value="water_leak">Water Leak</option>
-                <option value="tree_damage">Tree Damage</option>
-                <option value="sidewalk">Sidewalk Damage</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <!-- Priority -->
-            <div>
-              <label for="priority" class="mb-2 block text-sm font-semibold text-[#10141f]">
-                Priority <span class="text-[#cf573c]">*</span>
-              </label>
-              <select
-                id="priority"
-                v-model="form.priority"
-                class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
-                required
-              >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="critical">Critical</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Map Section -->
-          <div class="mb-6">
-            <label class="mb-2 block text-sm font-semibold text-[#10141f]">
-              Location on Map <span class="text-[#cf573c]">*</span>
-            </label>
-            <p class="mb-3 text-xs text-[#819796]">
-              Click on the map to mark the exact location of the issue
+            <p v-if="errors.description" class="mt-1 text-xs text-red-500">
+              {{ errors.description }}
             </p>
-            <div
-              id="map"
-              class="relative z-0 mb-3 h-80 max-h-80 overflow-hidden rounded-lg border border-gray-300"
-            ></div>
+          </div>
 
-            <div
-              v-if="form.latitude && form.longitude"
-              class="rounded-lg border border-green-200 bg-green-50 p-3"
-            >
-              <p class="text-sm text-green-800">
-                <i class="fas fa-check-circle mr-2"></i>
-                Location selected: {{ form.latitude.toFixed(6) }}, {{ form.longitude.toFixed(6) }}
+          <!-- Priority -->
+          <div>
+            <label class="mb-2 block text-sm font-bold text-[#10141f]">Priority Level</label>
+            <div class="flex items-start rounded-lg bg-blue-50 p-4">
+              <ExclamationCircleIcon class="mr-2 h-6 w-6 flex-shrink-0 text-yellow-500" />
+              <p class="text-sm text-blue-800">
+                Most community reports are <strong>Medium</strong> or <strong>Low</strong> priority.
+                High priority should be reserved for safety hazards.
               </p>
             </div>
-            <div v-else class="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
-              <p class="text-sm text-yellow-800">
-                <i class="fas fa-exclamation-triangle mr-2"></i>
-                Please click on the map to select a location
-              </p>
+            <div class="mt-3 flex gap-4">
+              <label class="inline-flex items-center">
+                <input
+                  type="radio"
+                  v-model="form.priority"
+                  value="low"
+                  class="text-primary focus:ring-[#25562e]"
+                />
+                <span class="ml-2 text-[#10141f]">Low</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="radio"
+                  v-model="form.priority"
+                  value="medium"
+                  class="text-primary focus:ring-[#25562e]"
+                />
+                <span class="ml-2 text-[#10141f]">Medium</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="radio"
+                  v-model="form.priority"
+                  value="high"
+                  class="text-primary focus:ring-[#25562e]"
+                />
+                <span class="ml-2 text-[#10141f]">High</span>
+              </label>
             </div>
           </div>
 
           <!-- Image Upload -->
-          <div class="mb-6">
-            <label for="image" class="mb-2 block text-sm font-semibold text-[#10141f]">
-              Upload Photo (Optional)
-            </label>
+          <div>
+            <label class="mb-2 block text-sm font-bold text-[#10141f]">Photo Evidence</label>
             <div
-              class="cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-6 text-center transition-colors hover:border-[#75a743]"
-              @click="$refs.fileInput.click()"
-              @dragover.prevent="isDragging = true"
-              @dragleave.prevent="isDragging = false"
+              class="relative cursor-pointer rounded-xl border-2 border-dashed border-gray-300 p-8 text-center transition-colors hover:bg-gray-50"
+              @dragover.prevent
               @drop.prevent="handleFileDrop"
-              :class="{ 'border-[#75a743] bg-green-50': isDragging }"
+              @click="triggerFileInput"
             >
               <input
-                ref="fileInput"
                 type="file"
-                accept="image/*"
+                ref="fileInput"
                 class="hidden"
+                accept="image/*"
                 @change="handleFileSelect"
               />
-              <i class="fas fa-cloud-upload-alt mb-2 block text-3xl text-[#819796]"></i>
-              <p class="font-semibold text-[#10141f]">Drag and drop your image here</p>
-              <p class="text-sm text-[#819796]">or click to browse</p>
-              <p class="mt-2 text-xs text-[#819796]">Supported formats: JPG, PNG, GIF (Max 5MB)</p>
-            </div>
 
-            <!-- Image Preview -->
-            <div v-if="imagePreview" class="mt-4">
-              <p class="mb-2 text-sm font-semibold text-[#10141f]">Preview:</p>
-              <img
-                :src="imagePreview"
-                alt="Preview"
-                class="max-h-64 rounded-lg border border-gray-300"
-              />
-              <button
-                type="button"
-                @click="removeImage"
-                class="mt-2 text-sm text-[#cf573c] hover:underline"
-              >
-                <i class="fas fa-trash mr-1"></i>Remove image
-              </button>
-            </div>
-            <div v-if="form.image" class="mt-3 text-sm text-green-600">
-              <i class="fas fa-check-circle mr-1"></i>
-              {{ form.image.name }}
+              <div v-if="!form.image" class="flex flex-col items-center">
+                <PhotoIcon class="mb-2 h-12 w-12 text-[#819796]" />
+                <p class="text-sm font-semibold text-[#10141f]">Click to upload or drag and drop</p>
+                <p class="mt-1 text-xs text-[#819796]">JPG, PNG, GIF up to 5MB</p>
+              </div>
+
+              <div v-else class="flex flex-col items-center">
+                <p class="mb-2 flex items-center text-sm font-semibold text-green-600">
+                  <CheckCircleIcon class="mr-1 h-5 w-5" />
+                  {{ form.image.name }}
+                </p>
+                <button
+                  type="button"
+                  @click.stop="removeImage"
+                  class="flex items-center text-sm text-[#cf573c] hover:underline"
+                >
+                  <TrashIcon class="mr-1 h-4 w-4" /> Remove image
+                </button>
+              </div>
             </div>
           </div>
 
@@ -184,9 +174,9 @@
             <button
               type="submit"
               :disabled="isSubmitting || !form.latitude || !form.longitude"
-              class="flex-1 rounded-lg bg-gradient-to-r from-[#25562e] to-[#1a3d21] px-4 py-3 font-semibold text-white transition-shadow hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
+              class="flex flex-1 items-center justify-center rounded-lg bg-gradient-to-r from-[#25562e] to-[#1a3d21] px-4 py-3 font-semibold text-white transition-shadow hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <i v-if="isSubmitting" class="fas fa-spinner fa-spin mr-2"></i>
+              <ArrowPathIcon v-if="isSubmitting" class="mr-2 h-5 w-5 animate-spin" />
               {{ isSubmitting ? 'Submitting...' : 'Report Issue' }}
             </button>
             <router-link
@@ -199,19 +189,19 @@
 
           <!-- Error Message -->
           <div v-if="error" class="mt-4 rounded-lg border border-red-200 bg-red-50 p-4">
-            <p class="text-sm text-red-800">
-              <i class="fas fa-exclamation-circle mr-2"></i>
+            <p class="flex items-center text-sm text-red-800">
+              <ExclamationCircleIcon class="mr-2 h-5 w-5" />
               {{ error }}
             </p>
           </div>
 
           <!-- Success Message -->
           <div
-            v-if="successMessage"
-            class="mt-4 rounded-lg border border-green-200 bg-green-50 p-4"
+            v-if="form.latitude && form.longitude"
+            class="rounded-lg border border-green-200 bg-green-50 p-3"
           >
-            <p class="text-sm text-green-800">
-              <i class="fas fa-check-circle mr-2"></i>
+            <p class="flex items-center text-sm text-green-800">
+              <CheckCircleIcon class="mr-2 h-5 w-5" />
               {{ successMessage }}
             </p>
           </div>
@@ -226,6 +216,16 @@ import { ref, onMounted } from 'vue'
 import L from 'leaflet'
 import { useIssuesStore } from '../../stores/issuesStore'
 import { useRouter } from 'vue-router'
+import {
+  ArrowLeftIcon,
+  ExclamationCircleIcon,
+  ArrowPathIcon,
+  PhotoIcon,
+  MapPinIcon,
+  PaperAirplaneIcon,
+  TrashIcon,
+  CheckCircleIcon,
+} from '@heroicons/vue/24/solid'
 
 const issuesStore = useIssuesStore()
 const router = useRouter()

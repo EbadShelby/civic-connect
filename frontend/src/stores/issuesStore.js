@@ -32,8 +32,6 @@ export const useIssuesStore = defineStore('issues', () => {
       result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     } else if (filters.value.sortBy === 'upvotes') {
       result.sort((a, b) => b.upvote_count - a.upvote_count)
-    } else if (filters.value.sortBy === 'comments') {
-      result.sort((a, b) => b.comment_count - a.comment_count)
     }
 
     return result
@@ -243,113 +241,7 @@ export const useIssuesStore = defineStore('issues', () => {
     }
   }
 
-  // Add comment
-  const addComment = async (issueId, content) => {
-    error.value = null
-    try {
-      const response = await axios.post(`${API_BASE_URL}/issues/${issueId}/comments`, {
-        content
-      })
 
-      const newComment = response.data.comment
-
-      // Update comment count
-      const issue = issues.value.find((i) => i.id === issueId)
-      if (issue) {
-        issue.comment_count = response.data.comment_count
-      }
-
-      if (currentIssue.value?.id === issueId) {
-        currentIssue.value.comment_count = response.data.comment_count
-        if (!currentIssue.value.comments) {
-          currentIssue.value.comments = []
-        }
-        currentIssue.value.comments.push(newComment)
-      }
-
-      return {
-        success: true,
-        comment: newComment,
-        commentCount: response.data.comment_count
-      }
-    } catch (err) {
-      error.value = err.response?.data?.error || 'Failed to add comment'
-      throw error.value
-    }
-  }
-
-  // Get comments
-  const fetchComments = async (issueId) => {
-    error.value = null
-    try {
-      const response = await axios.get(`${API_BASE_URL}/issues/${issueId}/comments`)
-
-      if (currentIssue.value?.id === issueId) {
-        currentIssue.value.comments = response.data.comments || []
-      }
-
-      return response.data.comments || []
-    } catch (err) {
-      error.value = err.response?.data?.error || 'Failed to fetch comments'
-      throw error.value
-    }
-  }
-
-  // Update comment
-  const updateComment = async (commentId, content) => {
-    error.value = null
-    try {
-      const response = await axios.put(`${API_BASE_URL}/comments/${commentId}`, { content })
-
-      // Update comment in current issue
-      if (currentIssue.value?.comments) {
-        const comment = currentIssue.value.comments.find((c) => c.id === commentId)
-        if (comment) {
-          comment.content = response.data.comment.content
-          comment.updated_at = response.data.comment.updated_at
-        }
-      }
-
-      return {
-        success: true,
-        comment: response.data.comment
-      }
-    } catch (err) {
-      error.value = err.response?.data?.error || 'Failed to update comment'
-      throw error.value
-    }
-  }
-
-  // Delete comment
-  const deleteComment = async (issueId, commentId) => {
-    error.value = null
-    try {
-      const response = await axios.delete(`${API_BASE_URL}/comments/${commentId}`)
-
-      // Update comment count
-      const issue = issues.value.find((i) => i.id === issueId)
-      if (issue) {
-        issue.comment_count = response.data.comment_count
-      }
-
-      if (currentIssue.value?.id === issueId) {
-        currentIssue.value.comment_count = response.data.comment_count
-        if (currentIssue.value.comments) {
-          currentIssue.value.comments = currentIssue.value.comments.filter(
-            (c) => c.id !== commentId
-          )
-        }
-      }
-
-      return {
-        success: true,
-        commentCount: response.data.comment_count
-      }
-    } catch (err) {
-      error.value = err.response?.data?.error || 'Failed to delete comment'
-      throw error.value
-    }
-  }
 
   // Set filters
   const setFilters = (newFilters) => {
@@ -383,10 +275,6 @@ export const useIssuesStore = defineStore('issues', () => {
     fetchUserIssues,
     upvoteIssue,
     removeUpvote,
-    addComment,
-    fetchComments,
-    updateComment,
-    deleteComment,
     setFilters,
     resetFilters
   }

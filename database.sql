@@ -39,7 +39,6 @@ CREATE TABLE issues (
     priority ENUM('low', 'medium', 'high', 'critical') DEFAULT 'medium',
     image_path VARCHAR(255),
     upvote_count INT DEFAULT 0,
-    comment_count INT DEFAULT 0,
     is_anonymous BOOLEAN DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -86,28 +85,13 @@ CREATE TABLE audit_trail (
     INDEX idx_entity (entity_type, entity_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Create comments table (for issue discussions)
-CREATE TABLE comments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    issue_id INT NOT NULL,
-    user_id INT NOT NULL,
-    content TEXT NOT NULL,
-    is_anonymous BOOLEAN DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (issue_id) REFERENCES issues(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_issue_id (issue_id),
-    INDEX idx_user_id (user_id),
-    INDEX idx_created_at (created_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Create issue_updates table (for status changes and comments)
+-- Create issue_updates table (for status changes)
 CREATE TABLE issue_updates (
     id INT AUTO_INCREMENT PRIMARY KEY,
     issue_id INT NOT NULL,
     user_id INT,
-    update_type ENUM('status_change', 'comment', 'image_added', 'assigned') DEFAULT 'comment',
+    update_type ENUM('status_change', 'image_added', 'assigned') DEFAULT 'status_change',
     content TEXT,
     old_status VARCHAR(50),
     new_status VARCHAR(50),
