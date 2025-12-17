@@ -12,7 +12,7 @@ export const useIssuesStore = defineStore('issues', () => {
   const filters = ref({
     status: null,
     category: null,
-    sortBy: 'recent'
+    sortBy: 'recent',
   })
 
   // Computed properties
@@ -45,7 +45,7 @@ export const useIssuesStore = defineStore('issues', () => {
     'water_leak',
     'tree_damage',
     'sidewalk',
-    'other'
+    'other',
   ])
 
   const issueStatuses = computed(() => ['open', 'in_progress', 'resolved', 'closed'])
@@ -74,7 +74,13 @@ export const useIssuesStore = defineStore('issues', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await axios.get(`${API_BASE_URL}/issues/${issueId}`)
+      const token = localStorage.getItem('token')
+      const headers = {}
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
+      const response = await axios.get(`${API_BASE_URL}/issues/${issueId}`, { headers })
       currentIssue.value = response.data.issue
 
       return response.data.issue
@@ -94,8 +100,8 @@ export const useIssuesStore = defineStore('issues', () => {
       const token = localStorage.getItem('token')
       const response = await axios.post(`${API_BASE_URL}/issues`, formData, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
 
       const newIssue = response.data.issue
@@ -104,7 +110,7 @@ export const useIssuesStore = defineStore('issues', () => {
       return {
         success: true,
         message: response.data.message,
-        issue: newIssue
+        issue: newIssue,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to create issue'
@@ -134,7 +140,7 @@ export const useIssuesStore = defineStore('issues', () => {
       return {
         success: true,
         message: response.data.message,
-        issue: updatedIssue
+        issue: updatedIssue,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to update issue'
@@ -158,7 +164,7 @@ export const useIssuesStore = defineStore('issues', () => {
 
       return {
         success: true,
-        message: response.data.message
+        message: response.data.message,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to delete issue'
@@ -187,7 +193,16 @@ export const useIssuesStore = defineStore('issues', () => {
   const upvoteIssue = async (issueId) => {
     error.value = null
     try {
-      const response = await axios.post(`${API_BASE_URL}/issues/${issueId}/upvotes`)
+      const token = localStorage.getItem('token')
+      const response = await axios.post(
+        `${API_BASE_URL}/issues/${issueId}/upvotes`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
 
       // Update issue in list
       const issue = issues.value.find((i) => i.id === issueId)
@@ -204,7 +219,7 @@ export const useIssuesStore = defineStore('issues', () => {
 
       return {
         success: true,
-        upvoteCount: response.data.upvote_count
+        upvoteCount: response.data.upvote_count,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to upvote issue'
@@ -216,7 +231,12 @@ export const useIssuesStore = defineStore('issues', () => {
   const removeUpvote = async (issueId) => {
     error.value = null
     try {
-      const response = await axios.delete(`${API_BASE_URL}/issues/${issueId}/upvotes`)
+      const token = localStorage.getItem('token')
+      const response = await axios.delete(`${API_BASE_URL}/issues/${issueId}/upvotes`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       // Update issue in list
       const issue = issues.value.find((i) => i.id === issueId)
@@ -233,15 +253,13 @@ export const useIssuesStore = defineStore('issues', () => {
 
       return {
         success: true,
-        upvoteCount: response.data.upvote_count
+        upvoteCount: response.data.upvote_count,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to remove upvote'
       throw error.value
     }
   }
-
-
 
   // Set filters
   const setFilters = (newFilters) => {
@@ -253,7 +271,7 @@ export const useIssuesStore = defineStore('issues', () => {
     filters.value = {
       status: null,
       category: null,
-      sortBy: 'recent'
+      sortBy: 'recent',
     }
   }
 
@@ -276,6 +294,6 @@ export const useIssuesStore = defineStore('issues', () => {
     upvoteIssue,
     removeUpvote,
     setFilters,
-    resetFilters
+    resetFilters,
   }
 })

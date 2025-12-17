@@ -59,6 +59,11 @@ class UpvoteController {
             ");
             $stmt->execute([$issue_id, $issue_id]);
 
+            // Get updated upvote count
+            $stmt = $this->pdo->prepare("SELECT upvote_count FROM issues WHERE id = ?");
+            $stmt->execute([$issue_id]);
+            $upvote_count = $stmt->fetch()['upvote_count'];
+
             // Log audit trail
             Middleware::logAuditTrail($user['user_id'], 'ISSUE_UPVOTED', 'upvotes', $this->pdo->lastInsertId(), null, [
                 'issue_id' => $issue_id
@@ -66,7 +71,8 @@ class UpvoteController {
 
             sendResponse([
                 'success' => true,
-                'message' => 'Issue upvoted successfully'
+                'message' => 'Issue upvoted successfully',
+                'upvote_count' => $upvote_count
             ], 201);
         } catch (PDOException $e) {
             sendError('Failed to add upvote: ' . $e->getMessage(), 500);
@@ -117,12 +123,18 @@ class UpvoteController {
             ");
             $stmt->execute([$issue_id, $issue_id]);
 
+            // Get updated upvote count
+            $stmt = $this->pdo->prepare("SELECT upvote_count FROM issues WHERE id = ?");
+            $stmt->execute([$issue_id]);
+            $upvote_count = $stmt->fetch()['upvote_count'];
+
             // Log audit trail
             Middleware::logAuditTrail($user['user_id'], 'ISSUE_UNUPVOTED', 'upvotes', $issue_id);
 
             sendResponse([
                 'success' => true,
-                'message' => 'Upvote removed successfully'
+                'message' => 'Upvote removed successfully',
+                'upvote_count' => $upvote_count
             ], 200);
         } catch (PDOException $e) {
             sendError('Failed to remove upvote: ' . $e->getMessage(), 500);

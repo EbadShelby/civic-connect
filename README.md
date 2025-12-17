@@ -22,7 +22,7 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 * **VeeValidate** (^4.15.1) — form validation
 * **Vue Toastification** — toast notifications
 * **Vue Loading Overlay** — loading indicators
-* **fontawesome** — icons
+* **Heroicons/vue** — icons
 * **ESLint + Prettier** — linting and formatting
 
 ### **Map**

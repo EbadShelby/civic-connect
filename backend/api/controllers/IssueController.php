@@ -110,6 +110,9 @@ class IssueController {
         }
 
         try {
+            // Try to get current user if authenticated (optional for this endpoint)
+            $current_user = Middleware::authenticate();
+
             $stmt = $this->pdo->prepare("
                 SELECT
                     i.*,
@@ -128,12 +131,43 @@ class IssueController {
                 sendError('Issue not found', 404);
             }
 
-            // If anonymous, remove user details
+            // Check if current user has upvoted
+            $user_has_upvoted = false;
+            if ($current_user) {
+                $upvote_stmt = $this->pdo->prepare("
+                    SELECT id FROM upvotes 
+                    WHERE issue_id = ? AND user_id = ?
+                ");
+                $upvote_stmt->execute([$issue_id, $current_user['user_id']]);
+                $user_has_upvoted = (bool)$upvote_stmt->fetch();
+            }
+            $issue['user_has_upvoted'] = $user_has_upvoted;
+
+            // Add image_url from image_path
+            if (!empty($issue['image_path'])) {
+                $issue['image_url'] = 'http://localhost/civic-connect/backend/' . $issue['image_path'];
+            } else {
+                $issue['image_url'] = null;
+            }
+
+            // Add user_name field
             if ($issue['is_anonymous']) {
+                $issue['user_name'] = 'Anonymous';
                 $issue['first_name'] = 'Anonymous';
                 $issue['last_name'] = '';
                 $issue['profile_image'] = null;
+            } else {
+                $issue['user_name'] = trim($issue['first_name'] . ' ' . $issue['last_name']);
             }
+
+            // Convert numeric fields to proper types
+            if ($issue['latitude'] !== null) {
+                $issue['latitude'] = (float)$issue['latitude'];
+            }
+            if ($issue['longitude'] !== null) {
+                $issue['longitude'] = (float)$issue['longitude'];
+            }
+            $issue['upvote_count'] = (int)$issue['upvote_count'];
 
             sendResponse([
                 'success' => true,
