@@ -18,11 +18,14 @@ CREATE TABLE users (
     otp_expires_at TIMESTAMP NULL,
     otp_attempts INT DEFAULT 0,
     is_active BOOLEAN DEFAULT 1,
+    role ENUM('citizen', 'staff', 'admin') DEFAULT 'citizen',
+    last_login TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_email (email),
     INDEX idx_created_at (created_at),
-    INDEX idx_is_active (is_active)
+    INDEX idx_is_active (is_active),
+    INDEX idx_role (role)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Create issues table

@@ -316,8 +316,12 @@ class IssueController {
                 sendError('Issue not found', 404);
             }
 
-            // Check ownership
-            if (!Middleware::ownsResource($user['user_id'], $issue['user_id'])) {
+            // Check ownership or role
+            $stmt = $this->pdo->prepare("SELECT role FROM users WHERE id = ?");
+            $stmt->execute([$user['user_id']]);
+            $user_role = $stmt->fetchColumn();
+
+            if (!Middleware::ownsResource($user['user_id'], $issue['user_id']) && !in_array($user_role, ['admin', 'staff'])) {
                 sendError('Unauthorized: Cannot update other user\'s issues', 403);
             }
 
@@ -396,8 +400,12 @@ class IssueController {
                 sendError('Issue not found', 404);
             }
 
-            // Check ownership
-            if (!Middleware::ownsResource($user['user_id'], $issue['user_id'])) {
+            // Check ownership or role
+            $stmt = $this->pdo->prepare("SELECT role FROM users WHERE id = ?");
+            $stmt->execute([$user['user_id']]);
+            $user_role = $stmt->fetchColumn();
+
+            if (!Middleware::ownsResource($user['user_id'], $issue['user_id']) && !in_array($user_role, ['admin', 'staff'])) {
                 sendError('Unauthorized: Cannot delete other user\'s issues', 403);
             }
 

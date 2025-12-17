@@ -258,12 +258,18 @@ class UserController {
 
         try {
             $stmt = $this->pdo->prepare("
-                SELECT id, email, password_hash, first_name, last_name, email_verified, is_active
+                SELECT id, email, password_hash, first_name, last_name, email_verified, is_active, role
                 FROM users
                 WHERE email = ?
             ");
             $stmt->execute([$data['email']]);
             $user = $stmt->fetch();
+            
+            // Update last_login
+            if ($user) {
+                $updateLogin = $this->pdo->prepare("UPDATE users SET last_login = NOW() WHERE id = ?");
+                $updateLogin->execute([$user['id']]);
+            }
 
             if (!$user) {
                 sendError('Invalid email or password', 401);
@@ -301,7 +307,9 @@ class UserController {
                     'id' => $user['id'],
                     'email' => $user['email'],
                     'first_name' => $user['first_name'],
-                    'last_name' => $user['last_name']
+                    'first_name' => $user['first_name'],
+                    'last_name' => $user['last_name'],
+                    'role' => $user['role']
                 ],
                 'token' => $token
             ], 200);

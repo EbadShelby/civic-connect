@@ -57,6 +57,16 @@
                 >Issues</router-link
               >
 
+              <!-- Admin Links -->
+              <template v-if="authStore.isAdmin">
+                <router-link
+                  to="/admin/dashboard"
+                  active-class="text-primary font-semibold"
+                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  >Admin</router-link
+                >
+              </template>
+
               <!-- Profile Dropdown (Simplified for now) -->
               <div class="group relative">
                 <button
@@ -158,6 +168,14 @@
               @click="mobileMenuOpen = false"
               >My Issues</router-link
             >
+            <template v-if="authStore.isAdmin">
+              <router-link
+                to="/admin/dashboard"
+                class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+                @click="mobileMenuOpen = false"
+                >Admin Dashboard</router-link
+              >
+            </template>
             <button
               @click="handleLogout"
               class="text-danger hover:bg-danger-light/20 block w-full rounded-lg px-3 py-3 text-left text-base font-medium"
