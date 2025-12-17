@@ -143,16 +143,19 @@
             <router-link
               to="/dashboard"
               class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+              @click="mobileMenuOpen = false"
               >Dashboard</router-link
             >
             <router-link
               to="/issues"
               class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+              @click="mobileMenuOpen = false"
               >All Issues</router-link
             >
             <router-link
               to="/my-issues"
               class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+              @click="mobileMenuOpen = false"
               >My Issues</router-link
             >
             <button
@@ -166,11 +169,13 @@
             <router-link
               to="/login"
               class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+              @click="mobileMenuOpen = false"
               >Sign In</router-link
             >
             <router-link
               to="/register"
               class="text-primary bg-primary-light/30 block rounded-lg px-3 py-3 text-base font-medium"
+              @click="mobileMenuOpen = false"
               >Get Started</router-link
             >
           </template>

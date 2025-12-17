@@ -23,8 +23,8 @@ Frontend (Vue + Tailwind):
       ✔ Build citizen dashboard (/dashboard) @done(25-12-17 10:57)
       ✔ Build report issue page (/report) @done(25-12-17 10:57)
       ✔ Build issues map/list page (/issues) @done(25-12-17 10:57)
-      ☐ Build issue details page (/issues/:id)
-      ☐ Build profile page (/profile)
+      ✔ Build issue details page (/issues/:id) @done(25-12-17)
+      ✔ Build profile page (/profile) @done(25-12-17)
 
     Staff Pages:
       ☐ Build staff dashboard (/staff/dashboard)

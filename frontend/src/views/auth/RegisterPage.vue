@@ -1,57 +1,59 @@
 <template>
-  <div class="min-h-screen bg-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="w-full max-w-md">
+  <div class="bg-bg flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    <div class="w-full max-w-xl">
       <!-- Logo & Header -->
-      <div class="text-center mb-8">
-        <div class="flex items-center justify-center gap-2 mb-4">
-          <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <span class="text-white font-bold text-lg">CC</span>
+      <div class="mb-8 text-center">
+        <div class="mb-4 flex items-center justify-center gap-2">
+          <div class="bg-primary flex h-10 w-10 items-center justify-center rounded-lg">
+            <span class="text-lg font-bold text-white">CC</span>
           </div>
-          <h1 class="text-2xl font-bold text-primary">CivicConnect</h1>
+          <h1 class="text-primary text-2xl font-bold">CivicConnect</h1>
         </div>
-        <h2 class="text-2xl font-bold text-primary mb-2">Join Our Community</h2>
+        <h2 class="text-primary mb-2 text-2xl font-bold">Join Our Community</h2>
         <p class="text-muted">Create an account to start reporting and engaging</p>
       </div>
 
       <!-- Registration Form -->
-      <form @submit.prevent="handleRegister" class="bg-white rounded-xl shadow-md p-8 space-y-4">
-        <!-- First Name Field -->
-        <div>
-          <label for="firstName" class="block text-sm font-medium text-primary mb-2">
-            First Name
-          </label>
-          <input
-            id="firstName"
-            v-model="formData.firstName"
-            type="text"
-            name="firstName"
-            placeholder="John"
-            class="w-full px-4 py-2 border border-accent/30 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition"
-            @blur="validateField('firstName')"
-          />
-          <p v-if="errors.firstName" class="mt-1 text-sm text-danger">{{ errors.firstName }}</p>
-        </div>
+      <form @submit.prevent="handleRegister" class="space-y-4 rounded-xl bg-white p-8 shadow-md">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <!-- First Name Field -->
+          <div>
+            <label for="firstName" class="text-primary mb-2 block text-sm font-medium">
+              First Name
+            </label>
+            <input
+              id="firstName"
+              v-model="formData.firstName"
+              type="text"
+              name="firstName"
+              placeholder="John"
+              class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
+              @blur="validateField('firstName')"
+            />
+            <p v-if="errors.firstName" class="text-danger mt-1 text-sm">{{ errors.firstName }}</p>
+          </div>
 
-        <!-- Last Name Field -->
-        <div>
-          <label for="lastName" class="block text-sm font-medium text-primary mb-2">
-            Last Name
-          </label>
-          <input
-            id="lastName"
-            v-model="formData.lastName"
-            type="text"
-            name="lastName"
-            placeholder="Doe"
-            class="w-full px-4 py-2 border border-accent/30 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition"
-            @blur="validateField('lastName')"
-          />
-          <p v-if="errors.lastName" class="mt-1 text-sm text-danger">{{ errors.lastName }}</p>
+          <!-- Last Name Field -->
+          <div>
+            <label for="lastName" class="text-primary mb-2 block text-sm font-medium">
+              Last Name
+            </label>
+            <input
+              id="lastName"
+              v-model="formData.lastName"
+              type="text"
+              name="lastName"
+              placeholder="Doe"
+              class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
+              @blur="validateField('lastName')"
+            />
+            <p v-if="errors.lastName" class="text-danger mt-1 text-sm">{{ errors.lastName }}</p>
+          </div>
         </div>
 
         <!-- Email Field -->
         <div>
-          <label for="email" class="block text-sm font-medium text-primary mb-2">
+          <label for="email" class="text-primary mb-2 block text-sm font-medium">
             Email Address
           </label>
           <input
@@ -60,15 +62,15 @@
             type="email"
             name="email"
             placeholder="you@example.com"
-            class="w-full px-4 py-2 border border-accent/30 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition"
+            class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
             @blur="validateField('email')"
           />
-          <p v-if="errors.email" class="mt-1 text-sm text-danger">{{ errors.email }}</p>
+          <p v-if="errors.email" class="text-danger mt-1 text-sm">{{ errors.email }}</p>
         </div>
 
         <!-- Phone Field (Optional) -->
         <div>
-          <label for="phone" class="block text-sm font-medium text-primary mb-2">
+          <label for="phone" class="text-primary mb-2 block text-sm font-medium">
             Phone Number (Optional)
           </label>
           <input
@@ -77,13 +79,13 @@
             type="tel"
             name="phone"
             placeholder="+1 (555) 000-0000"
-            class="w-full px-4 py-2 border border-accent/30 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition"
+            class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
           />
         </div>
 
         <!-- Password Field -->
         <div>
-          <label for="password" class="block text-sm font-medium text-primary mb-2">
+          <label for="password" class="text-primary mb-2 block text-sm font-medium">
             Password
           </label>
           <input
@@ -92,18 +94,18 @@
             type="password"
             name="password"
             placeholder="••••••••"
-            class="w-full px-4 py-2 border border-accent/30 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition"
+            class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
             @blur="validateField('password')"
           />
-          <p v-if="errors.password" class="mt-1 text-sm text-danger">{{ errors.password }}</p>
-          <p class="mt-1 text-xs text-muted">
+          <p v-if="errors.password" class="text-danger mt-1 text-sm">{{ errors.password }}</p>
+          <p class="text-muted mt-1 text-xs">
             At least 8 characters with uppercase, lowercase, and numbers
           </p>
         </div>
 
         <!-- Confirm Password Field -->
         <div>
-          <label for="confirmPassword" class="block text-sm font-medium text-primary mb-2">
+          <label for="confirmPassword" class="text-primary mb-2 block text-sm font-medium">
             Confirm Password
           </label>
           <input
@@ -112,10 +114,12 @@
             type="password"
             name="confirmPassword"
             placeholder="••••••••"
-            class="w-full px-4 py-2 border border-accent/30 rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition"
+            class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
             @blur="validateField('confirmPassword')"
           />
-          <p v-if="errors.confirmPassword" class="mt-1 text-sm text-danger">{{ errors.confirmPassword }}</p>
+          <p v-if="errors.confirmPassword" class="text-danger mt-1 text-sm">
+            {{ errors.confirmPassword }}
+          </p>
         </div>
 
         <!-- Terms Acceptance -->
@@ -125,37 +129,40 @@
             v-model="formData.acceptTerms"
             type="checkbox"
             name="terms"
-            class="h-4 w-4 text-primary focus:ring-accent border-accent/30 rounded cursor-pointer mt-1"
+            class="text-primary focus:ring-accent border-accent/30 mt-1 h-4 w-4 cursor-pointer rounded"
           />
-          <label for="terms" class="text-sm text-muted cursor-pointer">
+          <label for="terms" class="text-muted cursor-pointer text-sm">
             I agree to the
             <a href="#" class="text-primary hover:text-accent transition">Terms of Service</a>
             and
             <a href="#" class="text-primary hover:text-accent transition">Privacy Policy</a>
           </label>
         </div>
-        <p v-if="errors.terms" class="text-sm text-danger">{{ errors.terms }}</p>
+        <p v-if="errors.terms" class="text-danger text-sm">{{ errors.terms }}</p>
 
         <!-- Error Message -->
-        <div v-if="error" class="p-4 bg-danger/10 border border-danger/30 rounded-lg">
-          <p class="text-sm text-danger">{{ error }}</p>
+        <div v-if="error" class="bg-danger/10 border-danger/30 rounded-lg border p-4">
+          <p class="text-danger text-sm">{{ error }}</p>
         </div>
 
         <!-- Submit Button -->
         <button
           type="submit"
           :disabled="isLoading"
-          class="w-full py-2 px-4 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          class="bg-primary hover:bg-primary/90 w-full rounded-lg px-4 py-2 font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span v-if="!isLoading">Create Account</span>
           <span v-else>Creating account...</span>
         </button>
 
         <!-- Sign In Link -->
-        <div class="text-center pt-4 border-t border-accent/20">
+        <div class="border-accent/20 border-t pt-4 text-center">
           <p class="text-muted text-sm">
             Already have an account?
-            <router-link to="/login" class="text-primary font-semibold hover:text-accent transition">
+            <router-link
+              to="/login"
+              class="text-primary hover:text-accent font-semibold transition"
+            >
               Sign in
             </router-link>
           </p>
@@ -182,7 +189,7 @@ const formData = ref({
   phone: '',
   password: '',
   confirmPassword: '',
-  acceptTerms: false
+  acceptTerms: false,
 })
 
 const errors = ref({
@@ -191,7 +198,7 @@ const errors = ref({
   email: '',
   password: '',
   confirmPassword: '',
-  terms: ''
+  terms: '',
 })
 
 const error = ref('')
@@ -199,7 +206,7 @@ const isLoading = ref(false)
 
 const validateField = (field) => {
   errors.value[field] = ''
-  
+
   if (field === 'firstName') {
     if (!formData.value.firstName) {
       errors.value.firstName = 'First name is required'
@@ -207,7 +214,7 @@ const validateField = (field) => {
       errors.value.firstName = 'First name must be at least 2 characters'
     }
   }
-  
+
   if (field === 'lastName') {
     if (!formData.value.lastName) {
       errors.value.lastName = 'Last name is required'
@@ -215,7 +222,7 @@ const validateField = (field) => {
       errors.value.lastName = 'Last name must be at least 2 characters'
     }
   }
-  
+
   if (field === 'email') {
     if (!formData.value.email) {
       errors.value.email = 'Email is required'
@@ -223,7 +230,7 @@ const validateField = (field) => {
       errors.value.email = 'Please enter a valid email'
     }
   }
-  
+
   if (field === 'password') {
     if (!formData.value.password) {
       errors.value.password = 'Password is required'
@@ -237,7 +244,7 @@ const validateField = (field) => {
       errors.value.password = 'Password must contain numbers'
     }
   }
-  
+
   if (field === 'confirmPassword') {
     if (!formData.value.confirmPassword) {
       errors.value.confirmPassword = 'Please confirm your password'
@@ -249,18 +256,18 @@ const validateField = (field) => {
 
 const handleRegister = async () => {
   error.value = ''
-  
+
   // Validate all fields
   validateField('firstName')
   validateField('lastName')
   validateField('email')
   validateField('password')
   validateField('confirmPassword')
-  
+
   if (!formData.value.acceptTerms) {
     errors.value.terms = 'You must accept the terms and conditions'
   }
-  
+
   if (
     errors.value.firstName ||
     errors.value.lastName ||
@@ -271,24 +278,24 @@ const handleRegister = async () => {
   ) {
     return
   }
-  
+
   isLoading.value = true
-  
+
   try {
     const response = await authStore.register({
       firstName: formData.value.firstName,
       lastName: formData.value.lastName,
       email: formData.value.email,
       phone: formData.value.phone || null,
-      password: formData.value.password
+      password: formData.value.password,
     })
-    
+
     if (response.success) {
       toast.success('Account created! Please verify your email.')
-      
+
       // Store email for verification page
       sessionStorage.setItem('registeredEmail', response.email)
-      
+
       router.push('/verify-email')
     }
   } catch (err) {
