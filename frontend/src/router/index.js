@@ -29,6 +29,12 @@ const routes = [
     meta: { guard: 'PUBLIC', title: 'Verify Email' }
   },
   {
+    path: '/verify-otp',
+    name: 'verifyOTP',
+    component: () => import('../views/auth/OTPVerificationPage.vue'),
+    meta: { guard: 'PUBLIC', title: 'Verify OTP' }
+  },
+  {
     path: '/forgot-password',
     name: 'forgotPassword',
     component: () => import('../views/auth/ForgotPasswordPage.vue'),

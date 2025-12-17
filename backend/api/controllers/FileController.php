@@ -3,9 +3,9 @@
  * File Controller - Handles file upload and deletion
  */
 
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/Middleware.php';
-require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../Middleware.php';
+require_once __DIR__ . '/../helpers.php';
 
 class FileController {
     private $pdo;

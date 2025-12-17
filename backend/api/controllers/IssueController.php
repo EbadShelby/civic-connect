@@ -3,9 +3,9 @@
  * Issue Controller - Handles CRUD operations for issues
  */
 
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/Middleware.php';
-require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../Middleware.php';
+require_once __DIR__ . '/../helpers.php';
 
 class IssueController {
     private $pdo;
@@ -222,9 +222,18 @@ class IssueController {
                 LIMIT ? OFFSET ?
             ");
 
-            $params[] = $limit;
-            $params[] = $offset;
-            $stmt->execute($params);
+            // Bind WHERE clause parameters
+            $param_index = 1;
+            foreach ($params as $value) {
+                $stmt->bindValue($param_index, $value);
+                $param_index++;
+            }
+            
+            // Bind LIMIT and OFFSET as integers
+            $stmt->bindValue($param_index, (int)$limit, PDO::PARAM_INT);
+            $stmt->bindValue($param_index + 1, (int)$offset, PDO::PARAM_INT);
+            
+            $stmt->execute();
             $issues = $stmt->fetchAll();
 
             // Remove user details for anonymous issues

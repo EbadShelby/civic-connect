@@ -1,38 +1,10 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    
-    # Set the RewriteBase to the api directory
-    RewriteBase /civic-connect/backend/api/
-    
-    # Remove .php extension from URLs
-    # If the request is not for an existing file
-    RewriteCond %{REQUEST_FILENAME} !-f
-    # If the request is not for an existing directory
-    RewriteCond %{REQUEST_FILENAME} !-d
-    
-    # Rewrite all requests to index.php
-    RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
-    
-    # Prevent access to vendor and config directories
-    RewriteRule ^\.well-known/security\.txt$ index.php?route=security [QSA,L]
-</IfModule>
+# Enable URL rewriting
+RewriteEngine On
+RewriteBase /civic-connect/backend/api/
 
-# Security headers
-<IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options "DENY"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
-</IfModule>
+# Skip rewriting for real files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 
-# Compression
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE application/json
-    AddOutputFilterByType DEFLATE text/plain
-</IfModule>
-
-# Cache control
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType application/json "access plus 1 hour"
-</IfModule>
+# Rewrite all requests to index.php with the route as a query parameter  
+RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]

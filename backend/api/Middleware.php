@@ -119,9 +119,29 @@ class Middleware {
      * CORS headers for cross-origin requests
      */
     public static function setCORSHeaders() {
-        header('Access-Control-Allow-Origin: ' . ($_ENV['APP_URL'] ?? '*'));
+        $allowed_origins = [
+            $_ENV['APP_URL'] ?? 'http://localhost/civic-connect',
+            'http://localhost:5173',  // Vite dev server default
+            'http://localhost:5174',  // Vite dev server alternative
+            'http://localhost:3000',  // Common dev server port
+            'http://127.0.0.1:5173',
+            'http://127.0.0.1:5174',
+            'http://127.0.0.1:3000'
+        ];
+        
+        $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+        
+        // Check if origin is in allowed list
+        if (in_array($origin, $allowed_origins)) {
+            header('Access-Control-Allow-Origin: ' . $origin);
+        } else {
+            // Fallback to APP_URL for production
+            header('Access-Control-Allow-Origin: ' . ($_ENV['APP_URL'] ?? 'http://localhost/civic-connect'));
+        }
+        
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Max-Age: 3600');
 
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {

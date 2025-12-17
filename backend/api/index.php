@@ -34,6 +34,8 @@
  * DELETE /api/comments/{id}               - Delete comment
  */
 
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/Middleware.php';
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/controllers/UserController.php';
@@ -50,14 +52,33 @@ header('Content-Type: application/json');
 session_start();
 
 // Get request URI and method
-$request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$request_method = $_SERVER['REQUEST_METHOD'];
+// Support multiple ways to access the API:
+// 1. Via .htaccess rewrite: route parameter
+// 2. Via DirectoryIndex (when accessing /api/): parse REQUEST_URI
+// 3. Via explicit path: parse REQUEST_URI
 
-// Remove base path
-$base_path = '/civic-connect/backend/api/';
-if (strpos($request_uri, $base_path) === 0) {
-    $request_uri = substr($request_uri, strlen($base_path));
+$request_uri = '';
+
+if (isset($_GET['route']) && !empty($_GET['route'])) {
+    // Method 1: .htaccess passed the route as a query parameter
+    $request_uri = $_GET['route'];
+} else {
+    // Method 2 & 3: Parse REQUEST_URI directly
+    $full_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $base_path = '/civic-connect/backend/api';
+    
+    // Remove the base path to get the route
+    if (strpos($full_uri, $base_path) === 0) {
+        $request_uri = substr($full_uri, strlen($base_path));
+    } else {
+        $request_uri = $full_uri;
+    }
+    
+    // Remove index.php if it's in the path (for DirectoryIndex scenario)
+    $request_uri = str_replace('/index.php', '', $request_uri);
 }
+
+$request_method = $_SERVER['REQUEST_METHOD'];
 
 // Route the request
 routeRequest($request_uri, $request_method);
@@ -68,6 +89,11 @@ routeRequest($request_uri, $request_method);
 function routeRequest($uri, $method) {
     // Remove leading/trailing slashes
     $uri = trim($uri, '/');
+    
+    // If URI is empty, return an error with available endpoints
+    if (empty($uri)) {
+        sendError('API endpoint required. Available endpoints: /users, /issues, /upload, /files, /comments', 400);
+    }
     
     // Split URI into parts
     $parts = explode('/', $uri);

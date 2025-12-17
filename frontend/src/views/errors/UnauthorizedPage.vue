@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+  <div class="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
     <div class="text-center">
       <h1 class="text-6xl font-bold text-gray-900 mb-4">401</h1>
       <h2 class="text-2xl font-semibold text-gray-700 mb-4">Unauthorized</h2>

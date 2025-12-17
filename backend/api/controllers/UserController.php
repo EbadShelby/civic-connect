@@ -3,10 +3,10 @@
  * User Controller - Handles user registration, login, and profile management
  */
 
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../config/mailer.php';
-require_once __DIR__ . '/Middleware.php';
-require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../config/mailer.php';
+require_once __DIR__ . '/../Middleware.php';
+require_once __DIR__ . '/../helpers.php';
 
 class UserController {
     private $pdo;
