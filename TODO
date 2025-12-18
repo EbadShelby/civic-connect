@@ -106,7 +106,7 @@ Backend (PHP + MySQL):
 
   Email Notifications:
     ✔ Configure PHPMailer SMTP @done(25-12-18 09:28)
-    ☐ Send email when issue status changes
+   ✔ Send email when issue status changes @done(25-12-18)
     ✔ Send email on registration (OTP/Verify) @done(25-12-18)
     ✔ Send email on staff creation @done(25-12-18)
 
@@ -124,7 +124,7 @@ Features & Logic:
     ✔ Upvote issue @done(25-12-18)
     ✔ View issue status updates @done(25-12-18)
     ✔ View map with all issues @done(25-12-18)
-    ☐ Email notification on status update
+   ✔ Email notification on status update @done(25-12-18)
     ✔ OTP for account verification / login @done(25-12-18)
     ✔ Email verification on registration @done(25-12-18)
     ✔ Captcha on registration/login forms @done(25-12-18)

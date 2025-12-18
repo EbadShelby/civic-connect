@@ -68,6 +68,7 @@ export const useIssuesStore = defineStore('issues', () => {
       return issues.value
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to fetch issues'
+      issues.value = [] // Ensure array on error
       throw error.value
     } finally {
       isLoading.value = false
@@ -130,12 +131,22 @@ export const useIssuesStore = defineStore('issues', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await axios.put(`${API_BASE_URL}/issues/${issueId}`, formData)
+      const token = localStorage.getItem('token')
+      const headers = {}
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
+      const response = await axios.put(`${API_BASE_URL}/issues/${issueId}`, formData, { headers })
 
       const updatedIssue = response.data.issue
       const index = issues.value.findIndex((issue) => issue.id === issueId)
       if (index !== -1) {
-        issues.value[index] = updatedIssue
+        // Update the issue in place to maintain reactivity
+        Object.assign(issues.value[index], updatedIssue)
+      } else {
+        // If not found in array, try to add it
+        issues.value.push(updatedIssue)
       }
 
       if (currentIssue.value?.id === issueId) {

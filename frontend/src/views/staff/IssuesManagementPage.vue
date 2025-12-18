@@ -211,23 +211,28 @@ const statusFilters = [
 ]
 
 const filteredIssues = computed(() => {
-  let result = [...issuesStore.issues]
+  // Ensure issues is an array and filter out any undefined/null items
+  let result = Array.isArray(issuesStore.issues) ? [...issuesStore.issues].filter(Boolean) : []
 
   // Status Filter
   if (activeStatusFilter.value !== 'all') {
-    result = result.filter((i) => i.status === activeStatusFilter.value)
+    result = result.filter((i) => i && i.status === activeStatusFilter.value)
   }
 
   // Category Filter
   if (selectedCategory.value) {
-    result = result.filter((i) => i.category === selectedCategory.value)
+    result = result.filter((i) => i && i.category === selectedCategory.value)
   }
 
   // Search
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     result = result.filter(
-      (i) => i.title.toLowerCase().includes(query) || i.description.toLowerCase().includes(query),
+      (i) =>
+        i &&
+        i.title &&
+        i.description &&
+        (i.title.toLowerCase().includes(query) || i.description.toLowerCase().includes(query)),
     )
   }
 

@@ -162,4 +162,65 @@ function sendResponse($data, $status_code = 200) {
 function sendError($message, $status_code = 400) {
     sendResponse(['error' => $message], $status_code);
 }
+
+/**
+ * Send status change email notification
+ * 
+ * @param string $to_email Recipient email
+ * @param string $to_name Recipient name
+ * @param array $issue_data Issue details
+ * @param string $old_status Previous status
+ * @param string $new_status New status
+ * @return bool Success status
+ */
+function sendStatusChangeEmail($to_email, $to_name, $issue_data, $old_status, $new_status) {
+    require_once __DIR__ . '/../config/mailer.php';
+    
+    try {
+        $mail = mailer();
+        $mail->addAddress($to_email, $to_name);
+        $mail->Subject = "Issue Status Updated: {$issue_data['title']}";
+        
+        $status_labels = [
+            'open' => 'Pending Review',
+            'in_progress' => 'In Progress',
+            'resolved' => 'Resolved',
+            'closed' => 'Closed'
+        ];
+        
+        $old_label = $status_labels[$old_status] ?? $old_status;
+        $new_label = $status_labels[$new_status] ?? $new_status;
+        
+        $mail->Body = "
+            <h2>Your Issue Status Has Been Updated</h2>
+            <p>Hello {$to_name},</p>
+            <p>The status of your reported issue has been updated:</p>
+            
+            <div style='background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;'>
+                <h3 style='margin-top: 0;'>{$issue_data['title']}</h3>
+                <p><strong>Issue ID:</strong> #{$issue_data['id']}</p>
+                <p><strong>Category:</strong> {$issue_data['category']}</p>
+                <p><strong>Status Change:</strong> <span style='color: #f59e0b;'>{$old_label}</span> → <span style='color: #10b981;'>{$new_label}</span></p>
+            </div>
+            
+            <p>You can view the full details of your issue by logging into your account.</p>
+            <p style='margin-top: 30px;'>
+                <a href='http://localhost:5173/issues/{$issue_data['id']}' 
+                   style='background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;'>
+                    View Issue Details
+                </a>
+            </p>
+            
+            <p style='color: #6b7280; font-size: 14px; margin-top: 30px;'>
+                Thank you for using Civic Connect to make your community better.
+            </p>
+        ";
+        
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Email notification failed: " . $e->getMessage());
+        return false;
+    }
+}
 ?>

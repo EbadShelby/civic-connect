@@ -364,14 +364,17 @@ class IssueController {
         $data = getRequestData();
 
         try {
-            // Get current issue
-            $stmt = $this->pdo->prepare("SELECT user_id FROM issues WHERE id = ?");
+            // Get current issue with old status
+            $stmt = $this->pdo->prepare("SELECT user_id, status FROM issues WHERE id = ?");
             $stmt->execute([$issue_id]);
             $issue = $stmt->fetch();
 
             if (!$issue) {
                 sendError('Issue not found', 404);
             }
+
+            // Store old status for comparison
+            $old_status = $issue['status'];
 
             // Check ownership or role
             $stmt = $this->pdo->prepare("SELECT role FROM users WHERE id = ?");
@@ -426,6 +429,58 @@ class IssueController {
 
             // Log audit trail
             Middleware::logAuditTrail($user['user_id'], 'ISSUE_UPDATED', 'issues', $issue_id, null, $data);
+
+            // Check if status was changed and send notification
+            if (isset($data['status']) && $old_status !== $data['status']) {
+                // Get issue details and user info for notification
+                $issue_stmt = $this->pdo->prepare("
+                    SELECT i.*, u.email, u.first_name, u.last_name
+                    FROM issues i
+                    JOIN users u ON i.user_id = u.id
+                    WHERE i.id = ?
+                ");
+                $issue_stmt->execute([$issue_id]);
+                $issue_details = $issue_stmt->fetch();
+                
+                if ($issue_details) {
+                    // Create in-app notification
+                    require_once __DIR__ . '/NotificationController.php';
+                    $notificationController = new NotificationController();
+                    
+                    $status_labels = [
+                        'open' => 'Pending Review',
+                        'in_progress' => 'In Progress',
+                        'resolved' => 'Resolved',
+                        'closed' => 'Closed'
+                    ];
+                    
+                    $old_label = $status_labels[$old_status] ?? $old_status;
+                    $new_label = $status_labels[$data['status']] ?? $data['status'];
+                    
+                    $notificationController->createNotification(
+                        $issue_details['user_id'],
+                        $issue_id,
+                        'status_change',
+                        'Issue Status Updated',
+                        "Your issue '{$issue_details['title']}' status changed from {$old_label} to {$new_label}",
+                        $old_status,
+                        $data['status']
+                    );
+                    
+                    // Send email notification
+                    sendStatusChangeEmail(
+                        $issue_details['email'],
+                        trim($issue_details['first_name'] . ' ' . $issue_details['last_name']),
+                        [
+                            'id' => $issue_id,
+                            'title' => $issue_details['title'],
+                            'category' => $issue_details['category']
+                        ],
+                        $old_status,
+                        $data['status']
+                    );
+                }
+            }
 
             sendResponse([
                 'success' => true,

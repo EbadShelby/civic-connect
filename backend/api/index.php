@@ -116,6 +116,10 @@ function routeRequest($uri, $method) {
     elseif ($endpoint === 'admin') {
         handleAdminRoutes($parts, $method);
     }
+    // Notification routes
+    elseif ($endpoint === 'notifications') {
+        handleNotificationRoutes($parts, $method);
+    }
     else {
         sendError('Endpoint not found', 404);
     }
@@ -386,6 +390,58 @@ function handleAdminRoutes($parts, $method) {
 
         default:
             sendError('Invalid admin endpoint', 404);
+    }
+}
+
+/**
+ * Handle notification routes
+ */
+function handleNotificationRoutes($parts, $method) {
+    require_once __DIR__ . '/controllers/NotificationController.php';
+    $controller = new NotificationController();
+
+    if (empty($parts)) {
+        // GET /api/notifications - get user notifications
+        if ($method === 'GET') {
+            $controller->getNotifications();
+        } else {
+            sendError('Method not allowed', 405);
+        }
+    } else {
+        $action = array_shift($parts);
+
+        if ($action === 'unread-count') {
+            // GET /api/notifications/unread-count
+            if ($method === 'GET') {
+                $controller->getUnreadCount();
+            } else {
+                sendError('Method not allowed', 405);
+            }
+        } elseif ($action === 'mark-all-read') {
+            // PUT /api/notifications/mark-all-read
+            if ($method === 'PUT') {
+                $controller->markAllAsRead();
+            } else {
+                sendError('Method not allowed', 405);
+            }
+        } elseif (is_numeric($action)) {
+            // Notification ID route
+            $notification_id = (int)$action;
+            $sub_action = array_shift($parts);
+
+            if ($sub_action === 'read') {
+                // PUT /api/notifications/{id}/read
+                if ($method === 'PUT') {
+                    $controller->markAsRead($notification_id);
+                } else {
+                    sendError('Method not allowed', 405);
+                }
+            } else {
+                sendError('Invalid notification endpoint', 404);
+            }
+        } else {
+            sendError('Invalid notification endpoint', 404);
+        }
     }
 }
 ?>

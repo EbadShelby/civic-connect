@@ -89,6 +89,9 @@
                 >
               </template>
 
+              <!-- Notification Bell -->
+              <NotificationBell />
+
               <!-- Profile Dropdown (Simplified for now) -->
               <div class="group relative">
                 <button
@@ -294,6 +297,7 @@
 import { ref } from 'vue'
 import { useAuthStore } from '../stores/authStore'
 import { useRouter } from 'vue-router'
+import NotificationBell from '../components/NotificationBell.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()

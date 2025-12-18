@@ -56,8 +56,12 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 * **Track Status**: Receive updates when issue status changes.
 * **Security**:
     * Email verification on signup.
+
     * OTP verification for login (optional/conditional).
     * Captcha protection.
+* **Notifications**: 
+    * In-app notification center for status updates.
+    * Email alerts for issue status changes.
 * **Chatbot Assistance**: (Coming Soon)
 
 ### **Staff**
@@ -87,6 +91,9 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 
 ### **upvotes**
 `id, issue_id, user_id, created_at`
+
+### **notification**
+`id, user_id, issue_id, type, title, message, old_status, new_status, is_read, created_at`
 
 ### **issue_updates**
 `id, issue_id, user_id, update_type, content, old_status, new_status, created_at`
@@ -202,3 +209,14 @@ civic-connect/
 **MIT License** — free to use, modify, and distribute for academic or personal projects.
 
 ---
+
+---
+
+## **API Reference**
+
+### **Notifications**
+
+*   `GET /api/notifications` - Fetch list of notifications (Supports pagination).
+*   `GET /api/notifications/unread-count` - Get count of unread notifications.
+*   `PUT /api/notifications/{id}/read` - Mark a specific notification as read.
+*   `PUT /api/notifications/mark-all-read` - Mark all notifications as read.

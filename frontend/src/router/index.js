@@ -84,6 +84,12 @@ const routes = [
     component: () => import('../views/citizen/EditProfilePage.vue'),
     meta: { guard: 'CITIZEN', title: 'Edit Profile' },
   },
+  {
+    path: '/notifications',
+    name: 'notifications',
+    component: () => import('../views/citizen/NotificationsPage.vue'),
+    meta: { guard: 'CITIZEN', title: 'Notifications' },
+  },
 
   // Staff routes
   {
