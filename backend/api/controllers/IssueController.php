@@ -520,24 +520,36 @@ class IssueController {
             // But getUserIssues might be viewed by others? The route is /users/{id}/issues.
             // Assuming strict consistent behavior with listIssues.
             
+            $params = [];
             if ($current_user) {
                 $select_fields .= ", (SELECT COUNT(*) FROM upvotes WHERE issue_id = issues.id AND user_id = ?) as user_has_upvoted";
-                $params = [$current_user['user_id'], $user_id, (int)$limit, (int)$offset];
+                $params[] = $current_user['user_id'];
             } else {
                 $select_fields .= ", 0 as user_has_upvoted";
-                $params = [$user_id, (int)$limit, (int)$offset];
             }
+            
+            $params[] = $user_id; // For WHERE clause
 
             $stmt = $this->pdo->prepare("
                 SELECT $select_fields
                 FROM issues
                 WHERE user_id = ?
                 ORDER BY created_at DESC
-                LIMIT ?
-                OFFSET ?
+                LIMIT ? OFFSET ?
             ");
             
-            $stmt->execute($params);
+            // Bind parameters
+            $param_index = 1;
+            foreach ($params as $value) {
+                $stmt->bindValue($param_index, $value);
+                $param_index++;
+            }
+            
+            // Bind LIMIT and OFFSET as integers
+            $stmt->bindValue($param_index, (int)$limit, PDO::PARAM_INT);
+            $stmt->bindValue($param_index + 1, (int)$offset, PDO::PARAM_INT);
+            
+            $stmt->execute();
             $issues = $stmt->fetchAll();
 
             // Add image URLs and cast types

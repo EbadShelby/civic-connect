@@ -67,6 +67,28 @@
                 >
               </template>
 
+              <!-- Staff Links -->
+              <template v-if="authStore.isStaff">
+                <router-link
+                  to="/staff/dashboard"
+                  active-class="text-primary font-semibold"
+                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  >Staff Dashboard</router-link
+                >
+                <router-link
+                  to="/staff/issues"
+                  active-class="text-primary font-semibold"
+                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  >Manage Issues</router-link
+                >
+                <router-link
+                  to="/staff/reports"
+                  active-class="text-primary font-semibold"
+                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  >Reports</router-link
+                >
+              </template>
+
               <!-- Profile Dropdown (Simplified for now) -->
               <div class="group relative">
                 <button
@@ -86,11 +108,14 @@
                     class="text-text hover:text-primary block px-4 py-2 text-sm hover:bg-gray-50"
                     >Profile</router-link
                   >
-                  <router-link
-                    to="/my-issues"
-                    class="text-text hover:text-primary block px-4 py-2 text-sm hover:bg-gray-50"
-                    >My Issues</router-link
-                  >
+                  <!-- Citizen Specific Links -->
+                  <template v-if="authStore.isCitizen">
+                    <router-link
+                      to="/my-issues"
+                      class="text-text hover:text-primary block px-4 py-2 text-sm hover:bg-gray-50"
+                      >My Issues</router-link
+                    >
+                  </template>
                   <button
                     @click="handleLogout"
                     class="text-danger hover:bg-danger-light/30 block w-full px-4 py-2 text-left text-sm"
@@ -162,12 +187,18 @@
               @click="mobileMenuOpen = false"
               >All Issues</router-link
             >
-            <router-link
-              to="/my-issues"
-              class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
-              @click="mobileMenuOpen = false"
-              >My Issues</router-link
-            >
+
+            <!-- Citizen Links -->
+            <template v-if="authStore.isCitizen">
+              <router-link
+                to="/my-issues"
+                class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+                @click="mobileMenuOpen = false"
+                >My Issues</router-link
+              >
+            </template>
+
+            <!-- Admin Links -->
             <template v-if="authStore.isAdmin">
               <router-link
                 to="/admin/dashboard"
@@ -176,6 +207,29 @@
                 >Admin Dashboard</router-link
               >
             </template>
+
+            <!-- Staff Links -->
+            <template v-if="authStore.isStaff">
+              <router-link
+                to="/staff/dashboard"
+                class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+                @click="mobileMenuOpen = false"
+                >Staff Dashboard</router-link
+              >
+              <router-link
+                to="/staff/issues"
+                class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+                @click="mobileMenuOpen = false"
+                >Manage Issues</router-link
+              >
+              <router-link
+                to="/staff/reports"
+                class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+                @click="mobileMenuOpen = false"
+                >Reports</router-link
+              >
+            </template>
+
             <button
               @click="handleLogout"
               class="text-danger hover:bg-danger-light/20 block w-full rounded-lg px-3 py-3 text-left text-base font-medium"
