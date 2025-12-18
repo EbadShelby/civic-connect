@@ -20,7 +20,6 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 * **Pinia** (^3.0.4) — state management
 * **Vue Router** (^4.6.3) — client-side routing
 * **Vue Toastification** — toast notifications
-* **Vue Loading Overlay** — loading indicators
 * **Heroicons/vue** — icons
 * **ESLint + Prettier** — linting and formatting
 
