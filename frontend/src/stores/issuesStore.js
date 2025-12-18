@@ -57,7 +57,12 @@ export const useIssuesStore = defineStore('issues', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await axios.get(`${API_BASE_URL}/issues`, { params })
+      const token = localStorage.getItem('token')
+      const headers = {}
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+      const response = await axios.get(`${API_BASE_URL}/issues`, { params, headers })
       issues.value = response.data.issues || []
 
       return issues.value

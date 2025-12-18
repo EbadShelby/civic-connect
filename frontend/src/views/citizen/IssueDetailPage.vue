@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-[#ebede9] to-gray-100">
+  <div class="min-h-screen bg-linear-to-br from-[#ebede9] to-gray-100">
     <div class="mx-auto max-w-4xl px-4 py-8">
       <!-- Back Button -->
       <router-link
@@ -38,14 +38,22 @@
         <!-- Header Card -->
         <div class="mb-6 overflow-hidden rounded-xl bg-white shadow-md">
           <!-- Issue Image -->
-          <div v-if="issue.image_url" class="h-96 w-full overflow-hidden">
-            <img :src="issue.image_url" :alt="issue.title" class="h-full w-full object-cover" />
+          <div
+            v-if="issue.image_url"
+            class="h-96 w-full cursor-pointer overflow-hidden"
+            @click="selectedImage = issue.image_url"
+          >
+            <img
+              :src="issue.image_url"
+              :alt="issue.title"
+              class="h-full w-full object-cover transition-opacity hover:opacity-95"
+            />
           </div>
 
           <!-- Issue Info -->
           <div class="p-8">
             <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-              <div class="flex-grow">
+              <div class="grow">
                 <h1 class="mb-2 text-3xl font-bold text-[#10141f]">{{ issue.title }}</h1>
                 <div class="flex flex-wrap items-center gap-3">
                   <!-- Status Badge -->
@@ -147,6 +155,7 @@
       </div>
     </div>
   </div>
+  <ImageModal :image-url="selectedImage" :alt="issue?.title" @close="selectedImage = null" />
 </template>
 
 <script setup>
@@ -154,6 +163,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
 import { useIssuesStore } from '../../stores/issuesStore'
+import ImageModal from '../../components/common/ImageModal.vue'
 import L from 'leaflet'
 import {
   ArrowLeftIcon,
@@ -161,7 +171,6 @@ import {
   ExclamationCircleIcon,
   TagIcon,
   HandThumbUpIcon,
-  TrashIcon,
   MapPinIcon,
 } from '@heroicons/vue/24/solid'
 
@@ -174,6 +183,7 @@ const issue = ref(null)
 const isLoading = ref(false)
 const error = ref('')
 const isDeleting = ref(false)
+const selectedImage = ref(null)
 
 const canDeleteIssue = computed(() => {
   return authStore.user?.id === issue.value?.user_id
@@ -227,7 +237,7 @@ const toggleUpvote = async () => {
     if (updated) {
       issue.value = { ...issue.value, ...updated }
     }
-  } catch (err) {
+  } catch {
     error.value = 'Failed to upvote issue'
   }
 }
@@ -239,7 +249,7 @@ const deleteIssue = async () => {
   try {
     await issuesStore.deleteIssue(route.params.id)
     router.push('/issues')
-  } catch (err) {
+  } catch {
     error.value = 'Failed to delete issue'
   } finally {
     isDeleting.value = false
@@ -273,7 +283,7 @@ const fetchIssueDetails = async () => {
 
     // Initialize map after issue is loaded
     setTimeout(initMap, 100)
-  } catch (err) {
+  } catch {
     error.value = 'Failed to load issue details'
   } finally {
     isLoading.value = false

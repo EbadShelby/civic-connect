@@ -87,7 +87,7 @@
       <!-- Report New Issue -->
       <router-link
         to="/report-issue"
-        class="group from-primary to-primary-hover shadow-primary/20 relative overflow-hidden rounded-2xl bg-gradient-to-br p-8 text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
+        class="group from-primary to-primary-hover shadow-primary/20 relative overflow-hidden rounded-2xl bg-linear-to-br p-8 text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
       >
         <div
           class="absolute top-0 right-0 -mt-4 -mr-4 h-32 w-32 rounded-full bg-white/10 blur-2xl transition-colors group-hover:bg-white/20"
@@ -151,7 +151,8 @@
         <div
           v-for="issue in recentIssues"
           :key="issue.id"
-          class="flex items-center gap-4 rounded-xl border border-gray-100 p-4 transition-all hover:border-gray-200 hover:bg-gray-50"
+          @click="router.push(`/issues/${issue.id}`)"
+          class="flex cursor-pointer items-center gap-4 rounded-xl border border-gray-100 p-4 transition-all hover:border-gray-200 hover:bg-gray-50"
         >
           <!-- Status Badge -->
           <div class="shrink-0">
@@ -171,12 +172,9 @@
 
           <!-- Issue Info -->
           <div class="grow">
-            <router-link
-              :to="`/issues/${issue.id}`"
-              class="text-text hover:text-primary text-lg font-semibold transition-colors"
-            >
+            <div class="text-text hover:text-primary text-lg font-semibold transition-colors">
               {{ issue.title }}
-            </router-link>
+            </div>
             <p class="text-text-light mt-1 text-sm">
               {{ issue.category }} • {{ formatDate(issue.created_at) }}
             </p>
@@ -185,7 +183,10 @@
           <!-- Stats -->
           <div class="hidden items-center gap-4 text-sm sm:flex">
             <span class="text-text-light flex items-center gap-1 rounded-lg bg-gray-50 px-2 py-1">
-              <HandThumbUpIcon class="text-warning h-4 w-4" />
+              <HandThumbUpIcon
+                :class="issue.user_has_upvoted ? 'text-warning' : 'text-gray-400'"
+                class="h-4 w-4"
+              />
               <span class="text-text font-medium">{{ issue.upvote_count || 0 }}</span>
             </span>
           </div>
@@ -272,6 +273,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
 import { useIssuesStore } from '../../stores/issuesStore'
 import {
@@ -287,6 +289,7 @@ import {
   ArrowPathIcon,
 } from '@heroicons/vue/24/solid'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const issuesStore = useIssuesStore()
 

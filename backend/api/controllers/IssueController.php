@@ -43,10 +43,25 @@ class IssueController {
             sendError('Description must be at least 10 characters long', 400);
         }
 
+        // Handle image upload if present
+        $image_path = null;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                sendError('Image upload failed', 400);
+            }
+            
+            $upload_result = uploadIssueImage($_FILES['image']);
+            if (!$upload_result['success']) {
+                sendError($upload_result['error'], 400);
+            }
+            
+            $image_path = $upload_result['path'];
+        }
+
         try {
             $stmt = $this->pdo->prepare("
-                INSERT INTO issues (user_id, title, description, category, location, latitude, longitude, priority, status, is_anonymous)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO issues (user_id, title, description, category, location, latitude, longitude, priority, status, is_anonymous, image_path)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $priority = $data['priority'] ?? 'medium';
@@ -78,17 +93,23 @@ class IssueController {
                 $longitude,
                 $priority,
                 $status,
-                $is_anonymous
+                $is_anonymous,
+                $image_path
             ]);
 
             $issue_id = $this->pdo->lastInsertId();
 
             // Log audit trail
-            Middleware::logAuditTrail($user['user_id'], 'ISSUE_CREATED', 'issues', $issue_id, null, [
+            $audit_data = [
                 'title' => $data['title'],
                 'category' => $data['category'],
                 'priority' => $priority
-            ]);
+            ];
+            if ($image_path) {
+                $audit_data['image_uploaded'] = true;
+            }
+            
+            Middleware::logAuditTrail($user['user_id'], 'ISSUE_CREATED', 'issues', $issue_id, null, $audit_data);
 
             sendResponse([
                 'success' => true,
@@ -187,6 +208,9 @@ class IssueController {
             sendError('Method not allowed', 405);
         }
 
+        // Try to get current user if authenticated (optional)
+        $current_user = Middleware::authenticate();
+
         // Get query parameters
         $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
         $limit = isset($_GET['limit']) ? min(100, (int)$_GET['limit']) : 10;
@@ -242,13 +266,32 @@ class IssueController {
             $total = $count_stmt->fetch()['total'];
 
             // Get issues
+            // Base selection
+            $select_fields = "
+                i.*,
+                u.first_name,
+                u.last_name,
+                u.profile_image,
+                (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count
+            ";
+            
+            // Add user_has_upvoted if authenticated
+            if ($current_user) {
+                $select_fields .= ", (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id AND user_id = ?) as user_has_upvoted";
+                // Prepend user_id to params for the select subquery binding if we were binding there, 
+                // but we are binding via execute parameters. 
+                // Actually, strict positional binding with the current complicated WHERE clause building makes adding a param to the SELECT clause tricky if using ? 
+                // because the SELECT comes *before* the WHERE params in syntax but we bind them in order? 
+                // No, execute([p1, p2]) binds in order of appearance in the SQL string.
+                // The SELECT clause appears first. So we must put the user_id at the BEGINNING of params array.
+                array_unshift($params, $current_user['user_id']);
+            } else {
+                $select_fields .= ", 0 as user_has_upvoted";
+            }
+
             $stmt = $this->pdo->prepare("
                 SELECT
-                    i.*,
-                    u.first_name,
-                    u.last_name,
-                    u.profile_image,
-                    (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count
+                    $select_fields
                 FROM issues i
                 LEFT JOIN users u ON i.user_id = u.id
                 WHERE $where_clause
@@ -270,8 +313,22 @@ class IssueController {
             $stmt->execute();
             $issues = $stmt->fetchAll();
 
-            // Remove user details for anonymous issues
+            // Cast user_has_upvoted to boolean
             foreach ($issues as &$issue) {
+                $issue['user_has_upvoted'] = (bool)$issue['user_has_upvoted'];
+                $issue['upvote_count'] = (int)$issue['upvote_count'];
+            }
+
+            // Process issues (remove sensitive data, add image URLs)
+            foreach ($issues as &$issue) {
+                // Add image_url
+                if (!empty($issue['image_path'])) {
+                    $issue['image_url'] = 'http://localhost/civic-connect/backend/' . $issue['image_path'];
+                } else {
+                    $issue['image_url'] = null;
+                }
+
+                // Anonymize user if needed
                 if ($issue['is_anonymous']) {
                     $issue['first_name'] = 'Anonymous';
                     $issue['last_name'] = '';
@@ -443,6 +500,9 @@ class IssueController {
         $limit = isset($_GET['limit']) ? min(50, (int)$_GET['limit']) : 10;
         $offset = ($page - 1) * $limit;
 
+        // Try to get current user if authenticated
+        $current_user = Middleware::authenticate();
+
         try {
             $stmt = $this->pdo->prepare("
                 SELECT COUNT(*) as total
@@ -452,19 +512,45 @@ class IssueController {
             $stmt->execute([$user_id]);
             $total = $stmt->fetch()['total'];
 
+            // Base selection
+            $select_fields = "*, (SELECT COUNT(*) FROM upvotes WHERE issue_id = id) as upvote_count";
+
+            // Add user_has_upvoted if authenticated/viewing own issues
+            // Since we know the user_id of the issues, if $current_user['user_id'] == $user_id, we can check if they upvoted.
+            // But getUserIssues might be viewed by others? The route is /users/{id}/issues.
+            // Assuming strict consistent behavior with listIssues.
+            
+            if ($current_user) {
+                $select_fields .= ", (SELECT COUNT(*) FROM upvotes WHERE issue_id = issues.id AND user_id = ?) as user_has_upvoted";
+                $params = [$current_user['user_id'], $user_id, (int)$limit, (int)$offset];
+            } else {
+                $select_fields .= ", 0 as user_has_upvoted";
+                $params = [$user_id, (int)$limit, (int)$offset];
+            }
+
             $stmt = $this->pdo->prepare("
-                SELECT *
+                SELECT $select_fields
                 FROM issues
                 WHERE user_id = ?
                 ORDER BY created_at DESC
                 LIMIT ?
                 OFFSET ?
             ");
-            $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
-            $stmt->bindValue(2, (int)$limit, PDO::PARAM_INT);
-            $stmt->bindValue(3, (int)$offset, PDO::PARAM_INT);
-            $stmt->execute();
+            
+            $stmt->execute($params);
             $issues = $stmt->fetchAll();
+
+            // Add image URLs and cast types
+            foreach ($issues as &$issue) {
+                if (!empty($issue['image_path'])) {
+                    $issue['image_url'] = 'http://localhost/civic-connect/backend/' . $issue['image_path'];
+                } else {
+                    $issue['image_url'] = null;
+                }
+                
+                $issue['user_has_upvoted'] = (bool)($issue['user_has_upvoted'] ?? false);
+                $issue['upvote_count'] = (int)($issue['upvote_count'] ?? 0);
+            }
 
             sendResponse([
                 'success' => true,

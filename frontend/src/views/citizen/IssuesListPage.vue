@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-[#ebede9] to-gray-100">
+  <div class="min-h-screen bg-linear-to-br from-[#ebede9] to-gray-100">
     <div class="mx-auto max-w-7xl px-4 py-8">
       <!-- Header -->
       <div class="mb-8">
@@ -130,19 +130,20 @@
               <!-- Issue Image -->
               <div
                 v-if="issue.image_url"
-                class="h-32 w-full flex-shrink-0 overflow-hidden rounded-lg lg:w-32"
+                class="h-32 w-full shrink-0 cursor-pointer overflow-hidden rounded-lg transition-opacity hover:opacity-90 lg:w-32"
+                @click="selectedImage = issue.image_url"
               >
                 <img :src="issue.image_url" :alt="issue.title" class="h-full w-full object-cover" />
               </div>
               <div
                 v-else
-                class="flex h-32 w-full flex-shrink-0 items-center justify-center rounded-lg bg-gray-200 lg:w-32"
+                class="flex h-32 w-full shrink-0 items-center justify-center rounded-lg bg-gray-200 lg:w-32"
               >
                 <PhotoIcon class="h-8 w-8 text-gray-400" />
               </div>
 
               <!-- Issue Details -->
-              <div class="flex-grow">
+              <div class="grow">
                 <div class="mb-2 flex items-start gap-3">
                   <div>
                     <router-link
@@ -249,6 +250,9 @@
         <div id="map-container" v-else class="h-96 md:h-[600px]"></div>
       </div>
     </div>
+
+    <!-- Image Modal -->
+    <ImageModal :image-url="selectedImage" :alt="'Issue Image'" @close="selectedImage = null" />
   </div>
 </template>
 
@@ -256,6 +260,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import L from 'leaflet'
 import { useIssuesStore } from '../../stores/issuesStore'
+import ImageModal from '../../components/common/ImageModal.vue'
 import {
   ListBulletIcon,
   MapIcon,
@@ -274,6 +279,7 @@ const issuesStore = useIssuesStore()
 const viewMode = ref('list')
 const isLoading = ref(false)
 const totalIssuesCount = ref(0)
+const selectedImage = ref(null)
 let mapInstance = null
 let markers = {}
 
@@ -372,6 +378,19 @@ const initMap = () => {
     minZoom: 11,
   }).addTo(mapInstance)
 
+  // Handle popup clicks via delegation
+  mapInstance.getContainer().addEventListener('click', (e) => {
+    if (e.target.classList.contains('view-details-link')) {
+      e.preventDefault()
+      const issueId = e.target.getAttribute('data-issue-id')
+      if (issueId) {
+        import('../../router').then(({ default: router }) => {
+          router.push(`/issues/${issueId}`)
+        })
+      }
+    }
+  })
+
   // Add a visual bounds rectangle for Cotabato City
   L.rectangle(cotabatoBounds, {
     color: '#25562e',
@@ -398,7 +417,7 @@ const initMap = () => {
               ${issue.upvote_count || 0} Votes
             </p>
             <p class="text-sm mt-2">${issue.description.substring(0, 100)}...</p>
-            <a href="#/issues/${issue.id}" class="text-blue-600 text-sm font-semibold mt-2 inline-block">View Details →</a>
+            <a href="javascript:void(0)" class="text-blue-600 text-sm font-semibold mt-2 inline-block view-details-link" data-issue-id="${issue.id}">View Details →</a>
           </div>
         `)
 
