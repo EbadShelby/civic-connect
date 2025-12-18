@@ -1,0 +1,203 @@
+Fade in
+Available sizes: motion-preset-fade-sm, motion-preset-fade-md, motion-preset-fade-lg
+
+
+<div class="motion-preset-fade">
+    fade
+</div>
+
+fade
+Slide right
+Available sizes: motion-preset-slide-right-sm, motion-preset-slide-right-md, motion-preset-slide-right-lg
+
+
+<div class="motion-preset-slide-right">
+    slide-right
+</div>
+
+slide-right
+Slide up
+Available sizes: motion-preset-slide-up-sm, motion-preset-slide-up-md, motion-preset-slide-up-lg
+
+
+<div class="motion-preset-slide-up">
+    slide-up
+</div>
+
+slide-up
+Slide left
+Available sizes: motion-preset-slide-left-sm, motion-preset-slide-left-md, motion-preset-slide-left-lg
+
+
+<div class="motion-preset-slide-left">
+    slide-left
+</div>
+
+slide-left
+Slide down
+Available sizes: motion-preset-slide-down-sm, motion-preset-slide-down-md, motion-preset-slide-down-lg
+
+
+<div class="motion-preset-slide-down">
+    slide-down
+</div>
+
+slide-down
+Slide up right
+Available sizes: motion-preset-slide-up-right-sm, motion-preset-slide-up-right-md, motion-preset-slide-up-right-lg
+
+
+<div class="motion-preset-slide-up-right">
+    slide-up-right
+</div>
+
+slide-up-right
+Slide up left
+Available sizes: motion-preset-slide-up-left-sm, motion-preset-slide-up-left-md, motion-preset-slide-up-left-lg
+
+
+<div class="motion-preset-slide-up-left">
+    slide-up-left
+</div>
+
+slide-up-left
+Slide down left
+Available sizes: motion-preset-slide-down-left-sm, motion-preset-slide-down-left-md, motion-preset-slide-down-left-lg
+
+
+<div class="motion-preset-slide-down-left">
+    slide-down-left
+</div>
+
+slide-down-left
+Slide down right
+Available sizes: motion-preset-slide-down-right-sm, motion-preset-slide-down-right-md, motion-preset-slide-down-right-lg
+
+
+<div class="motion-preset-slide-down-right">
+    slide-down-right
+</div>
+
+slide-down-right
+Focus
+Available sizes: motion-preset-focus-sm, motion-preset-focus-md, motion-preset-focus-lg
+
+
+<div class="motion-preset-focus">
+    focus
+</div>
+
+focus
+Blur right
+Available sizes: motion-preset-blur-right-sm, motion-preset-blur-right-md, motion-preset-blur-right-lg
+
+
+<div class="motion-preset-blur-right">
+    blur-right
+</div>
+
+blur-right
+Blur left
+Available sizes: motion-preset-blur-left-sm, motion-preset-blur-left-md, motion-preset-blur-left-lg
+
+
+<div class="motion-preset-blur-left">
+    blur-left
+</div>
+
+blur-left
+Blur up
+Available sizes: motion-preset-blur-up-sm, motion-preset-blur-up-md, motion-preset-blur-up-lg
+
+
+<div class="motion-preset-blur-up">
+    blur-up
+</div>
+
+blur-up
+Blur down
+Available sizes: motion-preset-blur-down-sm, motion-preset-blur-down-md, motion-preset-blur-down-lg
+
+
+<div class="motion-preset-blur-down">
+    blur-down
+</div>
+
+blur-down
+Rebound right
+
+<div class="motion-preset-rebound-right">
+    rebound-right
+</div>
+
+rebound-right
+Rebound left
+
+<div class="motion-preset-rebound-left">
+    rebound-left
+</div>
+
+rebound-left
+Rebound up
+
+<div class="motion-preset-rebound-up">
+    rebound-up
+</div>
+
+rebound-up
+Rebound down
+
+<div class="motion-preset-rebound-down">
+    rebound-down
+</div>
+
+rebound-down
+Bounce
+
+<div class="motion-preset-bounce">
+    bounce
+</div>
+
+bounce
+Expand
+
+<div class="motion-preset-expand">
+    expand
+</div>
+
+expand
+Shrink
+
+<div class="motion-preset-shrink">
+    shrink
+</div>
+
+shrink
+Pop
+
+<div class="motion-preset-pop">
+    pop
+</div>
+
+pop
+Compress
+
+<div class="motion-preset-compress">
+    compress
+</div>
+
+compress
+Shake
+
+<div class="motion-preset-shake">
+    shake
+</div>
+
+shake
+Wiggle
+
+<div class="motion-preset-wiggle">
+    wiggle
+</div>
+
+wiggle

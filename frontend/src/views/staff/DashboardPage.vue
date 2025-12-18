@@ -27,11 +27,13 @@
     </div>
 
     <!-- Main Content -->
-    <div class="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="motion-preset-fade mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
       <!-- Stats Grid -->
       <div class="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <!-- Total Issues -->
-        <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+        <div
+          class="motion-preset-slide-up-sm motion-delay-75 overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
+        >
           <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50">
               <ClipboardDocumentListIcon class="h-6 w-6 text-blue-600" />
@@ -44,7 +46,9 @@
         </div>
 
         <!-- Open Issues -->
-        <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+        <div
+          class="motion-preset-slide-up-sm motion-delay-100 overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
+        >
           <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-50">
               <ExclamationCircleIcon class="h-6 w-6 text-yellow-600" />
@@ -57,7 +61,9 @@
         </div>
 
         <!-- In Progress -->
-        <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+        <div
+          class="motion-preset-slide-up-sm motion-delay-150 overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
+        >
           <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-50">
               <ClockIcon class="h-6 w-6 text-indigo-600" />
@@ -70,7 +76,9 @@
         </div>
 
         <!-- Resolved -->
-        <div class="overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5">
+        <div
+          class="motion-preset-slide-up-sm motion-delay-200 overflow-hidden rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-900/5"
+        >
           <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-green-50">
               <CheckCircleIcon class="h-6 w-6 text-green-600" />
@@ -84,7 +92,9 @@
       </div>
 
       <!-- Filters & Search -->
-      <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <div
+        class="motion-preset-slide-up-sm motion-delay-300 mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center"
+      >
         <div class="flex items-center gap-2">
           <div class="relative">
             <MagnifyingGlassIcon
@@ -130,7 +140,9 @@
       </div>
 
       <!-- Issues Table -->
-      <div class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5">
+      <div
+        class="motion-preset-slide-up-sm motion-delay-500 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-900/5"
+      >
         <div
           v-if="issuesStore.isLoading && !issuesStore.issues.length"
           class="flex h-64 items-center justify-center"

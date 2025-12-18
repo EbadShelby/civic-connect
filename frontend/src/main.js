@@ -17,6 +17,9 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 
+import vIntersect from './directives/vIntersect'
+app.directive('intersect', vIntersect)
+
 const options = {
   position: 'top-right',
   timeout: 3000,

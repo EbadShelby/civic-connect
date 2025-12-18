@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 pb-12">
+  <div class="motion-preset-fade min-h-screen bg-gray-50 pb-12">
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
@@ -22,7 +22,9 @@
       <div v-else class="space-y-8">
         <!-- Key Metrics -->
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <div class="overflow-hidden rounded-xl bg-white shadow">
+          <div
+            class="motion-preset-slide-up-sm motion-delay-75 overflow-hidden rounded-xl bg-white shadow"
+          >
             <div class="p-5">
               <div class="flex items-center">
                 <div class="shrink-0 rounded-md bg-blue-100 p-3">
@@ -57,7 +59,9 @@
             </div>
           </div>
 
-          <div class="overflow-hidden rounded-xl bg-white shadow">
+          <div
+            class="motion-preset-slide-up-sm motion-delay-100 overflow-hidden rounded-xl bg-white shadow"
+          >
             <div class="p-5">
               <div class="flex items-center">
                 <div class="shrink-0 rounded-md bg-orange-100 p-3">
@@ -94,7 +98,9 @@
             </div>
           </div>
 
-          <div class="overflow-hidden rounded-xl bg-white shadow">
+          <div
+            class="motion-preset-slide-up-sm motion-delay-150 overflow-hidden rounded-xl bg-white shadow"
+          >
             <div class="p-5">
               <div class="flex items-center">
                 <div class="shrink-0 rounded-md bg-green-100 p-3">
@@ -129,7 +135,9 @@
             </div>
           </div>
 
-          <div class="overflow-hidden rounded-xl bg-white shadow">
+          <div
+            class="motion-preset-slide-up-sm motion-delay-200 overflow-hidden rounded-xl bg-white shadow"
+          >
             <div class="p-5">
               <div class="flex items-center">
                 <div class="shrink-0 rounded-md bg-purple-100 p-3">
@@ -172,7 +180,7 @@
         <!-- Charts / Detailed Breakdown -->
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <!-- Issues by Status -->
-          <div class="rounded-xl bg-white p-6 shadow">
+          <div class="motion-preset-slide-up-sm motion-delay-300 rounded-xl bg-white p-6 shadow">
             <h3 class="mb-4 text-lg font-medium text-gray-900">Issues by Status</h3>
             <div class="space-y-4">
               <div
@@ -206,7 +214,7 @@
           </div>
 
           <!-- Users by Role -->
-          <div class="rounded-xl bg-white p-6 shadow">
+          <div class="motion-preset-slide-up-sm motion-delay-300 rounded-xl bg-white p-6 shadow">
             <h3 class="mb-4 text-lg font-medium text-gray-900">Users by Role</h3>
             <div class="space-y-4">
               <div
@@ -230,7 +238,7 @@
         </div>
 
         <!-- Quick Access -->
-        <div class="rounded-xl bg-white p-6 shadow">
+        <div class="motion-preset-slide-up-sm motion-delay-500 rounded-xl bg-white p-6 shadow">
           <h3 class="mb-4 text-lg font-medium text-gray-900">Quick Access</h3>
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <router-link

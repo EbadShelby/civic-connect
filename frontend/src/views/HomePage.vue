@@ -10,8 +10,10 @@
         class="bg-accent/5 absolute bottom-0 left-0 -z-10 h-[400px] w-[400px] -translate-x-1/2 translate-y-1/2 rounded-full blur-3xl"
       ></div>
 
-      <div class="mx-auto max-w-4xl text-center">
-        <h2 class="text-primary mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
+      <div class="motion-preset-fade mx-auto max-w-4xl text-center">
+        <h2
+          class="text-primary motion-preset-slide-up-sm motion-delay-200 mb-6 text-4xl font-bold md:text-5xl lg:text-6xl"
+        >
           Make Your Community Better
         </h2>
         <p class="text-muted mx-auto mb-8 max-w-2xl text-lg md:text-xl">
@@ -41,7 +43,7 @@
       class="border-accent/20 border-t bg-white px-4 py-12 sm:px-6 md:py-20 lg:px-8"
     >
       <div class="mx-auto max-w-6xl">
-        <div class="mb-12 text-center">
+        <div class="mb-12 text-center" v-intersect="'motion-preset-slide-up-sm'">
           <h2 class="text-primary mb-4 text-3xl font-bold md:text-4xl">Why Choose CivicConnect?</h2>
           <p class="text-muted text-lg">Empowering citizens and connecting communities</p>
         </div>
@@ -50,6 +52,7 @@
           <!-- Feature 1 -->
           <div
             class="border-accent/20 hover:border-accent/40 rounded-xl border p-6 transition hover:shadow-md"
+            v-intersect="'motion-preset-slide-up-sm'"
           >
             <div class="bg-accent/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
               <svg
@@ -76,6 +79,7 @@
           <!-- Feature 2 -->
           <div
             class="border-accent/20 hover:border-accent/40 rounded-xl border p-6 transition hover:shadow-md"
+            v-intersect="'motion-preset-slide-up-sm motion-delay-200'"
           >
             <div class="bg-accent/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
               <svg
@@ -101,6 +105,7 @@
           <!-- Feature 3 -->
           <div
             class="border-accent/20 hover:border-accent/40 rounded-xl border p-6 transition hover:shadow-md"
+            v-intersect="'motion-preset-slide-up-sm motion-delay-400'"
           >
             <div class="bg-accent/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
               <svg
@@ -130,12 +135,12 @@
     <!-- How It Works Section -->
     <section id="how-it-works" class="bg-bg px-4 py-12 sm:px-6 md:py-20 lg:px-8">
       <div class="mx-auto max-w-4xl">
-        <div class="mb-12 text-center">
+        <div class="mb-12 text-center" v-intersect="'motion-preset-slide-up-sm'">
           <h2 class="text-primary mb-4 text-3xl font-bold md:text-4xl">How It Works</h2>
         </div>
 
         <div class="space-y-8">
-          <div class="flex gap-6">
+          <div class="flex gap-6" v-intersect="'motion-preset-slide-right-sm'">
             <div class="shrink-0">
               <div
                 class="bg-primary flex h-10 w-10 items-center justify-center rounded-full font-bold text-white"
@@ -151,7 +156,7 @@
             </div>
           </div>
 
-          <div class="flex gap-6">
+          <div class="flex gap-6" v-intersect="'motion-preset-slide-right-sm motion-delay-200'">
             <div class="shrink-0">
               <div
                 class="bg-primary flex h-10 w-10 items-center justify-center rounded-full font-bold text-white"
@@ -168,7 +173,7 @@
             </div>
           </div>
 
-          <div class="flex gap-6">
+          <div class="flex gap-6" v-intersect="'motion-preset-slide-right-sm motion-delay-400'">
             <div class="shrink-0">
               <div
                 class="bg-primary flex h-10 w-10 items-center justify-center rounded-full font-bold text-white"
@@ -182,7 +187,7 @@
             </div>
           </div>
 
-          <div class="flex gap-6">
+          <div class="flex gap-6" v-intersect="'motion-preset-slide-right-sm motion-delay-600'">
             <div class="shrink-0">
               <div
                 class="bg-primary flex h-10 w-10 items-center justify-center rounded-full font-bold text-white"
@@ -230,7 +235,7 @@
 
     <!-- CTA Section -->
     <section class="bg-primary px-4 py-12 text-white sm:px-6 md:py-20 lg:px-8">
-      <div class="mx-auto max-w-4xl text-center">
+      <div class="mx-auto max-w-4xl text-center" v-intersect="'motion-preset-pop'">
         <h2 class="mb-6 text-3xl font-bold md:text-4xl">Ready to Make a Difference?</h2>
         <p class="mb-8 text-lg opacity-90">
           Join our community today and help make cities better for everyone.

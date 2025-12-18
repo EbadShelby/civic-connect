@@ -1,0 +1,19 @@
+You can customize presets using base animations and modifiers classes.
+
+For example:
+
+Add a delay to motion-preset-fade:
+
+<div class="motion-preset-fade motion-delay-500"></div>
+
+Delayed fade in
+Adjust the duration of motion-preset-slide-right:
+
+<div class="motion-preset-slide-right motion-duration-2000"></div>
+
+Slow slide right
+Increase the height of motion-preset-bounce:
+
+<div class="motion-preset-bounce -motion-translate-y-in-150"></div>
+
+Higher bounce

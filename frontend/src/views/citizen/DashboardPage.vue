@@ -1,5 +1,5 @@
 <template>
-  <div class="animate-fade-in-up mx-auto max-w-7xl px-4 py-8">
+  <div class="motion-preset-fade mx-auto max-w-7xl px-4 py-8">
     <!-- Header -->
     <div class="mb-8">
       <h1 class="text-text mb-2 text-3xl font-bold md:text-4xl">
@@ -12,7 +12,7 @@
     <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
       <!-- My Issues -->
       <div
-        class="shadow-soft hover-lift rounded-2xl border border-gray-100 bg-white p-6 transition-all"
+        class="shadow-soft hover-lift motion-preset-slide-up-sm motion-delay-75 rounded-2xl border border-gray-100 bg-white p-6 transition-all"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -34,7 +34,7 @@
 
       <!-- Issues Resolved -->
       <div
-        class="shadow-soft hover-lift rounded-2xl border border-gray-100 bg-white p-6 transition-all"
+        class="shadow-soft hover-lift motion-preset-slide-up-sm motion-delay-100 rounded-2xl border border-gray-100 bg-white p-6 transition-all"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -49,7 +49,7 @@
 
       <!-- Total Upvotes -->
       <div
-        class="shadow-soft hover-lift rounded-2xl border border-gray-100 bg-white p-6 transition-all"
+        class="shadow-soft hover-lift motion-preset-slide-up-sm motion-delay-150 rounded-2xl border border-gray-100 bg-white p-6 transition-all"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -66,7 +66,7 @@
 
       <!-- Community Issues -->
       <div
-        class="shadow-soft hover-lift rounded-2xl border border-gray-100 bg-white p-6 transition-all"
+        class="shadow-soft hover-lift motion-preset-slide-up-sm motion-delay-200 rounded-2xl border border-gray-100 bg-white p-6 transition-all"
       >
         <div class="flex items-center justify-between">
           <div>
@@ -87,7 +87,7 @@
       <!-- Report New Issue -->
       <router-link
         to="/report-issue"
-        class="group from-primary to-primary-hover shadow-primary/20 relative overflow-hidden rounded-2xl bg-linear-to-br p-8 text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
+        class="group from-primary to-primary-hover shadow-primary/20 motion-preset-slide-up-sm motion-delay-300 relative overflow-hidden rounded-2xl bg-linear-to-br p-8 text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl"
       >
         <div
           class="absolute top-0 right-0 -mt-4 -mr-4 h-32 w-32 rounded-full bg-white/10 blur-2xl transition-colors group-hover:bg-white/20"
@@ -106,7 +106,7 @@
       <!-- Browse Issues -->
       <router-link
         to="/issues"
-        class="group text-text shadow-soft hover:border-primary/30 relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-lg"
+        class="group text-text shadow-soft hover:border-primary/30 motion-preset-slide-up-sm motion-delay-300 relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-lg"
       >
         <div
           class="bg-accent/5 group-hover:bg-accent/10 absolute top-0 right-0 -mt-4 -mr-4 h-32 w-32 rounded-full blur-2xl transition-colors"
@@ -126,7 +126,9 @@
     </div>
 
     <!-- Recent Issues Section -->
-    <div class="shadow-soft mb-8 rounded-2xl border border-gray-100 bg-white p-6">
+    <div
+      class="shadow-soft motion-preset-slide-up-sm motion-delay-500 mb-8 rounded-2xl border border-gray-100 bg-white p-6"
+    >
       <div class="mb-6 flex items-center justify-between">
         <h2 class="text-text text-2xl font-bold">Recent Community Issues</h2>
         <router-link
@@ -195,7 +197,9 @@
     </div>
 
     <!-- My Issues List -->
-    <div class="shadow-soft overflow-hidden rounded-2xl border border-gray-100 bg-white">
+    <div
+      class="shadow-soft motion-preset-slide-up-sm motion-delay-500 overflow-hidden rounded-2xl border border-gray-100 bg-white"
+    >
       <div class="border-b border-gray-100 bg-gray-50/50 p-6">
         <h2 class="text-text text-xl font-bold">My Reports</h2>
       </div>
