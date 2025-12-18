@@ -4,7 +4,7 @@ Project Setup:
   ✔ Initialize Vue project (npm init vue) @done(25-12-12 10:53)
   ✔ Install dependencies (✅Vue, ✅Axios, ✅Tailwind, ✅Leaflet, ✅Vue Router, ✅Pinia) @done(25-12-16)
   ✔ Install UI helpers (Vue Toastification, SweetAlert2, Heroicons, Vue Loading Overlay) @done(25-12-12 10:53)
-  ✔ Install form validation (VeeValidate) @done(25-12-12 10:53)
+  x Install form validation (VeeValidate) @cancelled(25-12-18)
   ✔ Set up ESLint + Prettier formatting @done(25-12-16)
   ✔ Set up XAMPP + MySQL database @done(25-12-16 22:36)
   ✔ Create database.sql with tables @done(25-12-16 22:36)
@@ -18,141 +18,137 @@ Frontend (Vue + Tailwind):
       ✔ Build register page (/register) @done(25-12-17 10:56)
       ✔ Build email verification page (/verify-email) @done(25-12-17 10:56)
       ✔ Build OTP verification page (/verify-otp) @done(25-12-17 10:56)
+      ✔ Build forgot password page (/forgot-password) @done(25-12-18)
 
     Citizen Pages:
       ✔ Build citizen dashboard (/dashboard) @done(25-12-17 10:57)
       ✔ Build report issue page (/report) @done(25-12-17 10:57)
-      ✔ Build issues map/list page (/issues) @done(25-12-17 10:57)
+      ✔ Build issues map/list page (/issues, /issues-list) @done(25-12-17 10:57)
       ✔ Build issue details page (/issues/:id) @done(25-12-17)
       ✔ Build profile page (/profile) @done(25-12-17)
+      ✔ Build my issues page (/my-issues) @done(25-12-17)
 
     Staff Pages:
       ✔ Build staff dashboard (/staff/dashboard) @done(25-12-17)
-      ✔ Build issue management page (/staff/issues/:id) @done(25-12-17)
+      ✔ Build staff login logic @done(25-12-18)
+      ✔ Build issue management logic (in details page) @done(25-12-18)
 
     Admin Pages:
-      ☐ Build admin dashboard (/admin/dashboard)
-      ☐ Build user management page (/admin/users)
-      ☐ Build audit trail page (/admin/audit)
+      ✔ Build admin dashboard (/admin/dashboard) @done(25-12-18 09:27)
+      ✔ Build user management page (/admin/users) @done(25-12-18 09:27)
+      ✔ Build audit trail page (/admin/audit) @done(25-12-18 09:27)
+      ✔ Build staff management page (/admin/staff) @done(25-12-18)
 
     Support Pages:
       ☐ Build chatbot page (/help)
-      ☐ Build error pages (404, 403)
+      ✔ Build error pages (404, 403) @done(25-12-18)
 
     General UI:
-      ☐ Integrate Heroicons for UI clarity
-      ☐ Add Toast/Alert system using Vue Toastification and SweetAlert2
+      ✔ Integrate Heroicons for UI clarity @done(25-12-17)
+      ✔ Add Toast/Alert system using Vue Toastification @done(25-12-18)
 
   Routing & State:
-    ☐ Set up Vue Router with all routes (/, /login, /register, /verify-email, /verify-otp, /dashboard, /report, /issues, /issues/:id, /profile, /staff/dashboard, /staff/issues/:id, /admin/dashboard, /admin/users, /admin/audit, /help, /404, /403) + guards (public, citizen, staff, admin)
-    ☐ Set up Pinia (auth store, issue store)
+    ✔ Set up Vue Router with all routes + guards (public, citizen, staff, admin) @done(25-12-18)
+    ✔ Set up Pinia (auth store, issue store) @done(25-12-18)
 
   Validation:
-    ☐ Add VeeValidate to forms (login, register, issue report, profile, admin user create/edit)
+    x Add VeeValidate to forms @cancelled(25-12-18) (Used custom validation)
+    ✔ Implement form validation (Login, Register, Report) @done(25-12-18)
 
   Map Integration:
-    ☐ Install & configure Leaflet
-    ☐ Display interactive map
-    ☐ Add pin drop selection for reporting
-    ☐ Show pins for reported issues
-    ☐ Add map popups for issue previews
+    ✔ Install & configure Leaflet @done(25-12-18 09:28)
+    ✔ Display interactive map @done(25-12-18 09:28)
+    ✔ Add pin drop selection for reporting @done(25-12-18 09:28)
+    ✔ Show pins for reported issues @done(25-12-18 09:28)
+    ✔ Add map popups for issue previews @done(25-12-18 09:28)
 
   Axios Integration:
-    ☐ Connect Vue to PHP API (base URL)
-    ☐ Create functions for: GET issues, POST issue, POST upvote, PATCH status
-    ☐ Add token authentication (Pinia store)
-    ☐ Add global error handling for Axios
+    ✔ Connect Vue to PHP API (base URL) @done(25-12-18)
+    ✔ Create functions for: GET issues, POST issue, POST upvote, PATCH status @done(25-12-18)
+    ✔ Add token authentication (Pinia store) @done(25-12-18)
+    ✔ Add global error handling for Axios @done(25-12-18)
 
 Backend (PHP + MySQL):
   Config & Setup:
-    ☐ Create database connection (config.php)
-    ☐ Set up .env via Dotenv (credentials + SMTP)
-    ☐ Set up folder structure (api/, uploads/)
-    ☐ Install Composer packages (PHPMailer, Dotenv)
+    ✔ Create database connection (config.php) @done(25-12-18)
+    ✔ Set up .env via Dotenv (credentials + SMTP) @done(25-12-18)
+    ✔ Set up folder structure (api/, uploads/) @done(25-12-18)
+    ✔ Install Composer packages (PHPMailer, Dotenv) @done(25-12-18)
 
   API Endpoints:
-    ☐ POST /users/register
-    ☐ POST /users/login
-    ☐ GET /issues (fetch all issues)
-    ☐ POST /issues (create issue + upload image)
-    ☐ POST /issues/upvote
-    ☐ PATCH /issues/status (staff only)
-    ☐ GET /audit (fetch audit logs)
-    ☐ Secure endpoints with auth/token
-    ☐ POST /auth/send-otp → send OTP to email (phpmailer)
-    ☐ POST /auth/verify-otp → verify OTP (phpmailer)
-    ☐ POST /auth/register → with email verification + captcha
-    ☐ POST /auth/login → with captcha and optional OTP
-    ☐ POST /auth/resend-verification → resend email link
+    ✔ POST /users/register @done(25-12-18)
+    ✔ POST /users/login @done(25-12-18)
+    ✔ GET /issues (fetch all issues) @done(25-12-18)
+    ✔ POST /issues (create issue + upload image) @done(25-12-18)
+    ✔ POST /issues/upvote @done(25-12-18)
+    ✔ PATCH /issues/status (staff/admin via PUT) @done(25-12-18)
+    ✔ GET /audit (fetch audit logs) @done(25-12-18)
+    ✔ Secure endpoints with auth/token @done(25-12-18)
+    ✔ POST /auth/send-otp (part of login flow) @done(25-12-18)
+    ✔ POST /auth/verify-otp (part of login flow) @done(25-12-18)
+    ✔ POST /auth/register (with email verification) @done(25-12-18)
+    ✔ POST /auth/login (with captcha and OTP) @done(25-12-18)
+    ✔ POST /auth/resend-verification @done(25-12-18)
     ☐ GET /chatbot → basic Q&A guidance
 
   API Endpoints (Admin):
-    ☐ GET /users (list all users)
-    ☐ POST /users (create user)
-    ☐ PATCH /users/{id} (update user / role)
-    ☐ DELETE /users/{id} (remove user)
-    ☐ GET /analytics (summary of issues, votes, status counts)
+    ✔ GET /users (list all users) @done(25-12-18)
+    ✔ POST /users (create user) @done(25-12-18)
+    ✔ PUT /users/{id} (update user / role) @done(25-12-18)
+    ✔ DELETE /users/{id} (remove user) @done(25-12-18)
+    ✔ GET /analytics (summary of issues, votes, status counts) @done(25-12-18)
+    ✔ Staff Management Endpoints (GET, POST, PUT, DELETE) @done(25-12-18)
 
   File Upload:
-    ☐ Implement image upload handling
-    ☐ Limit file size
-    ☐ Save final path to database
+    ✔ Implement image upload handling @done(25-12-18 09:28)
+    ✔ Limit file size @done(25-12-18 09:28)
+    ✔ Save final path to database @done(25-12-18 09:28)
 
   Email Notifications:
-    ☐ Configure PHPMailer SMTP
+    ✔ Configure PHPMailer SMTP @done(25-12-18 09:28)
     ☐ Send email when issue status changes
-    ☐ Send email on registration (optional)
+    ✔ Send email on registration (OTP/Verify) @done(25-12-18)
+    ✔ Send email on staff creation @done(25-12-18)
 
 Database (MySQL):
-    ☐ Create users table
-    ☐ Create issues table
-    ☐ Create upvotes table
-    ☐ Create audit_trail table
-    ☐ Add foreign keys & constraints
-    ☐ Add indexes (issue_id, user_id for faster queries)
+    ✔ Create users table @done(25-12-18)
+    ✔ Create issues table @done(25-12-18)
+    ✔ Create upvotes table @done(25-12-18)
+    ✔ Create audit_trail table @done(25-12-18)
+    ✔ Add foreign keys & constraints @done(25-12-18)
+    ✔ Add indexes (issue_id, user_id for faster queries) @done(25-12-18)
 
 Features & Logic:
   Citizen:
-    ☐ Submit new issue
-    ☐ Upvote issue
-    ☐ View issue status updates
-    ☐ View map with all issues
+    ✔ Submit new issue @done(25-12-18)
+    ✔ Upvote issue @done(25-12-18)
+    ✔ View issue status updates @done(25-12-18)
+    ✔ View map with all issues @done(25-12-18)
     ☐ Email notification on status update
-    ☐ OTP for account verification / login
-    ☐ Email verification on registration
-    ☐ Captcha on registration/login forms
+    ✔ OTP for account verification / login @done(25-12-18)
+    ✔ Email verification on registration @done(25-12-18)
+    ✔ Captcha on registration/login forms @done(25-12-18)
     ☐ Chatbot for guiding users
 
   Staff:
-    ☐ Login to staff dashboard
-    ☐ OTP for login (optional)
-    ☐ Change issue status (Pending → In Progress → Resolved)
-    ☐ Audit trail auto-log on status change
-    ☐ Filter issues by status or upvotes
+    ✔ Login to staff dashboard @done(25-12-18)
+    ✔ OTP for login (part of standard auth) @done(25-12-18)
+    ✔ Change issue status (Pending → In Progress → Resolved) @done(25-12-18)
+    ✔ Audit trail auto-log on status change @done(25-12-18)
+    ✔ Filter issues by status @done(25-12-18)
 
   Admin:
-    ☐ Login to admin panel
-    ☐ Manage users (create, update, delete)
-    ☐ Assign roles (Citizen / Staff)
-    ☐ View audit logs
-    ☐ Monitor system stats
-
-Testing:
-  ☐ Test all API endpoints
-  ☐ Test image upload
-  ☐ Test map pin accuracy
-  ☐ Test upvote logic (1 vote per user)
-  ☐ Test staff permissions
-  ☐ Test email notifications (PHPMailer)
-  ☐ Test form validation (VeeValidate/Yup)
-  ☐ Test page routing and guards
-  ☐ Test chatbot functionality
-  ☐ Test error pages (404, 403)
+    ✔ Login to admin panel @done(25-12-18)
+    ✔ Manage users (create, update, delete) @done(25-12-18)
+    ✔ Manage staff (create, update, delete) @done(25-12-18)
+    ✔ Assign roles (Citizen / Staff) @done(25-12-18)
+    ✔ View audit logs @done(25-12-18)
+    ✔ Monitor system stats @done(25-12-18)
 
 Polish & Deployment:
-  ☐ Add loading states & error messages
-  ☐ Improve UI with Tailwind
-  ☐ Optimize map markers
-  ☐ Add responsive/mobile layout
-  ☐ Document setup in README
+  ✔ Add loading states & error messages @done(25-12-18)
+  ✔ Improve UI with Tailwind @done(25-12-18)
+  ✔ Optimize map markers @done(25-12-18)
+  ✔ Add responsive/mobile layout @done(25-12-18)
+  ☐ Document setup in README (Partial)
   ☐ Optional: Deploy online

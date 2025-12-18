@@ -437,12 +437,22 @@ class UserController {
             ");
             $stmt->execute($update_values);
 
+            // Fetch the updated user data
+            $stmt = $this->pdo->prepare("
+                SELECT id, email, first_name, last_name, phone, profile_image, bio, location, role, created_at
+                FROM users
+                WHERE id = ?
+            ");
+            $stmt->execute([$user_id]);
+            $updated_user = $stmt->fetch();
+
             // Log audit trail
             Middleware::logAuditTrail($user_id, 'USER_UPDATED', 'users', $user_id, null, $data);
 
             sendResponse([
                 'success' => true,
-                'message' => 'Profile updated successfully'
+                'message' => 'Profile updated successfully',
+                'user' => $updated_user
             ], 200);
         } catch (PDOException $e) {
             sendError('Failed to update profile: ' . $e->getMessage(), 500);

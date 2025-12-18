@@ -17,21 +17,24 @@
         </div>
 
         <div class="p-8">
-          <Form @submit="onSubmit" :validation-schema="schema" class="flex flex-col gap-6">
+          <form @submit.prevent="onSubmit" class="flex flex-col gap-6">
             <!-- First Name -->
             <div>
               <label for="firstName" class="mb-2 block font-semibold text-[#10141f]"
                 >First Name</label
               >
-              <Field
+              <input
                 name="firstName"
                 id="firstName"
                 type="text"
                 v-model="formData.firstName"
                 class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
                 :class="{ 'border-red-500': errors.firstName }"
+                @blur="validateField('firstName')"
               />
-              <ErrorMessage name="firstName" class="mt-1 text-sm text-red-500" />
+              <p v-if="errors.firstName" class="mt-1 text-sm text-red-500">
+                {{ errors.firstName }}
+              </p>
             </div>
 
             <!-- Last Name -->
@@ -39,15 +42,16 @@
               <label for="lastName" class="mb-2 block font-semibold text-[#10141f]"
                 >Last Name</label
               >
-              <Field
+              <input
                 name="lastName"
                 id="lastName"
                 type="text"
                 v-model="formData.lastName"
                 class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
                 :class="{ 'border-red-500': errors.lastName }"
+                @blur="validateField('lastName')"
               />
-              <ErrorMessage name="lastName" class="mt-1 text-sm text-red-500" />
+              <p v-if="errors.lastName" class="mt-1 text-sm text-red-500">{{ errors.lastName }}</p>
             </div>
 
             <!-- Phone -->
@@ -55,15 +59,16 @@
               <label for="phone" class="mb-2 block font-semibold text-[#10141f]"
                 >Phone Number</label
               >
-              <Field
+              <input
                 name="phone"
                 id="phone"
                 type="tel"
                 v-model="formData.phone"
                 class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
                 :class="{ 'border-red-500': errors.phone }"
+                @blur="validateField('phone')"
               />
-              <ErrorMessage name="phone" class="mt-1 text-sm text-red-500" />
+              <p v-if="errors.phone" class="mt-1 text-sm text-red-500">{{ errors.phone }}</p>
             </div>
 
             <!-- Email (Read Only) -->
@@ -94,7 +99,7 @@
                 {{ isSubmitting ? 'Saving...' : 'Save Changes' }}
               </button>
             </div>
-          </Form>
+          </form>
 
           <!-- Error Message -->
           <div v-if="error" class="mt-6 rounded-lg bg-red-50 p-4 text-red-800">
@@ -109,8 +114,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Form, Field, ErrorMessage, useForm } from 'vee-validate'
-import * as yup from 'yup'
 import { useAuthStore } from '../../stores/authStore'
 import { useToast } from 'vue-toastification'
 import { ArrowLeftIcon, ArrowPathIcon } from '@heroicons/vue/24/solid'
@@ -128,11 +131,10 @@ const formData = ref({
   phone: '',
 })
 
-// Validation Schema
-const schema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
-  phone: yup.string().nullable(),
+const errors = ref({
+  firstName: '',
+  lastName: '',
+  phone: '',
 })
 
 // Initialize form data
@@ -146,18 +148,42 @@ onMounted(() => {
   }
 })
 
-// Using validaiton errors from component
-const { errors } = useForm()
+const validateField = (field) => {
+  errors.value[field] = ''
 
-const onSubmit = async (values) => {
+  if (field === 'firstName') {
+    if (!formData.value.firstName || formData.value.firstName.trim() === '') {
+      errors.value.firstName = 'First name is required'
+    }
+  }
+
+  if (field === 'lastName') {
+    if (!formData.value.lastName || formData.value.lastName.trim() === '') {
+      errors.value.lastName = 'Last name is required'
+    }
+  }
+
+  // Phone is optional, so no validation needed
+}
+
+const onSubmit = async () => {
   isSubmitting.value = true
   error.value = ''
 
+  // Validate all required fields
+  validateField('firstName')
+  validateField('lastName')
+
+  if (errors.value.firstName || errors.value.lastName) {
+    isSubmitting.value = false
+    return
+  }
+
   try {
     await authStore.updateUserProfile(authStore.user.id, {
-      first_name: values.firstName,
-      last_name: values.lastName,
-      phone: values.phone,
+      first_name: formData.value.firstName,
+      last_name: formData.value.lastName,
+      phone: formData.value.phone,
     })
 
     toast.success('Profile updated successfully')

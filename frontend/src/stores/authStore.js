@@ -33,11 +33,19 @@ export const useAuthStore = defineStore('auth', () => {
   const loadUserFromStorage = () => {
     try {
       const storedUser = localStorage.getItem('user')
-      if (storedUser) {
+      if (storedUser && storedUser !== 'undefined' && storedUser !== 'null') {
         user.value = JSON.parse(storedUser)
+      } else if (storedUser === 'undefined' || storedUser === 'null') {
+        // Clear corrupted data
+        console.warn('Clearing corrupted user data from localStorage')
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
       }
     } catch (err) {
       console.error('Failed to load user from localStorage:', err)
+      // Clear corrupted data
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
     }
   }
 
@@ -56,14 +64,14 @@ export const useAuthStore = defineStore('auth', () => {
         password: formData.password,
         first_name: formData.firstName,
         last_name: formData.lastName,
-        phone: formData.phone || null
+        phone: formData.phone || null,
       })
 
       return {
         success: true,
         message: response.data.message,
         userId: response.data.user_id,
-        email: response.data.email
+        email: response.data.email,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Registration failed'
@@ -80,13 +88,13 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response = await axios.post(`${API_BASE_URL}/users/verify-email`, {
         email,
-        otp_code: otpCode
+        otp_code: otpCode,
       })
 
       return {
         success: true,
         message: response.data.message,
-        userId: response.data.user_id
+        userId: response.data.user_id,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Email verification failed'
@@ -105,7 +113,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       return {
         success: true,
-        message: response.data.message
+        message: response.data.message,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to resend OTP'
@@ -122,7 +130,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response = await axios.post(`${API_BASE_URL}/users/login`, {
         email,
-        password
+        password,
       })
 
       token.value = response.data.token
@@ -138,7 +146,7 @@ export const useAuthStore = defineStore('auth', () => {
       return {
         success: true,
         message: 'Login successful',
-        user: response.data.user
+        user: response.data.user,
       }
     } catch (err) {
       error.value = err.response?.data?.error || 'Login failed'
@@ -189,12 +197,16 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response = await axios.put(`${API_BASE_URL}/users/${userId}`, formData)
 
-      user.value = response.data.user
-      localStorage.setItem('user', JSON.stringify(response.data.user))
-
-      return response.data.user
+      // Ensure we have valid user data before updating
+      if (response.data.user) {
+        user.value = response.data.user
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+        return response.data.user
+      } else {
+        throw new Error('No user data returned from server')
+      }
     } catch (err) {
-      error.value = err.response?.data?.error || 'Failed to update profile'
+      error.value = err.response?.data?.error || err.message || 'Failed to update profile'
       throw error.value
     } finally {
       isLoading.value = false
@@ -206,10 +218,17 @@ export const useAuthStore = defineStore('auth', () => {
     const storedToken = localStorage.getItem('token')
     const storedUser = localStorage.getItem('user')
 
-    if (storedToken && storedUser) {
-      token.value = storedToken
-      user.value = JSON.parse(storedUser)
-      setAuthHeader(storedToken)
+    if (storedToken && storedUser && storedUser !== 'undefined' && storedUser !== 'null') {
+      try {
+        token.value = storedToken
+        user.value = JSON.parse(storedUser)
+        setAuthHeader(storedToken)
+      } catch (err) {
+        console.error('Failed to initialize auth:', err)
+        // Clear corrupted data
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+      }
     }
   }
 
@@ -231,6 +250,6 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUserProfile,
     updateUserProfile,
     initializeAuth,
-    setAuthHeader
+    setAuthHeader,
   }
 })

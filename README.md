@@ -19,7 +19,6 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 * **Axios** (^1.13.2) — HTTP client
 * **Pinia** (^3.0.4) — state management
 * **Vue Router** (^4.6.3) — client-side routing
-* **VeeValidate** (^4.15.1) — form validation
 * **Vue Toastification** — toast notifications
 * **Vue Loading Overlay** — loading indicators
 * **Heroicons/vue** — icons
@@ -51,47 +50,55 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 
 ### **Citizen**
 
-* Submit issues (description, category, location, photo)
-* Upvote existing issues
-* Track issue status
-* Email verification
-* OTP verification (login or sensitive actions)
-* Captcha protection
-* Optional chatbot assistance
+* **Submit Issues**: Report problems with description, category, location (map pin), and photo.
+* **My Issues**: View and track status of issues you have reported.
+* **Upvote**: Upvote existing issues to increase priority.
+* **Track Status**: Receive updates when issue status changes.
+* **Security**:
+    * Email verification on signup.
+    * OTP verification for login (optional/conditional).
+    * Captcha protection.
+* **Chatbot Assistance**: (Coming Soon)
 
 ### **Staff**
 
-* Staff dashboard
-* Update issue status (Pending → In Progress → Resolved)
-* Automatic audit trail logging
-* Filter issues by status or upvotes
+* **Dashboard**: View assigned or relevant issues.
+* **Issue Management**: Update status (Pending → In Progress → Resolved).
+* **Audit Trail**: all actions are automatically logged.
+* **Filtering**: Sort/filter issues by status or upvotes.
 
 ### **Admin**
 
-* Admin dashboard
-* Manage users and roles (Citizen / Staff)
-* View all audit logs
-* View system statistics
+* **Admin Dashboard**: Overview of system activity.
+* **User Management**: Manage users, assign roles (Citizen / Staff).
+* **Staff Management**: Create and manage staff accounts.
+* **Audit Logs**: Full transparency with efficient audit log viewing.
+* **System Stats**: View key metrics.
 
 ---
 
 ## **Database Tables**
 
 ### **users**
-
-`id, name, email, password_hash, role, created_at`
+`id, email, password_hash, first_name, last_name, phone, profile_image, bio, location, email_verified, otp_code, role, last_login, created_at`
 
 ### **issues**
-
-`id, title, description, category, latitude, longitude, photo_path, reported_by, timestamp, status`
+`id, user_id, title, description, category, location, latitude, longitude, status, priority, image_path, upvote_count, is_anonymous, created_at, resolved_at`
 
 ### **upvotes**
+`id, issue_id, user_id, created_at`
 
-`id, user_id, issue_id, timestamp`
+### **issue_updates**
+`id, issue_id, user_id, update_type, content, old_status, new_status, created_at`
 
 ### **audit_trail**
+`id, user_id, action, entity_type, entity_id, old_values, new_values, ip_address, user_agent, created_at`
 
-`id, issue_id, staff_id, old_status, new_status, timestamp`
+### **sessions**
+`id, user_id, token_hash, ip_address, user_agent, expires_at, created_at`
+
+### **password_resets**
+`id, user_id, token_hash, expires_at, created_at`
 
 ---
 
@@ -115,60 +122,31 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 
 ## **Setup & Development Workflow**
 
-### **1. Fork & Clone Repository (Team Members)**
-
-> Team members must **fork** the repository first.
+### **1. Fork & Clone Repository**
 
 ```bash
+# Clone your fork
 git clone https://github.com/YOUR_USERNAME/civic-connect.git
 cd civic-connect
-```
 
-⚠️ Do not clone the main repository directly unless you are the project lead.
-
----
-
-### **2. Add Upstream Remote (One-Time Setup)**
-
-```bash
+# Add upstream (if working in a team)
 git remote add upstream https://github.com/EbadShelby/civic-connect.git
-git remote -v
 ```
 
----
+### **2. Database Setup**
 
-### **3.One-time global setup (EVERY TEAM MEMBER)
+1.  Create a MySQL database named `civicconnect`.
+2.  Import the schema:
+    ```sql
+    source database.sql;
+    ```
+3.  **Create Admin Account**:
+    Register a new user via the frontend (register page), then run the migration script to promote them to admin:
+    ```bash
+    php migrate_admin.php
+    ```
 
-Add this to the workflow (VERY IMPORTANT):
-
-```bash
-git config --global pull.rebase false
-```
-
-✅ This tells Git:
-
-“Always use merge when pulling.”
-
----
-
-### **4. Sync With Main Repository (Before Coding)**
-
-```bash
-git pull upstream main
-```
-
-Always run this before starting new work.
-
----
-
-### **4. Database Setup**
-
-* Create a MySQL database named `civicconnect`
-* Import `database.sql`
-
----
-
-### **5. Backend Setup**
+### **3. Backend Setup**
 
 ```bash
 cd backend
@@ -176,22 +154,15 @@ cp .env.example .env
 composer install
 ```
 
-Update `.env` with:
+Update `.env` with your credentials:
+*   Database host, user, password, name
+*   SMTP settings for email (Gmail/Mailtrap)
 
-* Database credentials
-* SMTP email settings
+**Run Backend**:
+Ensure your web server (Apache/Nginx via XAMPP/MAMP) points to the project root or `backend` folder.
+Base URL in frontend config is set to: `http://localhost/civic-connect/backend/api` (Adjust in `frontend/src/stores/` if different).
 
-Run XAMPP (Apache + MySQL)
-
-Backend base URL:
-
-```
-http://localhost/civic-connect/backend/
-```
-
----
-
-### **6. Frontend Setup**
+### **4. Frontend Setup**
 
 ```bash
 cd frontend
@@ -199,80 +170,30 @@ npm install
 npm run dev
 ```
 
-Frontend URL:
-
-```
-http://localhost:5173/
-```
-
----
-
-### **7. Commit, Push & Pull Request (Team Members)**
-
-```bash
-git add .
-git commit -m "[frontend] Add issue reporting UI"
-git push origin main
-```
-
-Then:
-
-* Open your fork on GitHub
-* Click **Compare & Pull Request**
-* Describe your changes clearly
-
-All changes must be reviewed before merging.
-
----
-
-## **Repository Rules**
-
-* Only the project lead merges to `main`
-* Direct pushes to `main` are disabled
-* All changes go through Pull Requests
-* No branching is used in this project
-
 ---
 
 ## **Folder Structure**
 
 ```
 civic-connect/
-├─ frontend/                # Vue app
+├─ frontend/                # Vue 3 + Vite App
 │  ├─ src/
-│  ├─ public/
+│  │  ├─ views/             # Page components (Citizen, Staff, Admin)
+│  │  ├─ stores/            # Pinia state stores
+│  │  └─ router/            # Vue router config
 │  └─ package.json
 │
 ├─ backend/                 # PHP API
 │  ├─ api/
-│  ├─ config/
-│  ├─ vendor/
-│  ├─ uploads/
-│  └─ .env
+│  │  └─ controllers/       # Logic for Issues, Users, Staff
+│  ├─ config/               # DB & Mailer config
+│  ├─ uploads/              # Stored images
+│  └─ composer.json
 │
-├─ database.sql
-├─ README.md
-└─ .gitignore
+├─ database.sql             # SQL Schema
+├─ migrate_admin.php        # Utility to create admin
+└─ README.md
 ```
-
----
-
-## **Usage Workflow**
-
-### **Citizen Flow**
-
-1. Register and verify email
-2. Log in (OTP if enabled)
-3. Report an issue with map pin
-4. Upload photo (optional)
-5. Track status and receive updates
-
-### **Staff Flow**
-
-1. Log in to staff dashboard
-2. Review reported issues
-3. Update issue status
-4. Actions logged in audit trail
 
 ---
 
