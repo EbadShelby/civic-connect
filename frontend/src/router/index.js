@@ -125,6 +125,12 @@ const routes = [
     meta: { guard: 'ADMIN', title: 'Manage Users' },
   },
   {
+    path: '/admin/staff',
+    name: 'adminStaff',
+    component: () => import('../views/admin/StaffManagementPage.vue'),
+    meta: { guard: 'ADMIN', title: 'Manage Staff' },
+  },
+  {
     path: '/admin/issues',
     name: 'adminIssues',
     component: () => import('../views/admin/IssuesManagementPage.vue'),

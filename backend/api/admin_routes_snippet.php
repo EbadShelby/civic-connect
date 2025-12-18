@@ -39,6 +39,43 @@ function handleAdminRoutes($parts, $method) {
             $controller->getAuditLogs();
             break;
 
+        case 'staff':
+            // Staff management routes
+            $staffController = new StaffController();
+            
+            if (empty($parts)) {
+                // GET /api/admin/staff - list all staff
+                // POST /api/admin/staff - create new staff
+                if ($method === 'GET') {
+                    $staffController->getAllStaff();
+                } elseif ($method === 'POST') {
+                    $staffController->createStaff();
+                } else {
+                    sendError('Method not allowed', 405);
+                }
+            } else {
+                $staff_id = array_shift($parts);
+                $sub_action = array_shift($parts);
+                
+                if ($sub_action === 'status') {
+                    // PUT /api/admin/staff/{id}/status
+                    $staffController->toggleStaffStatus($staff_id);
+                } elseif (empty($sub_action)) {
+                    // GET /api/admin/staff/{id} - get staff details
+                    // PUT /api/admin/staff/{id} - update staff
+                    if ($method === 'GET') {
+                        $staffController->getStaff($staff_id);
+                    } elseif ($method === 'PUT') {
+                        $staffController->updateStaff($staff_id);
+                    } else {
+                        sendError('Method not allowed', 405);
+                    }
+                } else {
+                    sendError('Invalid admin staff endpoint', 404);
+                }
+            }
+            break;
+
         default:
             sendError('Invalid admin endpoint', 404);
     }

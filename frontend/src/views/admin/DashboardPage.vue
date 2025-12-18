@@ -228,6 +228,112 @@
             </div>
           </div>
         </div>
+
+        <!-- Quick Access -->
+        <div class="rounded-xl bg-white p-6 shadow">
+          <h3 class="mb-4 text-lg font-medium text-gray-900">Quick Access</h3>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <router-link
+              to="/admin/users"
+              class="flex items-center gap-3 rounded-lg border border-gray-200 p-4 transition-colors hover:border-blue-500 hover:bg-blue-50"
+            >
+              <div class="rounded-md bg-blue-100 p-2">
+                <svg
+                  class="h-5 w-5 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900">Manage Users</div>
+                <div class="text-sm text-gray-500">View all users</div>
+              </div>
+            </router-link>
+
+            <router-link
+              to="/admin/staff"
+              class="flex items-center gap-3 rounded-lg border border-gray-200 p-4 transition-colors hover:border-blue-500 hover:bg-blue-50"
+            >
+              <div class="rounded-md bg-purple-100 p-2">
+                <svg
+                  class="h-5 w-5 text-purple-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900">Manage Staff</div>
+                <div class="text-sm text-gray-500">View staff accounts</div>
+              </div>
+            </router-link>
+
+            <router-link
+              to="/admin/issues"
+              class="flex items-center gap-3 rounded-lg border border-gray-200 p-4 transition-colors hover:border-blue-500 hover:bg-blue-50"
+            >
+              <div class="rounded-md bg-orange-100 p-2">
+                <svg
+                  class="h-5 w-5 text-orange-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900">Manage Issues</div>
+                <div class="text-sm text-gray-500">View all issues</div>
+              </div>
+            </router-link>
+
+            <router-link
+              to="/admin/audit-logs"
+              class="flex items-center gap-3 rounded-lg border border-gray-200 p-4 transition-colors hover:border-blue-500 hover:bg-blue-50"
+            >
+              <div class="rounded-md bg-green-100 p-2">
+                <svg
+                  class="h-5 w-5 text-green-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900">Audit Logs</div>
+                <div class="text-sm text-gray-500">View activity logs</div>
+              </div>
+            </router-link>
+          </div>
+        </div>
       </div>
     </div>
   </div>
