@@ -128,7 +128,8 @@
           </div>
 
           <!-- Mobile menu button (Simplified) -->
-          <div class="flex items-center md:hidden">
+          <div class="flex items-center gap-4 md:hidden">
+            <NotificationBell v-if="authStore.isAuthenticated" />
             <button
               @click="mobileMenuOpen = !mobileMenuOpen"
               class="text-text rounded-lg p-2 transition-colors hover:bg-gray-100"
