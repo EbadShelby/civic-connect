@@ -568,7 +568,7 @@ class IssueController {
             $total = $stmt->fetch()['total'];
 
             // Base selection
-            $select_fields = "*, (SELECT COUNT(*) FROM upvotes WHERE issue_id = id) as upvote_count";
+            $select_fields = "*, (SELECT COUNT(*) FROM upvotes WHERE issue_id = issues.id) as upvote_count";
 
             // Add user_has_upvoted if authenticated/viewing own issues
             // Since we know the user_id of the issues, if $current_user['user_id'] == $user_id, we can check if they upvoted.

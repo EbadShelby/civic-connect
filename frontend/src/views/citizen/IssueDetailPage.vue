@@ -226,16 +226,17 @@ const formatDate = (dateString) => {
 
 const toggleUpvote = async () => {
   try {
+    let result
     if (issue.value?.user_has_upvoted) {
-      await issuesStore.removeUpvote(route.params.id)
+      result = await issuesStore.removeUpvote(route.params.id)
     } else {
-      await issuesStore.upvoteIssue(route.params.id)
+      result = await issuesStore.upvoteIssue(route.params.id)
     }
 
-    // Update local issue state
-    const updated = issuesStore.currentIssue
-    if (updated) {
-      issue.value = { ...issue.value, ...updated }
+    // Update local issue state reactively with the returned data
+    if (result && issue.value) {
+      issue.value.upvote_count = result.upvoteCount
+      issue.value.user_has_upvoted = !issue.value.user_has_upvoted
     }
   } catch {
     error.value = 'Failed to upvote issue'
