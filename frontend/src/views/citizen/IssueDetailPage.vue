@@ -120,7 +120,7 @@
             <div class="mt-6 grid grid-cols-1 gap-4 border-t border-gray-200 pt-6 md:grid-cols-3">
               <div>
                 <p class="text-sm text-[#819796]">Reported by</p>
-                <p class="font-semibold text-[#10141f]">{{ issue.user_name || 'Anonymous' }}</p>
+                <p class="font-semibold text-[#10141f]">{{ issue.user_name }}</p>
               </div>
               <div>
                 <p class="text-sm text-[#819796]">Date</p>

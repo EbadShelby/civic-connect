@@ -60,13 +60,12 @@ class IssueController {
 
         try {
             $stmt = $this->pdo->prepare("
-                INSERT INTO issues (user_id, title, description, category, location, latitude, longitude, priority, status, is_anonymous, image_path)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO issues (user_id, title, description, category, location, latitude, longitude, priority, status, image_path)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
             $priority = $data['priority'] ?? 'medium';
             $status = $data['status'] ?? 'open';
-            $is_anonymous = isset($data['is_anonymous']) ? (int)$data['is_anonymous'] : 0;
             $location = $data['location'] ?? null;
             $latitude = $data['latitude'] ?? null;
             $longitude = $data['longitude'] ?? null;
@@ -93,7 +92,6 @@ class IssueController {
                 $longitude,
                 $priority,
                 $status,
-                $is_anonymous,
                 $image_path
             ]);
 
@@ -172,14 +170,7 @@ class IssueController {
             }
 
             // Add user_name field
-            if ($issue['is_anonymous']) {
-                $issue['user_name'] = 'Anonymous';
-                $issue['first_name'] = 'Anonymous';
-                $issue['last_name'] = '';
-                $issue['profile_image'] = null;
-            } else {
-                $issue['user_name'] = trim($issue['first_name'] . ' ' . $issue['last_name']);
-            }
+            $issue['user_name'] = trim($issue['first_name'] . ' ' . $issue['last_name']);
 
             // Convert numeric fields to proper types
             if ($issue['latitude'] !== null) {
@@ -328,12 +319,8 @@ class IssueController {
                     $issue['image_url'] = null;
                 }
 
-                // Anonymize user if needed
-                if ($issue['is_anonymous']) {
-                    $issue['first_name'] = 'Anonymous';
-                    $issue['last_name'] = '';
-                    $issue['profile_image'] = null;
-                }
+                // Add user_name field
+                $issue['user_name'] = trim($issue['first_name'] . ' ' . $issue['last_name']);
             }
 
             sendResponse([

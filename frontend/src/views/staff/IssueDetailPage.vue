@@ -115,15 +115,26 @@
                   v-for="status in availableStatuses"
                   :key="status.value"
                   @click="updateStatus(status.value)"
-                  :disabled="isUpdating || issue.status === status.value"
+                  :disabled="updatingStatus !== null || issue.status === status.value"
                   class="flex items-center justify-center rounded-md border px-4 py-2 text-sm font-medium transition-colors"
                   :class="[
                     issue.status === status.value
                       ? 'cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400'
-                      : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
+                      : updatingStatus !== null
+                        ? 'cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400'
+                        : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
                   ]"
                 >
-                  <component :is="status.icon" class="mr-2 h-4 w-4" :class="status.colorClass" />
+                  <div
+                    v-if="updatingStatus === status.value"
+                    class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"
+                  ></div>
+                  <component
+                    v-else
+                    :is="status.icon"
+                    class="mr-2 h-4 w-4"
+                    :class="status.colorClass"
+                  />
                   Mark as {{ status.label }}
                 </button>
               </div>
@@ -152,7 +163,7 @@
               </div>
               <div>
                 <dt class="text-sm font-medium text-gray-500">Reporter</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ issue.user_name || 'Anonymous' }}</dd>
+                <dd class="mt-1 text-sm text-gray-900">{{ issue.user_name }}</dd>
               </div>
             </dl>
           </div>
@@ -184,7 +195,7 @@ const toast = useToast()
 
 const issue = ref(null)
 const isLoading = ref(false)
-const isUpdating = ref(false)
+const updatingStatus = ref(null)
 const error = ref('')
 
 const availableStatuses = [
@@ -244,7 +255,7 @@ const formatDate = (dateString) => {
 const updateStatus = async (newStatus) => {
   if (!issue.value) return
 
-  isUpdating.value = true
+  updatingStatus.value = newStatus
   try {
     await issuesStore.updateIssue(issue.value.id, { status: newStatus })
     issue.value.status = newStatus
@@ -253,7 +264,7 @@ const updateStatus = async (newStatus) => {
     toast.error('Failed to update status')
     console.error(err)
   } finally {
-    isUpdating.value = false
+    updatingStatus.value = null
   }
 }
 

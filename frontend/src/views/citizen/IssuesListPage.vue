@@ -196,7 +196,7 @@
                 <!-- Reporter -->
                 <p class="mb-3 flex items-center text-xs text-[#819796]">
                   <UserCircleIcon class="mr-1 h-4 w-4" />
-                  Reported by {{ issue.user_name || 'Anonymous' }}
+                  Reported by {{ issue.user_name }}
                 </p>
               </div>
 
