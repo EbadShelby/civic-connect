@@ -76,6 +76,17 @@
           <p class="text-danger text-sm">{{ error }}</p>
         </div>
 
+        <!-- hCaptcha -->
+        <div>
+          <vue-hcaptcha
+            :sitekey="hcaptchaSitekey"
+            @verify="onCaptchaVerify"
+            @error="onCaptchaError"
+            @expired="onCaptchaExpired"
+          ></vue-hcaptcha>
+          <p v-if="errors.captcha" class="text-danger mt-1 text-sm">{{ errors.captcha }}</p>
+        </div>
+
         <!-- Submit Button -->
         <button
           type="submit"
@@ -115,6 +126,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
 import { useToast } from 'vue-toastification'
+import VueHcaptcha from '@hcaptcha/vue3-hcaptcha'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -129,10 +141,13 @@ const formData = ref({
 const errors = ref({
   email: '',
   password: '',
+  captcha: '',
 })
 
 const error = ref('')
 const isLoading = ref(false)
+const captchaToken = ref('')
+const hcaptchaSitekey = import.meta.env.VITE_HCAPTCHA_SITEKEY
 
 const validateField = (field) => {
   errors.value[field] = ''
@@ -154,6 +169,21 @@ const validateField = (field) => {
   }
 }
 
+const onCaptchaVerify = (token) => {
+  captchaToken.value = token
+  errors.value.captcha = ''
+}
+
+const onCaptchaError = () => {
+  errors.value.captcha = 'Captcha verification failed. Please try again.'
+  captchaToken.value = ''
+}
+
+const onCaptchaExpired = () => {
+  errors.value.captcha = 'Captcha expired. Please verify again.'
+  captchaToken.value = ''
+}
+
 const handleLogin = async () => {
   error.value = ''
 
@@ -161,7 +191,13 @@ const handleLogin = async () => {
   validateField('email')
   validateField('password')
 
-  if (errors.value.email || errors.value.password) {
+  // Validate captcha
+  if (!captchaToken.value) {
+    errors.value.captcha = 'Please complete the captcha verification'
+    return
+  }
+
+  if (errors.value.email || errors.value.password || errors.value.captcha) {
     return
   }
 
