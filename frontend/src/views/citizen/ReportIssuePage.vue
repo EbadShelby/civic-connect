@@ -195,6 +195,26 @@
             >
             Location
           </h3>
+
+          <!-- Location Text Input -->
+          <div class="mb-4">
+            <label for="location" class="text-text mb-1 block text-sm font-medium"
+              >Address or Landmark <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              id="location"
+              v-model="form.location"
+              placeholder="e.g., Main St & 5th Ave, near City Hall"
+              class="focus:ring-primary/20 focus:border-primary w-full rounded-lg border-gray-200 bg-gray-50 px-4 py-2.5 transition-all outline-none focus:bg-white focus:ring-2"
+            />
+            <p v-if="errors.location" class="text-danger mt-1 text-xs">{{ errors.location }}</p>
+            <p class="text-text-light mt-1 text-xs">
+              <MapPinIcon class="mr-1 inline h-3 w-3" />
+              Provide a specific address or nearby landmark to help locate the issue
+            </p>
+          </div>
+
           <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
             <div id="map" class="z-0 h-80 w-full"></div>
           </div>
@@ -310,6 +330,7 @@ const form = ref({
   description: '',
   category: '',
   priority: 'medium',
+  location: '',
   latitude: null,
   longitude: null,
   image: null,
@@ -391,6 +412,10 @@ const validateForm = () => {
   }
   if (!form.value.description) {
     errors.value.description = 'Description is required'
+    isValid = false
+  }
+  if (!form.value.location || form.value.location.trim() === '') {
+    errors.value.location = 'Location address or landmark is required'
     isValid = false
   }
 
@@ -485,6 +510,7 @@ const submitIssue = async () => {
     formData.append('description', form.value.description)
     formData.append('category', form.value.category)
     formData.append('priority', form.value.priority)
+    formData.append('location', form.value.location)
     formData.append('latitude', form.value.latitude)
     formData.append('longitude', form.value.longitude)
 

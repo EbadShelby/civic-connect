@@ -414,6 +414,17 @@ class IssueController {
                 }
             }
 
+            // Handle resolved_at timestamp
+            if (isset($data['status'])) {
+                if ($data['status'] === 'resolved' && $old_status !== 'resolved') {
+                    // Set resolved_at to current timestamp when status changes to resolved
+                    $update_fields[] = "i.resolved_at = NOW()";
+                } elseif ($data['status'] !== 'resolved' && $old_status === 'resolved') {
+                    // Clear resolved_at when status changes away from resolved
+                    $update_fields[] = "i.resolved_at = NULL";
+                }
+            }
+
             if (empty($update_fields)) {
                 sendError('No fields to update', 400);
             }

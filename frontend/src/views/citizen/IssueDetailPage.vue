@@ -146,9 +146,14 @@
           class="mb-6 rounded-xl bg-white p-8 shadow-md"
         >
           <h2 class="mb-4 text-2xl font-bold text-[#10141f]">Location</h2>
+          <p v-if="issue.location" class="mb-2 flex items-start text-[#10141f]">
+            <MapPinIcon class="mt-0.5 mr-2 inline h-5 w-5 flex-shrink-0 text-[#75a743]" />
+            <span class="font-semibold">{{ issue.location }}</span>
+          </p>
           <p class="mb-4 flex items-center text-sm text-[#819796]">
-            <MapPinIcon class="mr-2 inline h-4 w-4" />
-            {{ issue.latitude.toFixed(6) }}, {{ issue.longitude.toFixed(6) }}
+            <span class="ml-7"
+              >Coordinates: {{ issue.latitude.toFixed(6) }}, {{ issue.longitude.toFixed(6) }}</span
+            >
           </p>
           <div id="issue-map" class="h-64 rounded-lg border border-gray-300"></div>
         </div>
