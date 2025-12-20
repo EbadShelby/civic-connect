@@ -48,27 +48,13 @@
       <p v-if="errors.password" class="text-danger mt-1 text-sm">{{ errors.password }}</p>
     </div>
 
-    <!-- Remember Me -->
-    <div class="flex items-center">
-      <input
-        id="remember"
-        v-model="formData.rememberMe"
-        type="checkbox"
-        name="remember"
-        class="text-primary focus:ring-accent border-accent/30 h-4 w-4 cursor-pointer rounded"
-      />
-      <label for="remember" class="text-muted ml-2 block cursor-pointer text-sm">
-        Remember me
-      </label>
-    </div>
-
     <!-- Error Message -->
     <div v-if="error" class="bg-danger/10 border-danger/30 rounded-lg border p-4">
       <p class="text-danger text-sm">{{ error }}</p>
     </div>
 
     <!-- hCaptcha -->
-    <div>
+    <div class="flex justify-center">
       <vue-hcaptcha
         :sitekey="hcaptchaSitekey"
         @verify="onCaptchaVerify"
@@ -115,7 +101,6 @@ const toast = useToast()
 const formData = ref({
   email: '',
   password: '',
-  rememberMe: false,
 })
 
 const errors = ref({
