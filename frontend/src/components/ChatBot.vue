@@ -24,7 +24,7 @@
             </div>
             <div>
               <h3 class="font-semibold text-white">CivicConnect Assistant</h3>
-              <p class="text-xs text-blue-100">Powered by AI</p>
+              <p class="text-xs text-emerald-100">Powered by AI</p>
             </div>
           </div>
           <button
@@ -46,7 +46,7 @@
             >
               <div class="message-content">
                 <div v-if="message.role === 'assistant'" class="message-icon">
-                  <SparklesIcon class="h-4 w-4 text-blue-600" />
+                  <SparklesIcon class="h-4 w-4 text-emerald-600" />
                 </div>
                 <div class="message-bubble" :class="{ error: message.isError }">
                   <p class="whitespace-pre-wrap">{{ message.content }}</p>
@@ -60,7 +60,7 @@
             <div v-if="chatStore.isLoading" class="message message-assistant">
               <div class="message-content">
                 <div class="message-icon">
-                  <SparklesIcon class="h-4 w-4 text-blue-600" />
+                  <SparklesIcon class="h-4 w-4 text-emerald-600" />
                 </div>
                 <div class="typing-indicator">
                   <span></span>
@@ -175,18 +175,18 @@ watch(
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 9999px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.5);
   transition: all 0.3s ease;
 }
 
 .chat-button:hover {
   transform: scale(1.1);
-  box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6);
+  box-shadow: 0 15px 30px -5px rgba(4, 120, 87, 0.6);
 }
 
 .chat-button:active {
@@ -224,7 +224,7 @@ watch(
 
 /* Header */
 .chat-header {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
   padding: 1rem 1.25rem;
   display: flex;
   align-items: center;
@@ -299,7 +299,7 @@ watch(
 }
 
 .message-user .message-bubble {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
   color: white;
   border-bottom-right-radius: 0.25rem;
 }
@@ -379,8 +379,8 @@ watch(
 
 .quick-action-btn:hover {
   background: #f3f4f6;
-  border-color: #3b82f6;
-  color: #2563eb;
+  border-color: #047857;
+  color: #059669;
 }
 
 /* Input Area */
@@ -406,8 +406,8 @@ watch(
 }
 
 .chat-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #047857;
+  box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
 }
 
 .chat-input:disabled {
@@ -419,7 +419,7 @@ watch(
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 0.75rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #047857 0%, #059669 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -429,7 +429,7 @@ watch(
 
 .send-button:hover:not(:disabled) {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.4);
 }
 
 .send-button:disabled {
