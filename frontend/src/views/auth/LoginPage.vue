@@ -1,11 +1,8 @@
 <template>
   <!-- Logo & Header -->
   <div class="mb-8 text-center">
-    <div class="mb-4 flex items-center justify-center gap-2">
-      <div class="bg-primary flex h-10 w-10 items-center justify-center rounded-lg">
-        <span class="text-lg font-bold text-white">CC</span>
-      </div>
-      <h1 class="text-primary text-2xl font-bold">CivicConnect</h1>
+    <div class="mb-4 flex items-center justify-center">
+      <img :src="logo" alt="CivicConnect" class="h-12 w-auto" />
     </div>
     <h2 class="text-primary mb-2 text-2xl font-bold">Welcome Back</h2>
     <p class="text-muted">Sign in to your account to continue</p>
@@ -109,6 +106,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
 import { useToast } from 'vue-toastification'
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha'
+import logo from '@/assets/civic-connect-logo.png'
 
 const router = useRouter()
 const authStore = useAuthStore()
