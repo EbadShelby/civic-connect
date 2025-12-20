@@ -1,153 +1,142 @@
 <template>
-  <div class="bg-bg flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-    <div class="w-full max-w-md">
-      <!-- Logo & Header -->
-      <div class="mb-8 text-center">
-        <div
-          class="bg-accent/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full"
-        >
-          <svg class="text-accent h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-            />
-          </svg>
-        </div>
-        <h2 class="text-primary mb-2 text-2xl font-bold">Reset Password</h2>
-        <p class="text-muted">Enter your email to receive password reset instructions</p>
-      </div>
-
-      <!-- Password Reset Form -->
-      <form
-        @submit.prevent="handleResetRequest"
-        class="space-y-6 rounded-xl bg-white p-8 shadow-md"
-      >
-        <!-- Step 1: Email Input -->
-        <div v-if="currentStep === 'email'">
-          <label for="email" class="text-primary mb-2 block text-sm font-medium">
-            Email Address
-          </label>
-          <input
-            id="email"
-            v-model="formData.email"
-            type="email"
-            placeholder="you@example.com"
-            class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
-            @blur="validateField('email')"
-          />
-          <p v-if="errors.email" class="text-danger mt-1 text-sm">{{ errors.email }}</p>
-        </div>
-
-        <!-- Step 2: Reset Code Input -->
-        <div v-if="currentStep === 'code'">
-          <p class="text-muted mb-4 text-sm">
-            We sent a reset code to
-            <span class="text-primary font-semibold">{{ maskEmail(formData.email) }}</span>
-          </p>
-          <label for="resetCode" class="text-primary mb-2 block text-sm font-medium">
-            Reset Code
-          </label>
-          <input
-            id="resetCode"
-            v-model="formData.resetCode"
-            type="text"
-            placeholder="Enter 6-digit code"
-            maxlength="6"
-            class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-3 text-center text-2xl tracking-widest transition focus:ring-1 focus:outline-none"
-            @input="formData.resetCode = formData.resetCode.replace(/\D/g, '').slice(0, 6)"
-            @blur="validateField('resetCode')"
-          />
-          <p v-if="errors.resetCode" class="text-danger mt-1 text-sm">{{ errors.resetCode }}</p>
-        </div>
-
-        <!-- Step 3: New Password Input -->
-        <div v-if="currentStep === 'password'">
-          <label for="newPassword" class="text-primary mb-2 block text-sm font-medium">
-            New Password
-          </label>
-          <input
-            id="newPassword"
-            v-model="formData.newPassword"
-            type="password"
-            placeholder="••••••••"
-            class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
-            @blur="validateField('newPassword')"
-          />
-          <p v-if="errors.newPassword" class="text-danger mt-1 text-sm">{{ errors.newPassword }}</p>
-
-          <label for="confirmPassword" class="text-primary mt-4 mb-2 block text-sm font-medium">
-            Confirm Password
-          </label>
-          <input
-            id="confirmPassword"
-            v-model="formData.confirmPassword"
-            type="password"
-            placeholder="••••••••"
-            class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
-            @blur="validateField('confirmPassword')"
-          />
-          <p v-if="errors.confirmPassword" class="text-danger mt-1 text-sm">
-            {{ errors.confirmPassword }}
-          </p>
-        </div>
-
-        <!-- Error Message -->
-        <div v-if="error" class="bg-danger/10 border-danger/30 rounded-lg border p-4">
-          <p class="text-danger text-sm">{{ error }}</p>
-        </div>
-
-        <!-- Resend Code (Step 2) -->
-        <div v-if="currentStep === 'code'" class="text-muted text-center text-sm">
-          <p v-if="!isResendDisabled">
-            Didn't receive the code?
-            <button
-              type="button"
-              @click="handleResendCode"
-              :disabled="isResending"
-              class="text-primary hover:text-accent font-semibold transition disabled:opacity-50"
-            >
-              <span v-if="!isResending">Resend</span>
-              <span v-else>Sending...</span>
-            </button>
-          </p>
-          <p v-else class="text-muted">
-            Resend available in <span class="font-semibold">{{ resendCountdown }}s</span>
-          </p>
-        </div>
-
-        <!-- Submit Button -->
-        <button
-          type="submit"
-          :disabled="isLoading"
-          class="bg-primary hover:bg-primary/90 w-full rounded-lg px-4 py-2 font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          <span v-if="currentStep === 'email' && !isLoading">Send Reset Code</span>
-          <span v-else-if="currentStep === 'code' && !isLoading">Verify Code</span>
-          <span v-else-if="currentStep === 'password' && !isLoading">Reset Password</span>
-          <span v-else>Processing...</span>
-        </button>
-
-        <!-- Back Button -->
-        <button
-          v-if="currentStep !== 'email'"
-          type="button"
-          @click="goBack"
-          class="border-accent/30 text-primary hover:bg-accent/5 w-full rounded-lg border px-4 py-2 font-semibold transition"
-        >
-          Back
-        </button>
-
-        <!-- Back to Login -->
-        <div class="border-accent/20 border-t pt-4 text-center">
-          <router-link to="/login" class="text-primary hover:text-accent text-sm transition">
-            Back to Login
-          </router-link>
-        </div>
-      </form>
+  <!-- Logo & Header -->
+  <div class="mb-8 text-center">
+    <div class="bg-accent/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+      <svg class="text-accent h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+        />
+      </svg>
     </div>
+    <h2 class="text-primary mb-2 text-2xl font-bold">Reset Password</h2>
+    <p class="text-muted">Enter your email to receive password reset instructions</p>
   </div>
+
+  <!-- Password Reset Form -->
+  <form @submit.prevent="handleResetRequest" class="space-y-6">
+    <!-- Step 1: Email Input -->
+    <div v-if="currentStep === 'email'">
+      <label for="email" class="text-primary mb-2 block text-sm font-medium"> Email Address </label>
+      <input
+        id="email"
+        v-model="formData.email"
+        type="email"
+        placeholder="you@example.com"
+        class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
+        @blur="validateField('email')"
+      />
+      <p v-if="errors.email" class="text-danger mt-1 text-sm">{{ errors.email }}</p>
+    </div>
+
+    <!-- Step 2: Reset Code Input -->
+    <div v-if="currentStep === 'code'">
+      <p class="text-muted mb-4 text-sm">
+        We sent a reset code to
+        <span class="text-primary font-semibold">{{ maskEmail(formData.email) }}</span>
+      </p>
+      <label for="resetCode" class="text-primary mb-2 block text-sm font-medium">
+        Reset Code
+      </label>
+      <input
+        id="resetCode"
+        v-model="formData.resetCode"
+        type="text"
+        placeholder="Enter 6-digit code"
+        maxlength="6"
+        class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-3 text-center text-2xl tracking-widest transition focus:ring-1 focus:outline-none"
+        @input="formData.resetCode = formData.resetCode.replace(/\D/g, '').slice(0, 6)"
+        @blur="validateField('resetCode')"
+      />
+      <p v-if="errors.resetCode" class="text-danger mt-1 text-sm">{{ errors.resetCode }}</p>
+    </div>
+
+    <!-- Step 3: New Password Input -->
+    <div v-if="currentStep === 'password'">
+      <label for="newPassword" class="text-primary mb-2 block text-sm font-medium">
+        New Password
+      </label>
+      <input
+        id="newPassword"
+        v-model="formData.newPassword"
+        type="password"
+        placeholder="••••••••"
+        class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
+        @blur="validateField('newPassword')"
+      />
+      <p v-if="errors.newPassword" class="text-danger mt-1 text-sm">{{ errors.newPassword }}</p>
+
+      <label for="confirmPassword" class="text-primary mt-4 mb-2 block text-sm font-medium">
+        Confirm Password
+      </label>
+      <input
+        id="confirmPassword"
+        v-model="formData.confirmPassword"
+        type="password"
+        placeholder="••••••••"
+        class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
+        @blur="validateField('confirmPassword')"
+      />
+      <p v-if="errors.confirmPassword" class="text-danger mt-1 text-sm">
+        {{ errors.confirmPassword }}
+      </p>
+    </div>
+
+    <!-- Error Message -->
+    <div v-if="error" class="bg-danger/10 border-danger/30 rounded-lg border p-4">
+      <p class="text-danger text-sm">{{ error }}</p>
+    </div>
+
+    <!-- Resend Code (Step 2) -->
+    <div v-if="currentStep === 'code'" class="text-muted text-center text-sm">
+      <p v-if="!isResendDisabled">
+        Didn't receive the code?
+        <button
+          type="button"
+          @click="handleResendCode"
+          :disabled="isResending"
+          class="text-primary hover:text-accent font-semibold transition disabled:opacity-50"
+        >
+          <span v-if="!isResending">Resend</span>
+          <span v-else>Sending...</span>
+        </button>
+      </p>
+      <p v-else class="text-muted">
+        Resend available in <span class="font-semibold">{{ resendCountdown }}s</span>
+      </p>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      :disabled="isLoading"
+      class="bg-primary hover:bg-primary/90 w-full rounded-lg px-4 py-2 font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      <span v-if="currentStep === 'email' && !isLoading">Send Reset Code</span>
+      <span v-else-if="currentStep === 'code' && !isLoading">Verify Code</span>
+      <span v-else-if="currentStep === 'password' && !isLoading">Reset Password</span>
+      <span v-else>Processing...</span>
+    </button>
+
+    <!-- Back Button -->
+    <button
+      v-if="currentStep !== 'email'"
+      type="button"
+      @click="goBack"
+      class="border-accent/30 text-primary hover:bg-accent/5 w-full rounded-lg border px-4 py-2 font-semibold transition"
+    >
+      Back
+    </button>
+
+    <!-- Back to Login -->
+    <div class="border-accent/20 border-t pt-4 text-center">
+      <router-link to="/login" class="text-primary hover:text-accent text-sm transition">
+        Back to Login
+      </router-link>
+    </div>
+  </form>
 </template>
 
 <script setup>
