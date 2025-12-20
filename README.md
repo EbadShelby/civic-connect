@@ -61,14 +61,18 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 * **Notifications**: 
     * In-app notification center for status updates.
     * Email alerts for issue status changes.
-* **Chatbot Assistance**: (Coming Soon)
+* **AI Chatbot Assistance**: 
+    * Interactive chatbot powered by Google Gemini AI.
+    * Provides help with reporting issues and navigating the platform.
+    * Context-aware responses and guidance.
 
 ### **Staff**
 
 * **Dashboard**: View assigned or relevant issues.
 * **Issue Management**: Update status (Pending → In Progress → Resolved).
-* **Audit Trail**: all actions are automatically logged.
+* **Audit Trail**: All actions are automatically logged.
 * **Filtering**: Sort/filter issues by status or upvotes.
+* **Reports & Analytics**: Access analytics dashboard with issue statistics and trends.
 
 ### **Admin**
 
@@ -141,7 +145,7 @@ git remote add upstream https://github.com/EbadShelby/civic-connect.git
 
 ### **2. Database Setup**
 
-1.  Create a MySQL database named `civicconnect`.
+1.  Create a MySQL database named `civic_connect`.
 2.  Import the schema:
     ```sql
     source database.sql;
@@ -213,9 +217,63 @@ civic-connect/
 
 ## **API Reference**
 
+### **Authentication**
+
+*   `POST /api/auth/register` - Register new user with email verification.
+*   `POST /api/auth/login` - Login user (with optional OTP).
+*   `POST /api/auth/send-otp` - Send OTP to user's email.
+*   `POST /api/auth/verify-otp` - Verify OTP code.
+*   `POST /api/auth/verify-email` - Verify email with token.
+*   `POST /api/auth/resend-verification` - Resend verification email.
+*   `POST /api/auth/logout` - Logout current user.
+*   `POST /api/auth/forgot-password` - Request password reset.
+*   `POST /api/auth/reset-password` - Reset password with token.
+
+### **Issues**
+
+*   `GET /api/issues` - Fetch all issues (supports filtering by status, category, user).
+*   `GET /api/issues/{id}` - Get specific issue details.
+*   `POST /api/issues` - Create new issue (with image upload).
+*   `PUT /api/issues/{id}` - Update issue details.
+*   `PUT /api/issues/{id}/status` - Update issue status (Staff/Admin only).
+*   `DELETE /api/issues/{id}` - Delete issue (Admin only).
+*   `GET /api/issues/my-issues` - Get issues reported by current user.
+
+### **Upvotes**
+
+*   `POST /api/upvotes` - Upvote an issue.
+*   `DELETE /api/upvotes/{id}` - Remove upvote.
+*   `GET /api/upvotes/check` - Check if user has upvoted an issue.
+
+### **Users**
+
+*   `GET /api/users` - Get all users (Admin only).
+*   `GET /api/users/{id}` - Get specific user details.
+*   `PUT /api/users/{id}` - Update user profile.
+*   `DELETE /api/users/{id}` - Delete user (Admin only).
+*   `GET /api/users/profile` - Get current user's profile.
+*   `PUT /api/users/profile` - Update current user's profile.
+
+### **Staff Management**
+
+*   `GET /api/staff` - Get all staff members (Admin only).
+*   `POST /api/staff` - Create new staff account (Admin only).
+*   `PUT /api/staff/{id}` - Update staff account (Admin only).
+*   `DELETE /api/staff/{id}` - Delete staff account (Admin only).
+
+### **Admin & Analytics**
+
+*   `GET /api/stats` - Get system statistics (issues, users, resolution rate).
+*   `GET /api/analytics` - Get detailed analytics (Admin/Staff only).
+*   `GET /api/audit` - Get audit trail logs (Admin only).
+
 ### **Notifications**
 
 *   `GET /api/notifications` - Fetch list of notifications (Supports pagination).
 *   `GET /api/notifications/unread-count` - Get count of unread notifications.
 *   `PUT /api/notifications/{id}/read` - Mark a specific notification as read.
 *   `PUT /api/notifications/mark-all-read` - Mark all notifications as read.
+
+### **Chatbot**
+
+*   `POST /api/chatbot` - Send message to AI chatbot and get response.
