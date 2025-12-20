@@ -212,22 +212,27 @@
       class="border-accent/20 border-t bg-white px-4 py-12 sm:px-6 md:py-20 lg:px-8"
     >
       <div class="mx-auto max-w-6xl">
-        <div class="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
+        <div v-if="loading" class="text-center">
+          <p class="text-muted">Loading statistics...</p>
+        </div>
+        <div v-else class="grid grid-cols-1 gap-8 text-center md:grid-cols-3">
           <div>
-            <p class="text-primary mb-2 text-3xl font-bold md:text-4xl">2,547</p>
+            <p class="text-primary mb-2 text-3xl font-bold md:text-4xl">
+              {{ stats.totalIssues.toLocaleString() }}
+            </p>
             <p class="text-muted">Issues Reported</p>
           </div>
           <div>
-            <p class="text-primary mb-2 text-3xl font-bold md:text-4xl">12.3K</p>
+            <p class="text-primary mb-2 text-3xl font-bold md:text-4xl">
+              {{ stats.totalUsers.toLocaleString() }}
+            </p>
             <p class="text-muted">Active Citizens</p>
           </div>
           <div>
-            <p class="text-primary mb-2 text-3xl font-bold md:text-4xl">89%</p>
+            <p class="text-primary mb-2 text-3xl font-bold md:text-4xl">
+              {{ stats.resolutionRate }}%
+            </p>
             <p class="text-muted">Resolution Rate</p>
-          </div>
-          <div>
-            <p class="text-primary mb-2 text-3xl font-bold md:text-4xl">45 days</p>
-            <p class="text-muted">Avg Resolution</p>
           </div>
         </div>
       </div>
@@ -251,4 +256,35 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost/civic-connect/backend/api'
+
+const stats = ref({
+  totalIssues: 0,
+  totalUsers: 0,
+  resolutionRate: 0,
+})
+const loading = ref(true)
+
+const fetchStats = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/stats.php`, {
+      withCredentials: false,
+    })
+    if (response.data.success) {
+      stats.value = response.data.data
+    }
+  } catch (error) {
+    console.error('Failed to fetch statistics:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchStats()
+})
+</script>
