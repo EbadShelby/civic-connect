@@ -10,6 +10,9 @@
  * POST   /api/users/logout                - Logout user
  * GET    /api/users/{id}                  - Get user profile
  * PUT    /api/users/{id}                  - Update user profile
+ * POST   /api/users/forgot-password       - Send password reset code
+ * POST   /api/users/verify-reset-code     - Verify password reset code
+ * POST   /api/users/reset-password        - Reset password with code
  * 
  * POST   /api/issues                      - Create issue
  * GET    /api/issues                      - List all issues (with filters)
@@ -156,6 +159,18 @@ function handleUserRoutes($parts, $method) {
 
         case 'resend-otp':
             $controller->resendOTP();
+            break;
+
+        case 'forgot-password':
+            $controller->sendPasswordResetCode();
+            break;
+
+        case 'verify-reset-code':
+            $controller->verifyPasswordResetCode();
+            break;
+
+        case 'reset-password':
+            $controller->resetPassword();
             break;
 
         default:

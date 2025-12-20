@@ -509,5 +509,347 @@ class UserController {
             </html>
         ";
     }
+
+    /**
+     * Send password reset code
+     * POST /api/users/forgot-password
+     */
+    public function sendPasswordResetCode() {
+        if (!Middleware::validateMethod('POST')) {
+            sendError('Method not allowed', 405);
+        }
+
+        $data = getRequestData();
+
+        if (!isset($data['email'])) {
+            sendError('Email is required', 400);
+        }
+
+        // Validate email format
+        if (!isValidEmail($data['email'])) {
+            sendError('Invalid email format', 400);
+        }
+
+        try {
+            $stmt = $this->pdo->prepare("
+                SELECT id, first_name, email_verified, is_active
+                FROM users
+                WHERE email = ?
+            ");
+            $stmt->execute([$data['email']]);
+            $user = $stmt->fetch();
+
+            if (!$user) {
+                // For security, don't reveal if email exists
+                sendResponse([
+                    'success' => true,
+                    'message' => 'If this email is registered, a reset code has been sent'
+                ], 200);
+                return;
+            }
+
+            if (!$user['is_active']) {
+                sendError('Account is inactive', 403);
+            }
+
+            if (!$user['email_verified']) {
+                sendError('Please verify your email address first', 403);
+            }
+
+            // Generate reset code
+            $reset_code = generateOTP(6);
+            $reset_expires = date('Y-m-d H:i:s', strtotime('+10 minutes'));
+
+            $stmt = $this->pdo->prepare("
+                UPDATE users
+                SET otp_code = ?, otp_expires_at = ?, otp_attempts = 0
+                WHERE id = ?
+            ");
+            $stmt->execute([$reset_code, $reset_expires, $user['id']]);
+
+            // Send password reset email
+            $emailSent = $this->sendPasswordResetEmail($data['email'], $user['first_name'], $reset_code);
+            
+            if (!$emailSent) {
+                error_log("CRITICAL: Failed to send password reset email to: " . $data['email']);
+                sendError('Failed to send reset code. Please try again later.', 500);
+            }
+
+            // Log audit trail
+            Middleware::logAuditTrail($user['id'], 'PASSWORD_RESET_REQUESTED', 'users', $user['id']);
+
+            sendResponse([
+                'success' => true,
+                'message' => 'Password reset code sent to your email address'
+            ], 200);
+
+        } catch (PDOException $e) {
+            sendError('Failed to process request: ' . $e->getMessage(), 500);
+        }
+    }
+
+    /**
+     * Verify password reset code
+     * POST /api/users/verify-reset-code
+     */
+    public function verifyPasswordResetCode() {
+        if (!Middleware::validateMethod('POST')) {
+            sendError('Method not allowed', 405);
+        }
+
+        $data = getRequestData();
+
+        // Validate required fields
+        if (!Middleware::validateRequired($data, ['email', 'reset_code'])) {
+            sendError('Email and reset code required', 400);
+        }
+
+        try {
+            $stmt = $this->pdo->prepare("
+                SELECT id, otp_code, otp_expires_at, otp_attempts, email_verified, is_active
+                FROM users
+                WHERE email = ?
+            ");
+            $stmt->execute([$data['email']]);
+            $user = $stmt->fetch();
+
+            if (!$user) {
+                sendError('Invalid email or reset code', 400);
+            }
+
+            if (!$user['is_active']) {
+                sendError('Account is inactive', 403);
+            }
+
+            if (!$user['email_verified']) {
+                sendError('Please verify your email address first', 403);
+            }
+
+            // Check OTP attempts
+            if ($user['otp_attempts'] >= 5) {
+                sendError('Maximum attempts exceeded. Please request a new reset code.', 429);
+            }
+
+            // Check OTP expiration
+            if (strtotime($user['otp_expires_at']) < time()) {
+                sendError('Reset code has expired', 400);
+            }
+
+            // Verify OTP
+            if ($user['otp_code'] !== $data['reset_code']) {
+                // Increment attempts
+                $stmt = $this->pdo->prepare("
+                    UPDATE users
+                    SET otp_attempts = otp_attempts + 1
+                    WHERE id = ?
+                ");
+                $stmt->execute([$user['id']]);
+
+                sendError('Invalid reset code', 400);
+            }
+
+            sendResponse([
+                'success' => true,
+                'message' => 'Reset code verified successfully'
+            ], 200);
+        } catch (PDOException $e) {
+            sendError('Verification failed: ' . $e->getMessage(), 500);
+        }
+    }
+
+    /**
+     * Reset password with verified code
+     * POST /api/users/reset-password
+     */
+    public function resetPassword() {
+        if (!Middleware::validateMethod('POST')) {
+            sendError('Method not allowed', 405);
+        }
+
+        $data = getRequestData();
+
+        // Validate required fields
+        if (!Middleware::validateRequired($data, ['email', 'reset_code', 'new_password'])) {
+            sendError('Email, reset code, and new password required', 400);
+        }
+
+        // Validate password strength
+        if (strlen($data['new_password']) < 8) {
+            sendError('Password must be at least 8 characters long', 400);
+        }
+
+        if (!preg_match('/(?=.*[a-z])/', $data['new_password'])) {
+            sendError('Password must contain at least one lowercase letter', 400);
+        }
+
+        if (!preg_match('/(?=.*[A-Z])/', $data['new_password'])) {
+            sendError('Password must contain at least one uppercase letter', 400);
+        }
+
+        if (!preg_match('/(?=.*\d)/', $data['new_password'])) {
+            sendError('Password must contain at least one number', 400);
+        }
+
+        try {
+            $stmt = $this->pdo->prepare("
+                SELECT id, first_name, otp_code, otp_expires_at, otp_attempts, email_verified, is_active
+                FROM users
+                WHERE email = ?
+            ");
+            $stmt->execute([$data['email']]);
+            $user = $stmt->fetch();
+
+            if (!$user) {
+                sendError('Invalid email or reset code', 400);
+            }
+
+            if (!$user['is_active']) {
+                sendError('Account is inactive', 403);
+            }
+
+            if (!$user['email_verified']) {
+                sendError('Please verify your email address first', 403);
+            }
+
+            // Check OTP attempts
+            if ($user['otp_attempts'] >= 5) {
+                sendError('Maximum attempts exceeded. Please request a new reset code.', 429);
+            }
+
+            // Check OTP expiration
+            if (strtotime($user['otp_expires_at']) < time()) {
+                sendError('Reset code has expired', 400);
+            }
+
+            // Verify reset code one more time
+            if ($user['otp_code'] !== $data['reset_code']) {
+                // Increment attempts
+                $stmt = $this->pdo->prepare("
+                    UPDATE users
+                    SET otp_attempts = otp_attempts + 1
+                    WHERE id = ?
+                ");
+                $stmt->execute([$user['id']]);
+
+                sendError('Invalid reset code', 400);
+            }
+
+            // Update password and clear reset code
+            $password_hash = hashPassword($data['new_password']);
+            
+            $stmt = $this->pdo->prepare("
+                UPDATE users
+                SET password_hash = ?, otp_code = NULL, otp_expires_at = NULL, otp_attempts = 0
+                WHERE id = ?
+            ");
+            $stmt->execute([$password_hash, $user['id']]);
+
+            // Send confirmation email
+            $this->sendPasswordChangedEmail($data['email'], $user['first_name']);
+
+            // Log audit trail
+            Middleware::logAuditTrail($user['id'], 'PASSWORD_RESET_COMPLETED', 'users', $user['id']);
+
+            sendResponse([
+                'success' => true,
+                'message' => 'Password reset successfully'
+            ], 200);
+
+        } catch (PDOException $e) {
+            sendError('Failed to reset password: ' . $e->getMessage(), 500);
+        }
+    }
+
+    /**
+     * Send password reset email with code
+     */
+    private function sendPasswordResetEmail($email, $first_name, $reset_code) {
+        try {
+            $mail = mailer();
+            $mail->addAddress($email, $first_name);
+            $mail->Subject = 'Password Reset - Civic Connect';
+            $mail->Body = $this->getPasswordResetEmailHTML($first_name, $reset_code);
+
+            $result = $mail->send();
+            
+            if ($result) {
+                error_log("Password reset email sent successfully to: {$email}");
+            } else {
+                error_log("Password reset email send returned false for: {$email}");
+            }
+            
+            return $result;
+        } catch (Exception $e) {
+            error_log('Password reset email failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Get password reset email HTML template
+     */
+    private function getPasswordResetEmailHTML($first_name, $reset_code) {
+        return "
+            <html>
+            <body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>
+                <div style='max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 8px;'>
+                    <h2>Password Reset Request</h2>
+                    <p>Hi {$first_name},</p>
+                    <p>We received a request to reset your password for your Civic Connect account. Please use the code below to reset your password:</p>
+                    <div style='background-color: #f0f0f0; padding: 20px; border-radius: 4px; text-align: center; margin: 20px 0;'>
+                        <h3 style='font-size: 24px; letter-spacing: 2px; margin: 0;'>{$reset_code}</h3>
+                    </div>
+                    <p>This code will expire in 10 minutes.</p>
+                    <p><strong>If you didn't request this password reset, please ignore this email and your password will remain unchanged.</strong></p>
+                    <hr>
+                    <p style='color: #777; font-size: 12px;'>Civic Connect - Building Better Communities</p>
+                </div>
+            </body>
+            </html>
+        ";
+    }
+
+    /**
+     * Send password changed confirmation email
+     */
+    private function sendPasswordChangedEmail($email, $first_name) {
+        try {
+            $mail = mailer();
+            $mail->addAddress($email, $first_name);
+            $mail->Subject = 'Password Changed Successfully - Civic Connect';
+            $mail->Body = $this->getPasswordChangedEmailHTML($first_name);
+
+            $result = $mail->send();
+            
+            if ($result) {
+                error_log("Password changed confirmation sent to: {$email}");
+            }
+            
+            return $result;
+        } catch (Exception $e) {
+            error_log('Password changed email failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Get password changed email HTML template
+     */
+    private function getPasswordChangedEmailHTML($first_name) {
+        return "
+            <html>
+            <body style='font-family: Arial, sans-serif; background-color: #f4f4f4;'>
+                <div style='max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 8px;'>
+                    <h2>Password Changed Successfully</h2>
+                    <p>Hi {$first_name},</p>
+                    <p>Your password has been successfully changed. You can now log in with your new password.</p>
+                    <p><strong>If you didn't make this change, please contact us immediately.</strong></p>
+                    <hr>
+                    <p style='color: #777; font-size: 12px;'>Civic Connect - Building Better Communities</p>
+                </div>
+            </body>
+            </html>
+        ";
+    }
 }
 ?>
