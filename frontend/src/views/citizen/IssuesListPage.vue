@@ -58,14 +58,13 @@
               class="rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
             >
               <option value="">All Categories</option>
-              <option value="pothole">Pothole</option>
-              <option value="trash">Trash/Littering</option>
-              <option value="streetlight">Street Light</option>
-              <option value="graffiti">Graffiti</option>
-              <option value="water_leak">Water Leak</option>
-              <option value="tree_damage">Tree Damage</option>
-              <option value="sidewalk">Sidewalk Damage</option>
-              <option value="other">Other</option>
+              <option
+                v-for="category in issuesStore.issueCategories"
+                :key="category"
+                :value="category"
+              >
+                {{ formatCategory(category) }}
+              </option>
             </select>
 
             <!-- Sort Filter -->
@@ -293,13 +292,14 @@ const filteredIssuesStore = computed(() => issuesStore.filteredIssues)
 
 const formatCategory = (category) => {
   const categoryMap = {
-    pothole: 'Pothole',
-    trash: 'Trash/Littering',
-    streetlight: 'Street Light',
-    graffiti: 'Graffiti',
-    water_leak: 'Water Leak',
-    tree_damage: 'Tree Damage',
-    sidewalk: 'Sidewalk Damage',
+    roads: 'Roads',
+    lighting: 'Lighting',
+    trash: 'Trash',
+    water_drainage: 'Water & Drainage',
+    parks_recreation: 'Parks & Recreation',
+    public_safety: 'Public Safety',
+    graffiti_vandalism: 'Graffiti & Vandalism',
+    noise: 'Noise',
     other: 'Other',
   }
   return categoryMap[category] || category

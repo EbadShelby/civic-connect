@@ -175,13 +175,14 @@ const error = ref(null)
 
 const formatCategory = (category) => {
   const categoryMap = {
-    pothole: 'Pothole',
-    trash: 'Trash/Littering',
-    streetlight: 'Street Light',
-    graffiti: 'Graffiti',
-    water_leak: 'Water Leak',
-    tree_damage: 'Tree Damage',
-    sidewalk: 'Sidewalk Damage',
+    roads: 'Roads',
+    lighting: 'Lighting',
+    trash: 'Trash',
+    water_drainage: 'Water & Drainage',
+    parks_recreation: 'Parks & Recreation',
+    public_safety: 'Public Safety',
+    graffiti_vandalism: 'Graffiti & Vandalism',
+    noise: 'Noise',
     other: 'Other',
   }
   return categoryMap[category] || category

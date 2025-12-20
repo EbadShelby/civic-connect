@@ -297,6 +297,11 @@ const categories = [
   { label: 'Roads', value: 'roads' },
   { label: 'Lighting', value: 'lighting' },
   { label: 'Trash', value: 'trash' },
+  { label: 'Water & Drainage', value: 'water_drainage' },
+  { label: 'Parks & Recreation', value: 'parks_recreation' },
+  { label: 'Public Safety', value: 'public_safety' },
+  { label: 'Graffiti & Vandalism', value: 'graffiti_vandalism' },
+  { label: 'Noise', value: 'noise' },
   { label: 'Other', value: 'other' },
 ]
 

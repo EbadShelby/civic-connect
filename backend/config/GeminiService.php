@@ -146,6 +146,8 @@ class GeminiService {
 - Be direct and to the point
 - Avoid lengthy explanations
 - Only provide essential information
+- DO NOT use markdown formatting (no **, *, _, etc.)
+- Use symbols and bullet points for formatting
 
 **Common Questions:**
 - How do I report an issue?

@@ -38,13 +38,14 @@ export const useIssuesStore = defineStore('issues', () => {
   })
 
   const issueCategories = computed(() => [
-    'pothole',
+    'roads',
+    'lighting',
     'trash',
-    'streetlight',
-    'graffiti',
-    'water_leak',
-    'tree_damage',
-    'sidewalk',
+    'water_drainage',
+    'parks_recreation',
+    'public_safety',
+    'graffiti_vandalism',
+    'noise',
     'other',
   ])
 
