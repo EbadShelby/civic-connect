@@ -46,6 +46,12 @@
                   class="text-text-light hover:text-primary font-medium transition-colors"
                   >Admin</router-link
                 >
+                <router-link
+                  to="/admin/analytics"
+                  active-class="text-primary font-semibold"
+                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  >Analytics</router-link
+                >
               </template>
 
               <!-- Staff Links -->
@@ -190,6 +196,12 @@
                 class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
                 @click="mobileMenuOpen = false"
                 >Admin Dashboard</router-link
+              >
+              <router-link
+                to="/admin/analytics"
+                class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
+                @click="mobileMenuOpen = false"
+                >Analytics</router-link
               >
             </template>
 
