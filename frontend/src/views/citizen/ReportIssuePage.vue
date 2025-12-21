@@ -315,7 +315,7 @@ const router = useRouter()
 // Categories (Mock data for now, could be from API)
 const categories = [
   { label: 'Roads', value: 'roads' },
-  { label: 'Lighting', value: 'lighting' },
+  { label: 'Street Lights', value: 'street_lights' },
   { label: 'Trash', value: 'trash' },
   { label: 'Water & Drainage', value: 'water_drainage' },
   { label: 'Parks & Recreation', value: 'parks_recreation' },

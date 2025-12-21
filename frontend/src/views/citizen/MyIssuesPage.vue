@@ -176,7 +176,7 @@ const error = ref(null)
 const formatCategory = (category) => {
   const categoryMap = {
     roads: 'Roads',
-    lighting: 'Lighting',
+    street_lights: 'Street Lights',
     trash: 'Trash',
     water_drainage: 'Water & Drainage',
     parks_recreation: 'Parks & Recreation',
