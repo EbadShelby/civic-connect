@@ -18,7 +18,8 @@
             <template v-if="!authStore.isAuthenticated">
               <router-link
                 to="/"
-                class="text-text-light hover:text-primary font-medium transition-colors"
+                active-class="bg-primary/10 text-primary font-semibold rounded-lg"
+                class="text-text-light hover:text-primary px-3 py-2 font-medium transition-colors"
                 >Home</router-link
               >
             </template>
@@ -27,14 +28,14 @@
             <template v-if="authStore.isAuthenticated">
               <router-link
                 to="/dashboard"
-                active-class="text-primary font-semibold"
-                class="text-text-light hover:text-primary font-medium transition-colors"
+                active-class="bg-primary/10 text-primary font-semibold rounded-lg"
+                class="text-text-light hover:text-primary px-3 py-2 font-medium transition-colors"
                 >Dashboard</router-link
               >
               <router-link
                 to="/issues"
-                active-class="text-primary font-semibold"
-                class="text-text-light hover:text-primary font-medium transition-colors"
+                active-class="bg-primary/10 text-primary font-semibold rounded-lg"
+                class="text-text-light hover:text-primary px-3 py-2 font-medium transition-colors"
                 >Issues</router-link
               >
 
@@ -42,14 +43,14 @@
               <template v-if="authStore.isAdmin">
                 <router-link
                   to="/admin/dashboard"
-                  active-class="text-primary font-semibold"
-                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  active-class="bg-primary/10 text-primary font-semibold rounded-lg"
+                  class="text-text-light hover:text-primary px-3 py-2 font-medium transition-colors"
                   >Admin</router-link
                 >
                 <router-link
                   to="/admin/analytics"
-                  active-class="text-primary font-semibold"
-                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  active-class="bg-primary/10 text-primary font-semibold rounded-lg"
+                  class="text-text-light hover:text-primary px-3 py-2 font-medium transition-colors"
                   >Analytics</router-link
                 >
               </template>
@@ -58,20 +59,20 @@
               <template v-if="authStore.isStaff">
                 <router-link
                   to="/staff/dashboard"
-                  active-class="text-primary font-semibold"
-                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  active-class="bg-primary/10 text-primary font-semibold rounded-lg"
+                  class="text-text-light hover:text-primary px-3 py-2 font-medium transition-colors"
                   >Staff Dashboard</router-link
                 >
                 <router-link
                   to="/staff/issues"
-                  active-class="text-primary font-semibold"
-                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  active-class="bg-primary/10 text-primary font-semibold rounded-lg"
+                  class="text-text-light hover:text-primary px-3 py-2 font-medium transition-colors"
                   >Manage Issues</router-link
                 >
                 <router-link
                   to="/staff/reports"
-                  active-class="text-primary font-semibold"
-                  class="text-text-light hover:text-primary font-medium transition-colors"
+                  active-class="bg-primary/10 text-primary font-semibold rounded-lg"
+                  class="text-text-light hover:text-primary px-3 py-2 font-medium transition-colors"
                   >Reports</router-link
                 >
               </template>
@@ -168,12 +169,14 @@
           <template v-if="authStore.isAuthenticated">
             <router-link
               to="/dashboard"
+              active-class="bg-primary/10 text-primary font-semibold"
               class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
               @click="mobileMenuOpen = false"
               >Dashboard</router-link
             >
             <router-link
               to="/issues"
+              active-class="bg-primary/10 text-primary font-semibold"
               class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
               @click="mobileMenuOpen = false"
               >All Issues</router-link
@@ -183,6 +186,7 @@
             <template v-if="authStore.isCitizen">
               <router-link
                 to="/my-issues"
+                active-class="bg-primary/10 text-primary font-semibold"
                 class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
                 @click="mobileMenuOpen = false"
                 >My Issues</router-link
@@ -193,12 +197,14 @@
             <template v-if="authStore.isAdmin">
               <router-link
                 to="/admin/dashboard"
+                active-class="bg-primary/10 text-primary font-semibold"
                 class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
                 @click="mobileMenuOpen = false"
                 >Admin Dashboard</router-link
               >
               <router-link
                 to="/admin/analytics"
+                active-class="bg-primary/10 text-primary font-semibold"
                 class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
                 @click="mobileMenuOpen = false"
                 >Analytics</router-link
@@ -209,18 +215,21 @@
             <template v-if="authStore.isStaff">
               <router-link
                 to="/staff/dashboard"
+                active-class="bg-primary/10 text-primary font-semibold"
                 class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
                 @click="mobileMenuOpen = false"
                 >Staff Dashboard</router-link
               >
               <router-link
                 to="/staff/issues"
+                active-class="bg-primary/10 text-primary font-semibold"
                 class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
                 @click="mobileMenuOpen = false"
                 >Manage Issues</router-link
               >
               <router-link
                 to="/staff/reports"
+                active-class="bg-primary/10 text-primary font-semibold"
                 class="text-text hover:text-primary block rounded-lg px-3 py-3 text-base font-medium hover:bg-gray-50"
                 @click="mobileMenuOpen = false"
                 >Reports</router-link
