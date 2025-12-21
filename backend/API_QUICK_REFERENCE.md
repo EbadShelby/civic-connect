@@ -144,7 +144,7 @@ Authorization: Bearer YOUR_TOKEN_HERE
   "latitude": 40.7128,
   "longitude": -74.0060,
   "priority": "high",
-  "is_anonymous": false
+
 }
 ```
 
@@ -159,8 +159,7 @@ Authorization: Bearer YOUR_TOKEN_HERE
 ### Add Comment
 ```json
 {
-  "content": "This needs urgent action!",
-  "is_anonymous": false
+  "content": "This needs urgent action!"
 }
 ```
 
@@ -242,7 +241,7 @@ echo "Registering user..."
 REGISTER=$(curl -s -X POST "$BASE_URL/users/register" \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "test@example.com",
+    "email": "admin@gmail.com",
     "password": "Test123456",
     "first_name": "Test",
     "last_name": "User"
@@ -254,7 +253,7 @@ echo -e "\n\nLogging in..."
 LOGIN=$(curl -s -X POST "$BASE_URL/users/login" \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "test@example.com",
+    "email": "admin@gmail.com",
     "password": "Test123456"
   }')
 echo $LOGIN

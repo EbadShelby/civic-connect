@@ -211,7 +211,7 @@ Authorization: Bearer {token}
   "latitude": 40.7128,
   "longitude": -74.0060,
   "priority": "high",
-  "is_anonymous": false
+
 }
 ```
 
@@ -261,8 +261,6 @@ List all issues with optional filters and pagination.
       "priority": "high",
       "image_path": "uploads/issues/issue_1.jpg",
       "upvote_count": 25,
-      "comment_count": 5,
-      "is_anonymous": false,
       "created_at": "2024-01-15 10:30:00",
       "first_name": "John",
       "last_name": "Doe"
@@ -301,8 +299,7 @@ Get detailed information about a specific issue.
     "priority": "high",
     "image_path": "uploads/issues/issue_1.jpg",
     "upvote_count": 25,
-    "comment_count": 5,
-    "is_anonymous": false,
+
     "created_at": "2024-01-15 10:30:00",
     "updated_at": "2024-01-15 10:30:00",
     "first_name": "John",
