@@ -32,7 +32,7 @@ http://localhost/civic-connect/backend/api/
 | Method | Endpoint | Auth | Purpose |
 |--------|----------|------|---------|
 | POST | `/upload/issue` | ✅ | Upload issue image |
-| POST | `/upload/profile` | ✅ | Upload profile image |
+| ~~POST~~ | ~~`/upload/profile`~~ | ~~✅~~ | ~~Upload profile image~~ (DEPRECATED) |
 | PUT | `/issues/{id}/image` | ✅ | Update issue image |
 | DELETE | `/files` | ✅ | Delete file |
 | GET | `/files/{filename}` | ❌ | Get file info |
@@ -168,7 +168,6 @@ Authorization: Bearer YOUR_TOKEN_HERE
 ```json
 {
   "first_name": "Jane",
-  "bio": "Civic enthusiast",
   "location": "New York, NY",
   "phone": "+9876543210"
 }

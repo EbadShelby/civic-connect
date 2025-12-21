@@ -10,8 +10,8 @@ require_once __DIR__ . '/../helpers.php';
 class FileController {
     private $pdo;
     private $upload_dirs = [
-        'issues' => '../uploads/issues/',
-        'profiles' => '../uploads/profiles/'
+        'issues' => '../uploads/issues/'
+        // 'profiles' => '../uploads/profiles/' // Removed: profile images no longer supported
     ];
 
     public function __construct() {
@@ -60,7 +60,9 @@ class FileController {
     /**
      * Upload profile image
      * POST /api/upload/profile
+     * DEPRECATED: Profile images are no longer supported
      */
+    /*
     public function uploadProfileImage() {
         if (!Middleware::validateMethod('POST')) {
             sendError('Method not allowed', 405);
@@ -110,6 +112,7 @@ class FileController {
             sendError('Failed to update profile: ' . $e->getMessage(), 500);
         }
     }
+    */
 
     /**
      * Delete a file

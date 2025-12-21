@@ -152,8 +152,6 @@ Get user profile information.
     "first_name": "John",
     "last_name": "Doe",
     "phone": "+1234567890",
-    "profile_image": "uploads/profiles/image.jpg",
-    "bio": "User bio",
     "location": "New York, NY",
     "created_at": "2024-01-15 10:30:00"
   }
@@ -177,7 +175,6 @@ Authorization: Bearer {token}
 {
   "first_name": "Jane",
   "phone": "+9876543210",
-  "bio": "Updated bio",
   "location": "Boston, MA"
 }
 ```
@@ -268,8 +265,7 @@ List all issues with optional filters and pagination.
       "is_anonymous": false,
       "created_at": "2024-01-15 10:30:00",
       "first_name": "John",
-      "last_name": "Doe",
-      "profile_image": "uploads/profiles/user_1.jpg"
+      "last_name": "Doe"
     }
   ],
   "pagination": {
@@ -310,8 +306,7 @@ Get detailed information about a specific issue.
     "created_at": "2024-01-15 10:30:00",
     "updated_at": "2024-01-15 10:30:00",
     "first_name": "John",
-    "last_name": "Doe",
-    "profile_image": "uploads/profiles/user_1.jpg"
+    "last_name": "Doe"
   }
 }
 ```
@@ -426,8 +421,10 @@ image: [binary image file]
 
 ---
 
-### 2. Upload Profile Image
+### 2. Upload Profile Image (DEPRECATED)
 **POST** `/upload/profile`
+
+> **⚠️ DEPRECATED**: Profile image uploads are no longer supported. This endpoint has been disabled.
 
 Upload profile image (requires authentication).
 
@@ -595,7 +592,6 @@ Get list of users who upvoted an issue.
       "user_id": 5,
       "first_name": "Jane",
       "last_name": "Smith",
-      "profile_image": "uploads/profiles/user_5.jpg",
       "created_at": "2024-01-15 10:35:00"
     }
   ],
@@ -664,8 +660,7 @@ Get all comments for an issue.
       "created_at": "2024-01-15 10:35:00",
       "updated_at": "2024-01-15 10:35:00",
       "first_name": "Jane",
-      "last_name": "Smith",
-      "profile_image": "uploads/profiles/user_2.jpg"
+      "last_name": "Smith"
     }
   ],
   "pagination": {

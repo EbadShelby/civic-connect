@@ -137,7 +137,6 @@ class IssueController {
                     i.*,
                     u.first_name,
                     u.last_name,
-                    u.profile_image,
                     (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count
                 FROM issues i
                 LEFT JOIN users u ON i.user_id = u.id
@@ -262,7 +261,6 @@ class IssueController {
                 i.*,
                 u.first_name,
                 u.last_name,
-                u.profile_image,
                 (SELECT COUNT(*) FROM upvotes WHERE issue_id = i.id) as upvote_count
             ";
             

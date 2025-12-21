@@ -199,6 +199,13 @@ function handleUserRoutes($parts, $method) {
                         } else {
                             sendError('Method not allowed', 405);
                         }
+                    } elseif ($sub_action === 'stats') {
+                        // GET /users/{id}/stats
+                        if ($method === 'GET') {
+                            $controller->getUserStats($user_id);
+                        } else {
+                            sendError('Method not allowed', 405);
+                        }
                     } else {
                         sendError('Invalid endpoint', 404);
                     }

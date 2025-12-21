@@ -373,7 +373,7 @@ class UserController {
 
         try {
             $stmt = $this->pdo->prepare("
-                SELECT id, email, first_name, last_name, phone, profile_image, bio, location, created_at
+                SELECT id, email, first_name, last_name, phone, location, created_at
                 FROM users
                 WHERE id = ? AND is_active = 1
             ");
@@ -412,7 +412,7 @@ class UserController {
         $data = getRequestData();
 
         // Allowed fields for update
-        $allowed_fields = ['first_name', 'last_name', 'phone', 'bio', 'location'];
+        $allowed_fields = ['first_name', 'last_name', 'phone', 'location'];
         $update_fields = [];
         $update_values = [];
 
@@ -439,7 +439,7 @@ class UserController {
 
             // Fetch the updated user data
             $stmt = $this->pdo->prepare("
-                SELECT id, email, first_name, last_name, phone, profile_image, bio, location, role, created_at
+                SELECT id, email, first_name, last_name, phone, location, role, created_at
                 FROM users
                 WHERE id = ?
             ");
@@ -850,6 +850,56 @@ class UserController {
             </body>
             </html>
         ";
+    }
+
+    /**
+     * Get user statistics
+     * GET /api/users/{id}/stats
+     */
+    public function getUserStats($user_id) {
+        if (!Middleware::validateMethod('GET')) {
+            sendError('Method not allowed', 405);
+        }
+
+        $auth_user = Middleware::requireAuth();
+
+        // Check if user can access these stats (own profile or admin/staff)
+        if (!Middleware::ownsResource($auth_user['user_id'], $user_id) && !in_array($auth_user['role'], ['admin', 'staff'])) {
+            sendError('Unauthorized: Cannot view other user stats', 403);
+        }
+
+        try {
+            // Get total issues reported by the user
+            $stmt = $this->pdo->prepare("
+                SELECT COUNT(*) as total_issues
+                FROM issues
+                WHERE user_id = ?
+            ");
+            $stmt->execute([$user_id]);
+            $issues_result = $stmt->fetch();
+            $total_issues = $issues_result['total_issues'] ?? 0;
+
+            // Get total upvotes received on user's issues
+            $stmt = $this->pdo->prepare("
+                SELECT COUNT(u.id) as total_upvotes
+                FROM upvotes u
+                JOIN issues i ON u.issue_id = i.id
+                WHERE i.user_id = ?
+            ");
+            $stmt->execute([$user_id]);
+            $upvotes_result = $stmt->fetch();
+            $total_upvotes = $upvotes_result['total_upvotes'] ?? 0;
+
+            sendResponse([
+                'success' => true,
+                'stats' => [
+                    'issues_reported' => (int)$total_issues,
+                    'upvotes_received' => (int)$total_upvotes
+                ]
+            ], 200);
+        } catch (PDOException $e) {
+            sendError('Failed to fetch user stats: ' . $e->getMessage(), 500);
+        }
     }
 }
 ?>

@@ -176,7 +176,7 @@ class StaffController {
 
         try {
             $stmt = $this->pdo->prepare("
-                SELECT id, email, first_name, last_name, phone, bio, location, role, is_active, 
+                SELECT id, email, first_name, last_name, phone, location, role, is_active, 
                        email_verified, created_at, last_login, updated_at 
                 FROM users 
                 WHERE id = ? AND role = 'staff'
@@ -225,7 +225,7 @@ class StaffController {
             $updateFields = [];
             $params = [];
 
-            $allowedFields = ['first_name', 'last_name', 'email', 'phone', 'bio', 'location'];
+            $allowedFields = ['first_name', 'last_name', 'email', 'phone', 'location'];
 
             foreach ($allowedFields as $field) {
                 if (isset($data[$field])) {

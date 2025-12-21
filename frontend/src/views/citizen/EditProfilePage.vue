@@ -71,6 +71,20 @@
               <p v-if="errors.phone" class="mt-1 text-sm text-red-500">{{ errors.phone }}</p>
             </div>
 
+            <!-- Location -->
+            <div>
+              <label for="location" class="mb-2 block font-semibold text-[#10141f]">Location</label>
+              <input
+                name="location"
+                id="location"
+                type="text"
+                v-model="formData.location"
+                placeholder="e.g., New York, NY"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
+              />
+              <p class="mt-1 text-xs text-[#819796]">Your city or general area (optional)</p>
+            </div>
+
             <!-- Email (Read Only) -->
             <div>
               <label class="mb-2 block font-semibold text-[#10141f]">Email Address</label>
@@ -129,6 +143,7 @@ const formData = ref({
   firstName: '',
   lastName: '',
   phone: '',
+  location: '',
 })
 
 const errors = ref({
@@ -144,6 +159,7 @@ onMounted(() => {
       firstName: authStore.user.first_name,
       lastName: authStore.user.last_name,
       phone: authStore.user.phone || '',
+      location: authStore.user.location || '',
     }
   }
 })
@@ -184,6 +200,7 @@ const onSubmit = async () => {
       first_name: formData.value.firstName,
       last_name: formData.value.lastName,
       phone: formData.value.phone,
+      location: formData.value.location,
     })
 
     toast.success('Profile updated successfully')

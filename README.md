@@ -87,7 +87,7 @@ CivicConnect is a web-based platform that allows citizens to report city issues 
 ## **Database Tables**
 
 ### **users**
-`id, email, password_hash, first_name, last_name, phone, profile_image, bio, location, email_verified, otp_code, role, last_login, created_at`
+`id, email, password_hash, first_name, last_name, phone, location, email_verified, otp_code, role, last_login, created_at`
 
 ### **issues**
 `id, user_id, title, description, category, location, latitude, longitude, status, priority, image_path, upvote_count, is_anonymous, created_at, resolved_at`

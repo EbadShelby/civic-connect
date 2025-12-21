@@ -178,8 +178,7 @@ class UpvoteController {
                     u.user_id,
                     u.created_at,
                     us.first_name,
-                    us.last_name,
-                    us.profile_image
+                    us.last_name
                 FROM upvotes u
                 LEFT JOIN users us ON u.user_id = us.id
                 WHERE u.issue_id = ?

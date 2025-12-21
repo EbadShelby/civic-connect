@@ -25,7 +25,7 @@ cd /var/www/html/civic-connect/backend/uploads
 
 # Create subdirectories
 mkdir -p issues
-mkdir -p profiles
+mkdir -p profiles  # Note: profile uploads are deprecated
 
 # Set proper permissions
 chmod 755 issues
@@ -189,7 +189,6 @@ curl -X PUT http://localhost/civic-connect/backend/api/users/1 \
   -H "Authorization: Bearer YOUR_TOKEN_HERE" \
   -d '{
     "first_name": "Updated",
-    "bio": "Civic enthusiast",
     "location": "New York, NY"
   }'
 ```

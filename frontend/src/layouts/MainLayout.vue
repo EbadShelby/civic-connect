@@ -87,7 +87,7 @@
                   <span
                     class="bg-primary-light text-primary rounded-full px-3 py-1 text-sm font-semibold"
                   >
-                    {{ authStore.user?.firstName?.[0] || 'U' }}
+                    {{ userInitials }}
                   </span>
                 </button>
                 <div
@@ -303,7 +303,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '../stores/authStore'
 import { useRouter } from 'vue-router'
 import NotificationBell from '../components/NotificationBell.vue'
@@ -313,6 +313,13 @@ import logoMobile from '@/assets/civic-connect-logo-mobile.png'
 const authStore = useAuthStore()
 const router = useRouter()
 const mobileMenuOpen = ref(false)
+
+const userInitials = computed(() => {
+  if (authStore.user?.first_name && authStore.user?.last_name) {
+    return (authStore.user.first_name.charAt(0) + authStore.user.last_name.charAt(0)).toUpperCase()
+  }
+  return 'U'
+})
 
 const handleLogout = () => {
   authStore.logout()

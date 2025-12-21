@@ -50,18 +50,29 @@
                 <PhoneIcon class="mr-1 h-4 w-4" />
                 {{ authStore.user.phone }}
               </span>
+              <span
+                v-if="authStore.user?.location"
+                class="inline-flex items-center text-sm text-[#819796]"
+              >
+                <MapPinIcon class="mr-1 h-4 w-4" />
+                {{ authStore.user.location }}
+              </span>
             </div>
           </div>
 
-          <!-- Stats (Placeholder for now) -->
+          <!-- Stats -->
           <div class="grid grid-cols-1 gap-4 border-t border-gray-200 pt-8 sm:grid-cols-3">
             <div class="rounded-lg bg-[#ebede9] p-4 text-center">
-              <p class="text-2xl font-bold text-[#25562e]">0</p>
+              <p class="text-2xl font-bold text-[#25562e]">
+                {{ isLoadingStats ? '...' : userStats.issuesReported }}
+              </p>
               <p class="text-sm font-semibold text-[#819796]">Issues Reported</p>
             </div>
             <div class="rounded-lg bg-[#ebede9] p-4 text-center">
-              <p class="text-2xl font-bold text-[#25562e]">0</p>
-              <p class="text-sm font-semibold text-[#819796]">Votes Given</p>
+              <p class="text-2xl font-bold text-[#25562e]">
+                {{ isLoadingStats ? '...' : userStats.upvotesReceived }}
+              </p>
+              <p class="text-sm font-semibold text-[#819796]">Received Upvotes</p>
             </div>
             <div class="rounded-lg bg-[#ebede9] p-4 text-center">
               <p class="text-2xl font-bold text-[#25562e]">Active</p>
@@ -75,11 +86,17 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useAuthStore } from '../../stores/authStore'
-import { PhoneIcon } from '@heroicons/vue/24/solid'
+import { PhoneIcon, MapPinIcon } from '@heroicons/vue/24/solid'
+import axios from 'axios'
 
 const authStore = useAuthStore()
+const isLoadingStats = ref(true)
+const userStats = ref({
+  issuesReported: 0,
+  upvotesReceived: 0,
+})
 
 const userFullName = computed(() => {
   if (authStore.user) {
@@ -93,5 +110,35 @@ const userInitials = computed(() => {
     return (authStore.user.first_name.charAt(0) + authStore.user.last_name.charAt(0)).toUpperCase()
   }
   return 'U'
+})
+
+const fetchUserStats = async () => {
+  if (!authStore.user?.id) return
+
+  isLoadingStats.value = true
+  try {
+    const token = localStorage.getItem('token')
+    const response = await axios.get(
+      `http://localhost/civic-connect/backend/api/users/${authStore.user.id}/stats`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+
+    if (response.data.success && response.data.stats) {
+      userStats.value.issuesReported = response.data.stats.issues_reported
+      userStats.value.upvotesReceived = response.data.stats.upvotes_received
+    }
+  } catch (error) {
+    console.error('Failed to fetch user stats:', error)
+  } finally {
+    isLoadingStats.value = false
+  }
+}
+
+onMounted(() => {
+  fetchUserStats()
 })
 </script>

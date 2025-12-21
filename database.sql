@@ -9,8 +9,6 @@ CREATE TABLE users (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
-    profile_image VARCHAR(255),
-    bio TEXT,
     location VARCHAR(255),
     email_verified BOOLEAN DEFAULT 0,
     email_verified_at TIMESTAMP NULL,
