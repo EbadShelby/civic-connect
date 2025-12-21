@@ -2,14 +2,7 @@
   <!-- Logo & Header -->
   <div class="mb-8 text-center">
     <div class="bg-accent/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-      <svg class="text-accent h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-        />
-      </svg>
+      <ShieldCheckIcon class="text-accent h-6 w-6" />
     </div>
     <h2 class="text-primary mb-2 text-2xl font-bold">Two-Factor Authentication</h2>
     <p class="text-muted">Enter the 6-digit code from your authenticator app</p>
@@ -49,10 +42,7 @@
         placeholder="000000"
         maxlength="6"
         class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 text-center text-xl tracking-widest transition focus:ring-1 focus:outline-none"
-        @input="
-          manualOtp = manualOtp.replace(/\D/g, '').slice(0, 6)
-          syncToDigits()
-        "
+        @input="handleManualInput"
       />
     </div>
 
@@ -104,6 +94,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
 import { useToast } from 'vue-toastification'
+import { ShieldCheckIcon } from '@heroicons/vue/24/outline'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -124,6 +115,11 @@ onMounted(() => {
     otpInputs.value[0].focus()
   }
 })
+
+const handleManualInput = () => {
+  manualOtp.value = manualOtp.value.replace(/\D/g, '').slice(0, 6)
+  syncToDigits()
+}
 
 const handleDigitInput = (index, event) => {
   const value = event.target.value

@@ -2,14 +2,7 @@
   <!-- Logo & Header -->
   <div class="mb-8 text-center">
     <div class="bg-accent/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-      <svg class="text-accent h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-        />
-      </svg>
+      <EnvelopeIcon class="text-accent h-6 w-6" />
     </div>
     <h2 class="text-primary mb-2 text-2xl font-bold">Verify Your Email</h2>
     <p class="text-muted">We sent a verification code to your email address</p>
@@ -96,6 +89,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/authStore'
 import { useToast } from 'vue-toastification'
+import { EnvelopeIcon } from '@heroicons/vue/24/outline'
 
 const router = useRouter()
 const authStore = useAuthStore()

@@ -65,19 +65,7 @@
             v-intersect="'motion-preset-slide-up-sm'"
           >
             <div class="bg-accent/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
-              <svg
-                class="text-accent h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-              </svg>
+              <MapPinIcon class="text-accent h-6 w-6" />
             </div>
             <h3 class="text-primary mb-2 text-xl font-bold">Report with Location</h3>
             <p class="text-muted">
@@ -92,19 +80,7 @@
             v-intersect="'motion-preset-slide-up-sm motion-delay-200'"
           >
             <div class="bg-accent/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
-              <svg
-                class="text-accent h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2 1m2-1l-2-1m2 1v2.5"
-                />
-              </svg>
+              <UserGroupIcon class="text-accent h-6 w-6" />
             </div>
             <h3 class="text-primary mb-2 text-xl font-bold">Community Engagement</h3>
             <p class="text-muted">
@@ -118,19 +94,7 @@
             v-intersect="'motion-preset-slide-up-sm motion-delay-400'"
           >
             <div class="bg-accent/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg">
-              <svg
-                class="text-accent h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                />
-              </svg>
+              <ChartBarIcon class="text-accent h-6 w-6" />
             </div>
             <h3 class="text-primary mb-2 text-xl font-bold">Track Progress</h3>
             <p class="text-muted">
@@ -270,6 +234,7 @@
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
+import { MapPinIcon, UserGroupIcon, ChartBarIcon } from '@heroicons/vue/24/outline'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost/civic-connect/backend/api'
 const authStore = useAuthStore()

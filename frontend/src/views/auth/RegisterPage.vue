@@ -75,7 +75,7 @@
         type="tel"
         name="phone"
         autocomplete="tel"
-        placeholder="+1 (555) 000-0000"
+        placeholder="09123456789"
         class="border-accent/30 focus:border-accent focus:ring-accent w-full rounded-lg border px-4 py-2 transition focus:ring-1 focus:outline-none"
       />
     </div>

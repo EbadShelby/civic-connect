@@ -2,14 +2,7 @@
   <!-- Logo & Header -->
   <div class="mb-8 text-center">
     <div class="bg-accent/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
-      <svg class="text-accent h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-        />
-      </svg>
+      <KeyIcon class="text-accent h-6 w-6" />
     </div>
     <h2 class="text-primary mb-2 text-2xl font-bold">Reset Password</h2>
     <p class="text-muted">Enter your email to receive password reset instructions</p>
@@ -144,6 +137,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import axios from 'axios'
+import { KeyIcon } from '@heroicons/vue/24/outline'
 
 const router = useRouter()
 const toast = useToast()

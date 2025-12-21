@@ -141,20 +141,7 @@
               @click="mobileMenuOpen = !mobileMenuOpen"
               class="text-text rounded-lg p-2 transition-colors hover:bg-gray-100"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                class="h-6 w-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
+              <Bars3Icon class="h-6 w-6" />
             </button>
           </div>
         </div>
@@ -319,6 +306,7 @@ import { ref, computed } from 'vue'
 import { useAuthStore } from '../stores/authStore'
 import { useRouter } from 'vue-router'
 import NotificationBell from '../components/NotificationBell.vue'
+import { Bars3Icon } from '@heroicons/vue/24/outline'
 import logoDesktop from '@/assets/civic-connect-logo.png'
 import logoMobile from '@/assets/civic-connect-logo-mobile.png'
 
