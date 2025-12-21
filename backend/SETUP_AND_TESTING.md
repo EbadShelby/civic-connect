@@ -144,7 +144,7 @@ curl -X PUT http://localhost/civic-connect/backend/api/issues/1 \
   -H "Authorization: Bearer YOUR_TOKEN_HERE" \
   -d '{
     "status": "in_progress",
-    "priority": "critical"
+    "priority": "high"
   }'
 ```
 

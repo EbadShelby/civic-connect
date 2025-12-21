@@ -200,7 +200,6 @@
                   <span
                     class="flex items-center"
                     :class="{
-                      'text-red-600': issue.priority === 'critical',
                       'text-orange-600': issue.priority === 'high',
                       'text-yellow-600': issue.priority === 'medium',
                       'text-blue-600': issue.priority === 'low',

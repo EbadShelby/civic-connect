@@ -71,7 +71,7 @@ class IssueController {
             $longitude = $data['longitude'] ?? null;
 
             // Validate priority and status
-            $valid_priorities = ['low', 'medium', 'high', 'critical'];
+            $valid_priorities = ['low', 'medium', 'high'];
             $valid_statuses = ['pending_review', 'in_progress', 'resolved'];
 
             if (!in_array($priority, $valid_priorities)) {
@@ -386,7 +386,7 @@ class IssueController {
                     }
 
                     // Validate priority and status enums
-                    if ($field === 'priority' && !in_array($data[$field], ['low', 'medium', 'high', 'critical'])) {
+                    if ($field === 'priority' && !in_array($data[$field], ['low', 'medium', 'high'])) {
                         sendError('Invalid priority value', 400);
                     }
 

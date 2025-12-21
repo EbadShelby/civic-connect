@@ -236,7 +236,7 @@ List all issues with optional filters and pagination.
 - `limit` (default: 10, max: 100)
 - `category` - Filter by category
 - `status` - Filter by status (pending_review, in_progress, resolved)
-- `priority` - Filter by priority (low, medium, high, critical)
+- `priority` - Filter by priority (low, medium, high)
 - `search` - Search in title and description
 - `sort_by` - Sort field (created_at, upvote_count, title, priority)
 - `sort_order` - Sort order (ASC, DESC)
@@ -325,7 +325,7 @@ Authorization: Bearer {token}
 {
   "title": "Pothole on Main Street - URGENT",
   "status": "in_progress",
-  "priority": "critical"
+  "priority": "high"
 }
 ```
 

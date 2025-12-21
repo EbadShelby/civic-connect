@@ -66,7 +66,7 @@ http://localhost/civic-connect/backend/api/
 ```
 ?category=infrastructure        # Filter by category
 ?status=pending_review          # Status: pending_review|in_progress|resolved
-?priority=high                  # Priority: low|medium|high|critical
+?priority=high                  # Priority: low|medium|high
 ?search=pothole                 # Search in title & description
 ?sort_by=created_at            # Sort field: created_at|upvote_count|title|priority
 ?sort_order=DESC               # Sort order: ASC|DESC
@@ -152,7 +152,7 @@ Authorization: Bearer YOUR_TOKEN_HERE
 ```json
 {
   "status": "in_progress",
-  "priority": "critical"
+  "priority": "high"
 }
 ```
 

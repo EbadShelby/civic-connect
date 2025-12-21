@@ -451,7 +451,8 @@ const lineOptions = {
 }
 
 const refreshData = async () => {
-  await issuesStore.fetchIssues()
+  // Fetch all issues for accurate reporting (not paginated)
+  await issuesStore.fetchIssues({ limit: 100 })
   lastUpdated.value = new Date().toLocaleTimeString()
 }
 

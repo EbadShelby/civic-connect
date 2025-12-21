@@ -98,7 +98,6 @@
                     <span
                       class="flex items-center text-xs font-semibold uppercase"
                       :class="{
-                        'text-red-600': issue.priority === 'critical',
                         'text-orange-600': issue.priority === 'high',
                         'text-yellow-600': issue.priority === 'medium',
                         'text-blue-600': issue.priority === 'low',

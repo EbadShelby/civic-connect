@@ -337,31 +337,19 @@ const priorityChartData = computed(() => {
     low: issues.filter((i) => i.priority === 'low').length,
     medium: issues.filter((i) => i.priority === 'medium').length,
     high: issues.filter((i) => i.priority === 'high').length,
-    critical: issues.filter((i) => i.priority === 'critical').length,
   }
 
   return {
-    labels: ['Low', 'Medium', 'High', 'Critical'],
+    labels: ['Low', 'Medium', 'High'],
     datasets: [
       {
-        data: [
-          priorityCounts.low,
-          priorityCounts.medium,
-          priorityCounts.high,
-          priorityCounts.critical,
-        ],
+        data: [priorityCounts.low, priorityCounts.medium, priorityCounts.high],
         backgroundColor: [
           'rgba(34, 197, 94, 0.8)', // Green for low
           'rgba(234, 179, 8, 0.8)', // Yellow for medium
           'rgba(249, 115, 22, 0.8)', // Orange for high
-          'rgba(239, 68, 68, 0.8)', // Red for critical
         ],
-        borderColor: [
-          'rgba(34, 197, 94, 1)',
-          'rgba(234, 179, 8, 1)',
-          'rgba(249, 115, 22, 1)',
-          'rgba(239, 68, 68, 1)',
-        ],
+        borderColor: ['rgba(34, 197, 94, 1)', 'rgba(234, 179, 8, 1)', 'rgba(249, 115, 22, 1)'],
         borderWidth: 2,
       },
     ],
@@ -592,7 +580,8 @@ const fetchAdminStats = async () => {
 
 const refreshData = async () => {
   loading.value = true
-  await Promise.all([issuesStore.fetchIssues(), fetchAdminStats()])
+  // Fetch all issues for accurate analytics (not paginated)
+  await Promise.all([issuesStore.fetchIssues({ limit: 100 }), fetchAdminStats()])
   lastUpdated.value = new Date().toLocaleTimeString()
   loading.value = false
 }

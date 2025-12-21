@@ -52,7 +52,7 @@ export const useIssuesStore = defineStore('issues', () => {
 
   const issueStatuses = computed(() => ['pending_review', 'in_progress', 'resolved'])
 
-  const issuePriorities = computed(() => ['low', 'medium', 'high', 'critical'])
+  const issuePriorities = computed(() => ['low', 'medium', 'high'])
 
   // Fetch all issues
   const fetchIssues = async (params = {}) => {

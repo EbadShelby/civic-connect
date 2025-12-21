@@ -37,7 +37,7 @@ CREATE TABLE issues (
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
     status ENUM('pending_review', 'in_progress', 'resolved') DEFAULT 'pending_review',
-    priority ENUM('low', 'medium', 'high', 'critical') DEFAULT 'medium',
+    priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
     image_path VARCHAR(255),
     upvote_count INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
