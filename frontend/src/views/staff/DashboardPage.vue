@@ -306,7 +306,7 @@ const statusFilters = [
 const stats = computed(() => {
   const issues = issuesStore.issues
   return {
-    total: issues.length,
+    total: issuesStore.totalCount,
     pending_review: issues.filter((i) => i.status === 'pending_review').length,
     inProgress: issues.filter((i) => i.status === 'in_progress').length,
     resolved: issues.filter((i) => i.status === 'resolved').length,

@@ -285,7 +285,6 @@ const issuesStore = useIssuesStore()
 
 const viewMode = ref('list')
 const isLoading = ref(false)
-const totalIssuesCount = ref(0)
 const selectedImage = ref(null)
 let mapInstance = null
 let markers = {}
@@ -297,6 +296,7 @@ const filters = ref({
 })
 
 const filteredIssuesStore = computed(() => issuesStore.filteredIssues)
+const totalIssuesCount = computed(() => issuesStore.totalCount)
 
 const formatCategory = (category) => {
   const categoryMap = {
@@ -447,8 +447,8 @@ const initMap = () => {
 const fetchIssues = async () => {
   isLoading.value = true
   try {
-    const result = await issuesStore.fetchIssues()
-    totalIssuesCount.value = result.length
+    // Fetch all issues by requesting a large limit
+    await issuesStore.fetchIssues({ limit: 1000 })
     applyFilters()
   } catch (error) {
     console.error('Error fetching issues:', error)

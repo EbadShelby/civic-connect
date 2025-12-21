@@ -9,6 +9,7 @@ export const useIssuesStore = defineStore('issues', () => {
   const currentIssue = ref(null)
   const isLoading = ref(false)
   const error = ref(null)
+  const totalCount = ref(0)
   const filters = ref({
     status: null,
     category: null,
@@ -66,10 +67,19 @@ export const useIssuesStore = defineStore('issues', () => {
       const response = await axios.get(`${API_BASE_URL}/issues`, { params, headers })
       issues.value = response.data.issues || []
 
+      // Store total count from pagination metadata
+      if (response.data.pagination) {
+        totalCount.value = response.data.pagination.total || 0
+      } else {
+        // If no pagination, use array length (for backward compatibility)
+        totalCount.value = issues.value.length
+      }
+
       return issues.value
     } catch (err) {
       error.value = err.response?.data?.error || 'Failed to fetch issues'
       issues.value = [] // Ensure array on error
+      totalCount.value = 0
       throw error.value
     } finally {
       isLoading.value = false
@@ -297,6 +307,7 @@ export const useIssuesStore = defineStore('issues', () => {
     currentIssue,
     isLoading,
     error,
+    totalCount,
     filters,
     filteredIssues,
     issueCategories,

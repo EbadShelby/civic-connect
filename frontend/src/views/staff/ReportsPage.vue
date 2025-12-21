@@ -187,7 +187,7 @@ const lastUpdated = ref(new Date().toLocaleTimeString())
 // Computed Statistics
 const stats = computed(() => {
   const issues = issuesStore.issues
-  const total = issues.length
+  const total = issuesStore.totalCount
   const pending_review = issues.filter((i) => i.status === 'pending_review').length
   const inProgress = issues.filter((i) => i.status === 'in_progress').length
   const resolved = issues.filter((i) => i.status === 'resolved').length
