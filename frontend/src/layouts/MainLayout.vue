@@ -262,9 +262,12 @@
       <div
         class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 sm:px-6 md:flex-row lg:px-8"
       >
-        <div class="flex items-center gap-2 opacity-80 transition-opacity hover:opacity-100">
+        <router-link
+          to="/"
+          class="flex items-center gap-2 opacity-80 transition-opacity hover:opacity-100"
+        >
           <img :src="logoDesktop" alt="CivicConnect" class="h-8 w-auto" />
-        </div>
+        </router-link>
         <div class="text-text-light text-sm">
           &copy; {{ new Date().getFullYear() }} CivicConnect. Empowering communities.
         </div>

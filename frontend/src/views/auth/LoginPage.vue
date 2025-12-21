@@ -56,7 +56,7 @@
     </div>
 
     <!-- hCaptcha -->
-    <div class="flex justify-center">
+    <div class="flex flex-col items-center">
       <vue-hcaptcha
         :sitekey="hcaptchaSitekey"
         @verify="onCaptchaVerify"

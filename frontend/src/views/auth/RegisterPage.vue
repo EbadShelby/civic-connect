@@ -143,7 +143,7 @@
     </div>
 
     <!-- hCaptcha -->
-    <div>
+    <div class="flex flex-col items-center">
       <vue-hcaptcha
         :sitekey="hcaptchaSitekey"
         @verify="onCaptchaVerify"

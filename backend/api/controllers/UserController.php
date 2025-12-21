@@ -864,9 +864,10 @@ class UserController {
         $auth_user = Middleware::requireAuth();
 
         // Check if user can access these stats (own profile or admin/staff)
-        if (!Middleware::ownsResource($auth_user['user_id'], $user_id) && !in_array($auth_user['role'], ['admin', 'staff'])) {
-            sendError('Unauthorized: Cannot view other user stats', 403);
-        }
+        // Removed restriction to allow viewing other users' stats
+        // if (!Middleware::ownsResource($auth_user['user_id'], $user_id) && !in_array($auth_user['role'], ['admin', 'staff'])) {
+        //    sendError('Unauthorized: Cannot view other user stats', 403);
+        // }
 
         try {
             // Get total issues reported by the user

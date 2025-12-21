@@ -21,18 +21,28 @@
           voice matters in building a better tomorrow.
         </p>
         <div class="flex flex-col justify-center gap-4 sm:flex-row">
-          <router-link
-            to="/register"
-            class="bg-primary hover:bg-primary/90 inline-block rounded-lg px-8 py-3 font-semibold text-white transition"
-          >
-            Start Reporting
-          </router-link>
-          <router-link
-            to="/login"
-            class="text-primary border-primary hover:bg-primary/5 inline-block rounded-lg border-2 bg-white px-8 py-3 font-semibold transition"
-          >
-            Sign In
-          </router-link>
+          <template v-if="!authStore.isAuthenticated">
+            <router-link
+              to="/register"
+              class="bg-primary hover:bg-primary/90 inline-block rounded-lg px-8 py-3 font-semibold text-white transition"
+            >
+              Start Reporting
+            </router-link>
+            <router-link
+              to="/login"
+              class="text-primary border-primary hover:bg-primary/5 inline-block rounded-lg border-2 bg-white px-8 py-3 font-semibold transition"
+            >
+              Sign In
+            </router-link>
+          </template>
+          <template v-else>
+            <router-link
+              :to="dashboardRoute"
+              class="bg-primary hover:bg-primary/90 inline-block rounded-lg px-8 py-3 font-semibold text-white transition"
+            >
+              Go to Dashboard
+            </router-link>
+          </template>
         </div>
       </div>
     </section>
@@ -257,10 +267,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost/civic-connect/backend/api'
+const authStore = useAuthStore()
 
 const stats = ref({
   totalIssues: 0,
@@ -268,6 +280,12 @@ const stats = ref({
   resolutionRate: 0,
 })
 const loading = ref(true)
+
+const dashboardRoute = computed(() => {
+  if (authStore.isAdmin) return '/admin/dashboard'
+  if (authStore.isStaff) return '/staff/dashboard'
+  return '/citizen/dashboard'
+})
 
 const fetchStats = async () => {
   try {
