@@ -2,9 +2,29 @@
   <div class="min-h-screen bg-linear-to-br from-[#ebede9] to-gray-100">
     <div class="mx-auto max-w-7xl px-4 py-8">
       <!-- Header -->
-      <div class="mb-8">
-        <h1 class="mb-2 text-4xl font-bold text-[#10141f]">Community Issues</h1>
-        <p class="text-[#819796]">Browse and upvote issues in your community</p>
+      <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 class="mb-2 text-4xl font-bold text-[#10141f]">Community Issues</h1>
+          <p class="text-[#819796]">Browse and upvote issues in your community</p>
+        </div>
+        <router-link
+          to="/report-issue"
+          class="flex items-center gap-2 rounded-lg bg-[#cf573c] px-6 py-3 font-semibold text-white shadow-md transition-all hover:bg-[#b84a31] hover:shadow-lg"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-5 w-5"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Report Issue
+        </router-link>
       </div>
 
       <!-- View Toggle and Filters -->
