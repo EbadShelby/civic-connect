@@ -176,6 +176,10 @@
                     <CalendarIcon class="mr-1 h-4 w-4 text-[#75a743]" />
                     {{ formatDate(issue.created_at) }}
                   </span>
+                  <span v-if="issue.location" class="flex max-w-xs items-center truncate">
+                    <MapPinIcon class="mr-1 h-4 w-4 shrink-0 text-[#75a743]" />
+                    <span class="truncate">{{ issue.location }}</span>
+                  </span>
                   <span
                     class="flex items-center"
                     :class="{
@@ -271,6 +275,7 @@ import {
   ExclamationCircleIcon,
   UserCircleIcon,
   HandThumbUpIcon,
+  MapPinIcon,
 } from '@heroicons/vue/24/solid'
 
 const issuesStore = useIssuesStore()

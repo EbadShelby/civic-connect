@@ -94,6 +94,15 @@
         >
           <div class="p-6">
             <h3 class="text-lg font-medium text-gray-900">Location</h3>
+            <div v-if="issue.location" class="mt-4 mb-4">
+              <p class="flex items-start text-gray-700">
+                <MapPinIcon class="mt-0.5 mr-2 h-5 w-5 shrink-0 text-blue-600" />
+                <span class="font-semibold">{{ issue.location }}</span>
+              </p>
+              <p class="mt-1 ml-7 text-sm text-gray-500">
+                Coordinates: {{ issue.latitude.toFixed(6) }}, {{ issue.longitude.toFixed(6) }}
+              </p>
+            </div>
             <div id="staff-issue-map" class="mt-4 h-64 rounded-lg bg-gray-100"></div>
           </div>
         </div>
@@ -187,6 +196,7 @@ import {
   ClockIcon,
   StopCircleIcon,
   InboxIcon,
+  MapPinIcon,
 } from '@heroicons/vue/24/outline'
 
 const route = useRoute()
