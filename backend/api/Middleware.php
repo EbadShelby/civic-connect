@@ -132,6 +132,8 @@ class Middleware {
             $_ENV['APP_URL'] ?? 'http://localhost/civic-connect',
             'http://localhost:5173',  // Vite dev server default
             'http://localhost:5174',  // Vite dev server alternative
+            'http://localhost:5175',  // Vite dev server alternative 2
+            'http://localhost:5176',  // Vite dev server alternative 3
             'http://localhost:3000',  // Common dev server port
             'http://127.0.0.1:5173',
             'http://127.0.0.1:5174',
