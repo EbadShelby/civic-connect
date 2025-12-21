@@ -373,9 +373,9 @@ class UserController {
 
         try {
             $stmt = $this->pdo->prepare("
-                SELECT id, email, first_name, last_name, phone, location, created_at
+                SELECT id, email, first_name, last_name, phone, location, is_active, created_at
                 FROM users
-                WHERE id = ? AND is_active = 1
+                WHERE id = ?
             ");
             $stmt->execute([$user_id]);
             $user = $stmt->fetch();

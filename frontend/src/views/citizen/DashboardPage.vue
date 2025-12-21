@@ -160,11 +160,11 @@
           <div class="shrink-0">
             <div
               :class="{
-                'bg-blue-50 text-blue-700 ring-1 ring-blue-700/10': issue.status === 'open',
+                'bg-blue-50 text-blue-700 ring-1 ring-blue-700/10':
+                  issue.status === 'pending_review',
                 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-600/20':
                   issue.status === 'in_progress',
                 'bg-green-50 text-green-700 ring-1 ring-green-600/20': issue.status === 'resolved',
-                'bg-gray-50 text-gray-600 ring-1 ring-gray-500/10': issue.status === 'closed',
               }"
               class="rounded-full px-3 py-1 text-xs font-semibold tracking-wider uppercase"
             >
@@ -233,10 +233,9 @@
               </h3>
               <span
                 :class="{
-                  'bg-blue-50 text-blue-700': issue.status === 'open',
+                  'bg-blue-50 text-blue-700': issue.status === 'pending_review',
                   'bg-yellow-50 text-yellow-700': issue.status === 'in_progress',
                   'bg-green-50 text-green-700': issue.status === 'resolved',
-                  'bg-gray-50 text-gray-600': issue.status === 'closed',
                 }"
                 class="rounded-full px-2 py-0.5 text-xs font-semibold uppercase"
               >

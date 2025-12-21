@@ -81,7 +81,7 @@
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Pending Review</p>
-                <p class="text-2xl font-bold text-gray-900">{{ stats.open }}</p>
+                <p class="text-2xl font-bold text-gray-900">{{ stats.pending_review }}</p>
               </div>
             </div>
           </div>
@@ -188,14 +188,14 @@ const lastUpdated = ref(new Date().toLocaleTimeString())
 const stats = computed(() => {
   const issues = issuesStore.issues
   const total = issues.length
-  const open = issues.filter((i) => i.status === 'open').length
+  const pending_review = issues.filter((i) => i.status === 'pending_review').length
   const inProgress = issues.filter((i) => i.status === 'in_progress').length
-  const resolved = issues.filter((i) => i.status === 'resolved' || i.status === 'closed').length
+  const resolved = issues.filter((i) => i.status === 'resolved').length
   const resolutionRate = total > 0 ? Math.round((resolved / total) * 100) : 0
 
   return {
     total,
-    open,
+    pending_review,
     inProgress,
     resolved,
     resolutionRate,
@@ -208,34 +208,22 @@ const statusChartData = computed(() => {
   if (!issues.length) return null
 
   const statusCounts = {
-    open: issues.filter((i) => i.status === 'open').length,
+    pending_review: issues.filter((i) => i.status === 'pending_review').length,
     in_progress: issues.filter((i) => i.status === 'in_progress').length,
     resolved: issues.filter((i) => i.status === 'resolved').length,
-    closed: issues.filter((i) => i.status === 'closed').length,
   }
 
   return {
-    labels: ['Pending Review', 'In Progress', 'Resolved', 'Closed'],
+    labels: ['Pending Review', 'In Progress', 'Resolved'],
     datasets: [
       {
-        data: [
-          statusCounts.open,
-          statusCounts.in_progress,
-          statusCounts.resolved,
-          statusCounts.closed,
-        ],
+        data: [statusCounts.pending_review, statusCounts.in_progress, statusCounts.resolved],
         backgroundColor: [
-          'rgba(234, 179, 8, 0.8)', // Yellow for open
+          'rgba(234, 179, 8, 0.8)', // Yellow for pending_review
           'rgba(99, 102, 241, 0.8)', // Indigo for in progress
           'rgba(34, 197, 94, 0.8)', // Green for resolved
-          'rgba(107, 114, 128, 0.8)', // Gray for closed
         ],
-        borderColor: [
-          'rgba(234, 179, 8, 1)',
-          'rgba(99, 102, 241, 1)',
-          'rgba(34, 197, 94, 1)',
-          'rgba(107, 114, 128, 1)',
-        ],
+        borderColor: ['rgba(234, 179, 8, 1)', 'rgba(99, 102, 241, 1)', 'rgba(34, 197, 94, 1)'],
         borderWidth: 2,
       },
     ],

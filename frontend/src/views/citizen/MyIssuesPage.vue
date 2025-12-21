@@ -47,10 +47,10 @@
           <div
             class="absolute top-0 left-0 h-full w-1.5 opacity-80"
             :class="{
-              'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]': issue.status === 'open',
+              'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]':
+                issue.status === 'pending_review',
               'bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]': issue.status === 'in_progress',
               'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]': issue.status === 'resolved',
-              'bg-gray-500 shadow-[0_0_10px_rgba(107,114,128,0.5)]': issue.status === 'closed',
             }"
           ></div>
 
@@ -74,11 +74,11 @@
               <div class="absolute top-3 left-3">
                 <span
                   :class="{
-                    'bg-blue-100/90 text-blue-800 ring-blue-500/30': issue.status === 'open',
+                    'bg-blue-100/90 text-blue-800 ring-blue-500/30':
+                      issue.status === 'pending_review',
                     'bg-yellow-100/90 text-yellow-800 ring-yellow-500/30':
                       issue.status === 'in_progress',
                     'bg-green-100/90 text-green-800 ring-green-500/30': issue.status === 'resolved',
-                    'bg-gray-100/90 text-gray-800 ring-gray-500/30': issue.status === 'closed',
                   }"
                   class="rounded-full px-3 py-1 text-xs font-bold tracking-wide uppercase shadow-sm ring-1 backdrop-blur-sm"
                 >

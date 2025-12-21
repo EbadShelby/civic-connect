@@ -129,7 +129,7 @@ curl -X POST http://localhost/civic-connect/backend/api/issues \
 
 #### 5. Get All Issues
 ```bash
-curl -X GET "http://localhost/civic-connect/backend/api/issues?category=infrastructure&status=open&sort_by=upvote_count&sort_order=DESC&page=1&limit=10"
+curl -X GET "http://localhost/civic-connect/backend/api/issues?category=infrastructure&status=pending_review&sort_by=upvote_count&sort_order=DESC&page=1&limit=10"
 ```
 
 #### 6. Get Single Issue

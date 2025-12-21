@@ -65,14 +65,14 @@ class IssueController {
             ");
 
             $priority = $data['priority'] ?? 'medium';
-            $status = $data['status'] ?? 'open';
+            $status = $data['status'] ?? 'pending_review';
             $location = $data['location'] ?? null;
             $latitude = $data['latitude'] ?? null;
             $longitude = $data['longitude'] ?? null;
 
             // Validate priority and status
             $valid_priorities = ['low', 'medium', 'high', 'critical'];
-            $valid_statuses = ['open', 'in_progress', 'resolved', 'closed'];
+            $valid_statuses = ['pending_review', 'in_progress', 'resolved'];
 
             if (!in_array($priority, $valid_priorities)) {
                 sendError('Invalid priority value', 400);
@@ -390,7 +390,7 @@ class IssueController {
                         sendError('Invalid priority value', 400);
                     }
 
-                    if ($field === 'status' && !in_array($data[$field], ['open', 'in_progress', 'resolved', 'closed'])) {
+                    if ($field === 'status' && !in_array($data[$field], ['pending_review', 'in_progress', 'resolved'])) {
                         sendError('Invalid status value', 400);
                     }
 
@@ -444,10 +444,9 @@ class IssueController {
                     $notificationController = new NotificationController();
                     
                     $status_labels = [
-                        'open' => 'Pending Review',
+                        'pending_review' => 'Pending Review',
                         'in_progress' => 'In Progress',
-                        'resolved' => 'Resolved',
-                        'closed' => 'Closed'
+                        'resolved' => 'Resolved'
                     ];
                     
                     $old_label = $status_labels[$old_status] ?? $old_status;

@@ -120,9 +120,9 @@
                 </div>
                 <div class="ml-5 w-0 flex-1">
                   <dl>
-                    <dt class="truncate text-sm font-medium text-gray-500">Closed Issues</dt>
+                    <dt class="truncate text-sm font-medium text-gray-500">Resolved Issues</dt>
                     <dd class="text-2xl font-semibold text-gray-900">
-                      {{ stats.issues_by_status?.closed || 0 }}
+                      {{ stats.issues_by_status?.resolved || 0 }}
                     </dd>
                   </dl>
                 </div>
@@ -130,7 +130,7 @@
             </div>
             <div class="bg-gray-50 px-5 py-3">
               <div class="text-sm">
-                <span class="text-gray-500">Resolved & Closed</span>
+                <span class="text-gray-500">Resolved</span>
               </div>
             </div>
           </div>
@@ -196,10 +196,9 @@
                     <div
                       class="h-full rounded-full"
                       :class="{
-                        'bg-red-500': status === 'open',
+                        'bg-red-500': status === 'pending_review',
                         'bg-yellow-500': status === 'in_progress',
                         'bg-green-500': status === 'resolved',
-                        'bg-gray-500': status === 'closed',
                       }"
                       :style="{ width: `${(count / stats.issues_total) * 100}%` }"
                     ></div>

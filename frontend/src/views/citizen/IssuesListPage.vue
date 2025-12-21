@@ -45,10 +45,9 @@
               class="rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-[#25562e] focus:outline-none"
             >
               <option value="">All Status</option>
-              <option value="open">Open</option>
+              <option value="pending_review">Pending Review</option>
               <option value="in_progress">In Progress</option>
               <option value="resolved">Resolved</option>
-              <option value="closed">Closed</option>
             </select>
 
             <!-- Category Filter -->
@@ -119,10 +118,9 @@
             :key="issue.id"
             class="rounded-xl border-l-4 bg-white p-6 shadow-md transition-shadow hover:shadow-lg"
             :class="{
-              'border-blue-500': issue.status === 'open',
+              'border-blue-500': issue.status === 'pending_review',
               'border-yellow-500': issue.status === 'in_progress',
               'border-green-500': issue.status === 'resolved',
-              'border-gray-500': issue.status === 'closed',
             }"
           >
             <div class="flex flex-col gap-6 lg:flex-row lg:items-start">
@@ -155,10 +153,9 @@
                   <!-- Status Badge -->
                   <div
                     :class="{
-                      'bg-blue-100 text-blue-800': issue.status === 'open',
+                      'bg-blue-100 text-blue-800': issue.status === 'pending_review',
                       'bg-yellow-100 text-yellow-800': issue.status === 'in_progress',
                       'bg-green-100 text-green-800': issue.status === 'resolved',
-                      'bg-gray-100 text-gray-800': issue.status === 'closed',
                     }"
                     class="rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap uppercase"
                   >
@@ -200,7 +197,13 @@
                 <!-- Reporter -->
                 <p class="mb-3 flex items-center text-xs text-[#819796]">
                   <UserCircleIcon class="mr-1 h-4 w-4" />
-                  Reported by {{ issue.user_name }}
+                  Reported by
+                  <router-link
+                    :to="`/profile/${issue.user_id}`"
+                    class="ml-1 font-semibold text-[#25562e] transition-colors hover:text-[#75a743] hover:underline"
+                  >
+                    {{ issue.user_name }}
+                  </router-link>
                 </p>
               </div>
 

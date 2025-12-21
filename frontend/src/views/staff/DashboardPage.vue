@@ -55,7 +55,7 @@
             </div>
             <div>
               <p class="text-sm font-medium text-gray-500">Pending Review</p>
-              <p class="text-2xl font-bold text-gray-900">{{ stats.open }}</p>
+              <p class="text-2xl font-bold text-gray-900">{{ stats.pending_review }}</p>
             </div>
           </div>
         </div>
@@ -298,7 +298,7 @@ const lastUpdated = ref(new Date().toLocaleTimeString())
 
 const statusFilters = [
   { label: 'All', value: 'all' },
-  { label: 'Pending', value: 'open' },
+  { label: 'Pending Review', value: 'pending_review' },
   { label: 'In Progress', value: 'in_progress' },
   { label: 'Resolved', value: 'resolved' },
 ]
@@ -307,9 +307,9 @@ const stats = computed(() => {
   const issues = issuesStore.issues
   return {
     total: issues.length,
-    open: issues.filter((i) => i.status === 'open').length,
+    pending_review: issues.filter((i) => i.status === 'pending_review').length,
     inProgress: issues.filter((i) => i.status === 'in_progress').length,
-    resolved: issues.filter((i) => i.status === 'resolved' || i.status === 'closed').length,
+    resolved: issues.filter((i) => i.status === 'resolved').length,
   }
 })
 
@@ -347,14 +347,12 @@ const formatCategory = (category) => {
 
 const formatStatus = (status) => {
   switch (status) {
-    case 'open':
+    case 'pending_review':
       return 'Pending Review'
     case 'in_progress':
       return 'In Progress'
     case 'resolved':
       return 'Resolved'
-    case 'closed':
-      return 'Closed'
     default:
       return status
   }
@@ -362,14 +360,12 @@ const formatStatus = (status) => {
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'open':
+    case 'pending_review':
       return 'bg-yellow-100 text-yellow-800'
     case 'in_progress':
       return 'bg-blue-100 text-blue-800'
     case 'resolved':
       return 'bg-green-100 text-green-800'
-    case 'closed':
-      return 'bg-gray-100 text-gray-800'
     default:
       return 'bg-gray-100 text-gray-800'
   }

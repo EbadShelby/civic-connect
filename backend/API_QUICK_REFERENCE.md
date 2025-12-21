@@ -65,7 +65,7 @@ http://localhost/civic-connect/backend/api/
 ### Issue Filters
 ```
 ?category=infrastructure        # Filter by category
-?status=open                    # Status: open|in_progress|resolved|closed
+?status=pending_review          # Status: pending_review|in_progress|resolved
 ?priority=high                  # Priority: low|medium|high|critical
 ?search=pothole                 # Search in title & description
 ?sort_by=created_at            # Sort field: created_at|upvote_count|title|priority
@@ -74,7 +74,7 @@ http://localhost/civic-connect/backend/api/
 
 ### Example
 ```
-GET /issues?category=infrastructure&status=open&sort_by=upvote_count&sort_order=DESC&page=1&limit=20
+GET /issues?category=infrastructure&status=pending_review&sort_by=upvote_count&sort_order=DESC&page=1&limit=20
 ```
 
 ---

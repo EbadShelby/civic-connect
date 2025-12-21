@@ -235,13 +235,13 @@ List all issues with optional filters and pagination.
 - `page` (default: 1)
 - `limit` (default: 10, max: 100)
 - `category` - Filter by category
-- `status` - Filter by status (open, in_progress, resolved, closed)
+- `status` - Filter by status (pending_review, in_progress, resolved)
 - `priority` - Filter by priority (low, medium, high, critical)
 - `search` - Search in title and description
 - `sort_by` - Sort field (created_at, upvote_count, title, priority)
 - `sort_order` - Sort order (ASC, DESC)
 
-**Example:** `GET /issues?category=infrastructure&status=open&sort_by=upvote_count&sort_order=DESC&page=1&limit=20`
+**Example:** `GET /issues?category=infrastructure&status=pending_review&sort_by=upvote_count&sort_order=DESC&page=1&limit=20`
 
 **Response (200):**
 ```json
@@ -257,7 +257,7 @@ List all issues with optional filters and pagination.
       "location": "Main Street, Downtown",
       "latitude": 40.7128,
       "longitude": -74.0060,
-      "status": "open",
+      "status": "pending_review",
       "priority": "high",
       "image_path": "uploads/issues/issue_1.jpg",
       "upvote_count": 25,
@@ -297,7 +297,7 @@ Get detailed information about a specific issue.
     "location": "Main Street, Downtown",
     "latitude": 40.7128,
     "longitude": -74.0060,
-    "status": "open",
+    "status": "pending_review",
     "priority": "high",
     "image_path": "uploads/issues/issue_1.jpg",
     "upvote_count": 25,
@@ -813,7 +813,7 @@ curl -X POST http://localhost/civic-connect/backend/api/issues \
 
 ### Get Issues
 ```bash
-curl -X GET "http://localhost/civic-connect/backend/api/issues?category=infrastructure&status=open&sort_by=upvote_count&sort_order=DESC"
+curl -X GET "http://localhost/civic-connect/backend/api/issues?category=infrastructure&status=pending_review&sort_by=upvote_count&sort_order=DESC"
 ```
 
 ### Upload Image

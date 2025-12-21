@@ -49,7 +49,7 @@ export const useIssuesStore = defineStore('issues', () => {
     'other',
   ])
 
-  const issueStatuses = computed(() => ['open', 'in_progress', 'resolved', 'closed'])
+  const issueStatuses = computed(() => ['pending_review', 'in_progress', 'resolved'])
 
   const issuePriorities = computed(() => ['low', 'medium', 'high', 'critical'])
 

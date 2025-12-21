@@ -172,7 +172,14 @@
               </div>
               <div>
                 <dt class="text-sm font-medium text-gray-500">Reporter</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ issue.user_name }}</dd>
+                <dd class="mt-1 text-sm">
+                  <router-link
+                    :to="`/profile/${issue.user_id}`"
+                    class="font-medium text-blue-600 transition-colors hover:text-blue-800 hover:underline"
+                  >
+                    {{ issue.user_name }}
+                  </router-link>
+                </dd>
               </div>
             </dl>
           </div>
@@ -194,7 +201,6 @@ import {
   HandThumbUpIcon,
   CheckCircleIcon,
   ClockIcon,
-  StopCircleIcon,
   InboxIcon,
   MapPinIcon,
 } from '@heroicons/vue/24/outline'
@@ -209,10 +215,14 @@ const updatingStatus = ref(null)
 const error = ref('')
 
 const availableStatuses = [
-  { value: 'open', label: 'Pending Review', icon: InboxIcon, colorClass: 'text-yellow-500' },
+  {
+    value: 'pending_review',
+    label: 'Pending Review',
+    icon: InboxIcon,
+    colorClass: 'text-yellow-500',
+  },
   { value: 'in_progress', label: 'In Progress', icon: ClockIcon, colorClass: 'text-blue-500' },
   { value: 'resolved', label: 'Resolved', icon: CheckCircleIcon, colorClass: 'text-green-500' },
-  { value: 'closed', label: 'Closed', icon: StopCircleIcon, colorClass: 'text-gray-500' },
 ]
 
 const formatCategory = (category) => {
@@ -224,14 +234,12 @@ const formatCategory = (category) => {
 
 const formatStatus = (status) => {
   switch (status) {
-    case 'open':
+    case 'pending_review':
       return 'Pending Review'
     case 'in_progress':
       return 'In Progress'
     case 'resolved':
       return 'Resolved'
-    case 'closed':
-      return 'Closed'
     default:
       return status
   }
@@ -239,14 +247,12 @@ const formatStatus = (status) => {
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'open':
+    case 'pending_review':
       return 'bg-yellow-100 text-yellow-800'
     case 'in_progress':
       return 'bg-blue-100 text-blue-800'
     case 'resolved':
       return 'bg-green-100 text-green-800'
-    case 'closed':
-      return 'bg-gray-100 text-gray-800'
     default:
       return 'bg-gray-100 text-gray-800'
   }

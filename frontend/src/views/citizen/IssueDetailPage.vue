@@ -59,10 +59,9 @@
                   <!-- Status Badge -->
                   <div
                     :class="{
-                      'bg-blue-100 text-blue-800': issue.status === 'open',
+                      'bg-blue-100 text-blue-800': issue.status === 'pending_review',
                       'bg-yellow-100 text-yellow-800': issue.status === 'in_progress',
                       'bg-green-100 text-green-800': issue.status === 'resolved',
-                      'bg-gray-100 text-gray-800': issue.status === 'closed',
                     }"
                     class="rounded-full px-4 py-1 text-sm font-semibold uppercase"
                   >
@@ -120,7 +119,12 @@
             <div class="mt-6 grid grid-cols-1 gap-4 border-t border-gray-200 pt-6 md:grid-cols-3">
               <div>
                 <p class="text-sm text-[#819796]">Reported by</p>
-                <p class="font-semibold text-[#10141f]">{{ issue.user_name }}</p>
+                <router-link
+                  :to="`/profile/${issue.user_id}`"
+                  class="font-semibold text-[#25562e] transition-colors hover:text-[#75a743] hover:underline"
+                >
+                  {{ issue.user_name }}
+                </router-link>
               </div>
               <div>
                 <p class="text-sm text-[#819796]">Date</p>

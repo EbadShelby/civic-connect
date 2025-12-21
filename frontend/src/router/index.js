@@ -73,7 +73,7 @@ const routes = [
     meta: { guard: 'CITIZEN', title: 'My Issues' },
   },
   {
-    path: '/profile',
+    path: '/profile/:id?',
     name: 'profile',
     component: () => import('../views/citizen/ProfilePage.vue'),
     meta: { guard: 'CITIZEN', title: 'Profile' },

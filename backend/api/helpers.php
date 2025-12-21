@@ -182,10 +182,9 @@ function sendStatusChangeEmail($to_email, $to_name, $issue_data, $old_status, $n
         $mail->Subject = "Issue Status Updated: {$issue_data['title']}";
         
         $status_labels = [
-            'open' => 'Pending Review',
+            'pending_review' => 'Pending Review',
             'in_progress' => 'In Progress',
-            'resolved' => 'Resolved',
-            'closed' => 'Closed'
+            'resolved' => 'Resolved'
         ];
         
         $old_label = $status_labels[$old_status] ?? $old_status;
