@@ -218,7 +218,7 @@ const handleVerifyOTP = async () => {
       message: 'OTP verified successfully',
     }
 
-    if (response.success || true) {
+    if (response.success) {
       toast.success('Authentication successful!')
 
       // Redirect to dashboard or return URL

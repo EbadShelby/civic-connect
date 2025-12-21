@@ -227,7 +227,7 @@ const formatDetails = (log) => {
       const parsed =
         typeof log.new_values === 'string' ? JSON.parse(log.new_values) : log.new_values
       return JSON.stringify(parsed)
-    } catch (e) {
+    } catch {
       return log.new_values
     }
   }
